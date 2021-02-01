@@ -1,6 +1,6 @@
 const itemsLoaded = (newItems) => {
     return {
-        type: 'BOOKS_LOADED',
+        type: 'ITEMS_LOADED',
         payload: newItems
     }
 }

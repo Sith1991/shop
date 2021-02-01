@@ -1,5 +1,5 @@
 import React from 'react';
-import {ShopstoreServiceConsumer} from "../shopstore-service-context";
+import {ShopstoreServiceConsumer} from "../services/shopstore-service-context";
 
 const withShopstoreService = () => (Wrapped) => {
     return (props) => {

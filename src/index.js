@@ -5,7 +5,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import store from '../src/store/store';
 import ErrorBoundry from './components/error-boundry';
 import App from './components/app';
-import {ShopstoreServiceProvider} from './components/shopstore-service-context';
+import {ShopstoreServiceProvider} from './services/shopstore-service-context';
 import ShopstoreService from './services/shopstore-service';
 
 const shopstoreService = new ShopstoreService();

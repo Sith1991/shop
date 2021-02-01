@@ -11,7 +11,7 @@ const App = () => {
                    component={HomePage}
                    exact/>
 
-            <Route path={'/all-property'}
+            <Route path={'/property-list'}
                    component={PropertyPage}/>
         </Switch>
     )
