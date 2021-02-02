@@ -6,14 +6,18 @@ import './header.css';
 const HeaderLists = () => {
     return (
         <div className={'header'}>
-            <ul className={'wrap'}>
-                <li className={'link colored'}>
-                    <Link to={'/'}>Листинг товаров</Link>
-                </li>
-                <li className={'link'}>
-                    <Link to={'/property-list'} >Листинг проперти</Link>
-                </li>
-            </ul>
+            <div className={'wrap colored'}>
+                <div className={'background'}></div>
+                <Link to={'/'}>
+                    Листинг товаров
+                </Link>
+            </div>
+            <div className={'wrap'}>
+                <div className={'background'}></div>
+                <Link to={'/property-list'}>
+                    Листинг проперти
+                </Link>
+            </div>
         </div>
     )
 }

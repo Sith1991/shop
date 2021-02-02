@@ -2,25 +2,48 @@
     width: 1110px;
     height: 60px;
     margin: 0 auto 14px;
-}
-
-.wrap {
     display: flex;
-    list-style: none;
 }
 
-.header .wrap .link {
+.header .wrap {
+    margin-right: 30px;
+    width: 255px;
+    height: 60px;
+}
+.header .wrap.colored {
+    border-top: 2px solid Blue;
+}
+
+.header a {
+    width: 255px;
+    height: 60px;
+    color: black;
+    text-align: center;
+    line-height: 45px;
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 22px;
+    position: absolute;
+    z-index: 1;
+}
+
+.header .wrap.colored a{
+    color: #0258FF;
+}
+
+.header a:hover {
+    text-decoration: none;
+}
+
+.header .background {
+    position: absolute;
+    z-index: 0;
     width: 255px;
     height: 60px;
 }
 
-.header .link.colored {
+.header .wrap.colored .background {
     background: linear-gradient(180deg, #0258FF 0%, rgba(2, 88, 255, 0) 100%);
     opacity: 0.1;
-}
-
-.header .wrap .link a {
-    z-index: 1;
-    text-align: center;
-    margin: 0 auto;
 }
