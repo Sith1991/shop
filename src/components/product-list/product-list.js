@@ -20,9 +20,12 @@ const ProductList = ({products}) => {
     return (
         <div className={'product-list'}>
             <div className={'button-wrap'}>
-                <button type={"button"} className={"btn btn-warning"}>
-                    Добавить товар
-                </button>
+                <Link to={'/add-item'}>
+                    <button type={"button"} className={"btn btn-warning"}>
+                        Добавить товар
+                    </button>
+                </Link>
+
             </div>
 
             <div className={'product-list-table'}>
@@ -40,7 +43,7 @@ const ProductList = ({products}) => {
                         const formatedPrice = numberFormat(price);
                         return (
                             <tr key={id}>
-                                <td className={'product-name'}><Link to={'/item-card/:id'}>{itemName}</Link></td>
+                                <td className={'product-name'}><Link to={`/item-card/${id}`}>{itemName}</Link></td>
                                 <td>{formatedPrice} $</td>
                                 <td>{dateOfChange}</td>
                                 <td><Link to={'#'}>Ред.</Link>

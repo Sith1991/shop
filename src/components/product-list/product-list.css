@@ -3,6 +3,7 @@
     box-shadow: 0 20px 20px rgba(40, 40, 40, 0.05);
     border-radius: 10px;
     min-height: 754px;
+    min-width: 360px;
 }
 
 .product-list .button-wrap {
@@ -16,6 +17,11 @@
     width: 160px;
     height: 32px;
     padding: 1px 6px;
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1em;
+    line-height: 1.1875em;
 }
 
 .product-list button:hover,
@@ -35,8 +41,8 @@
     font-family: Roboto, serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
+    font-size: 1em;
+    line-height: 1.1875em;
     border-top: none;
     padding-left: 80px;
 }
@@ -47,8 +53,8 @@
     font-family: Roboto, serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
-    line-height: 19px;
+    font-size: 1em;
+    line-height: 1.1875em;
     border-top: none;
 }
 
@@ -56,8 +62,8 @@
     font-family: Roboto, serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 0.875em;
+    line-height: 1em;
     opacity: 0.8;
     border-top: 1px solid #F7F9FA;
     border-bottom: 1px solid #F7F9FA;

@@ -17,11 +17,11 @@
     height: 60px;
     color: black;
     text-align: center;
-    line-height: 45px;
+    line-height: 2.8125em;
     font-family: Roboto, serif;
     font-style: normal;
     font-weight: 300;
-    font-size: 22px;
+    font-size: 1.375em;
     position: absolute;
     z-index: 1;
     opacity: 0.8;
