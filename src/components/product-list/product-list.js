@@ -5,6 +5,18 @@ import './product-list.css';
 
 const ProductList = ({products}) => {
 
+    const numberFormat = (price) => {
+        if (!isFinite(price)) {
+            return price;
+        }
+
+        let parts = price.toString().split('.');
+
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+        return parts.join('.');
+    }
+
     return (
         <div className={'product-list'}>
             <div className={'button-wrap'}>
@@ -18,19 +30,21 @@ const ProductList = ({products}) => {
                     <tbody>
                     <tr>
                         <th className={'bold-text'}><i className="fa fa-angle-down" aria-hidden="true"/> Перечень товаров</th>
-                        <th className={'gray-text'}>Стоимость</th>
-                        <th className={'gray-text'}>Дата изменения</th>
-                        <th className={'gray-text'}>Управление</th>
+                        <th className={'gray-text price'}>Стоимость</th>
+                        <th className={'gray-text date'}>Дата изменения</th>
+                        <th className={'gray-text administration'}>Управление</th>
                     </tr>
 
                     {products.map((product) => {
                         const {id, itemName, price, dateOfChange} = product;
+                        const formatedPrice = numberFormat(price);
                         return (
                             <tr key={id}>
-                                <td><Link to={'#'}>{itemName}</Link></td>
-                                <td>{price} $</td>
+                                <td className={'product-name'}><Link to={'/item-card/:id'}>{itemName}</Link></td>
+                                <td>{formatedPrice} $</td>
                                 <td>{dateOfChange}</td>
-                                <td><Link to={'#'}>Руд.</Link> <Link to={'#'}>Удалить</Link></td>
+                                <td><Link to={'#'}>Ред.</Link>
+                                    <Link to={'#'}>Удалить</Link></td>
                             </tr>
                         )
                     })}

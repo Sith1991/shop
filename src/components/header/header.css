@@ -24,10 +24,12 @@
     font-size: 22px;
     position: absolute;
     z-index: 1;
+    opacity: 0.8;
 }
 
 .header .wrap.colored a{
     color: #0258FF;
+    opacity: 1;
 }
 
 .header a:hover {

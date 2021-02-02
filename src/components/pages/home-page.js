@@ -22,7 +22,7 @@ const HomePage = () => {
             id: 3,
             itemName: 'CASHES VALLEY LANE',
             price: 500000,
-            dateOfChange: '01.11.18'
+            dateOfChange: '31.10.18'
         }
     ];
 
