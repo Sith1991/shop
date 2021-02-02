@@ -1,0 +1,26 @@
+.header {
+    width: 1110px;
+    height: 60px;
+    margin: 0 auto 14px;
+}
+
+.wrap {
+    display: flex;
+    list-style: none;
+}
+
+.header .wrap .link {
+    width: 255px;
+    height: 60px;
+}
+
+.header .link.colored {
+    background: linear-gradient(180deg, #0258FF 0%, rgba(2, 88, 255, 0) 100%);
+    opacity: 0.1;
+}
+
+.header .wrap .link a {
+    z-index: 1;
+    text-align: center;
+    margin: 0 auto;
+}

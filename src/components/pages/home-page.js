@@ -1,5 +1,7 @@
-import React from 'react';
-import ProductListItem from '../product-list-item'
+import React, {Fragment} from 'react';
+import ProductList from "../product-list";
+import HeaderLists from "../header";
+
 
 const HomePage = () => {
 
@@ -25,7 +27,10 @@ const HomePage = () => {
     ];
 
     return (
-        <ProductListItem products={products}/>
+        <Fragment>
+            <HeaderLists />
+            <ProductList products={products}/>
+        </Fragment>
     )
 }
 

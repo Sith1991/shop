@@ -1,0 +1,18 @@
+.product-list .box-wrap{
+    width: 1110px;
+    height: 754px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    box-shadow: 0 20px 20px rgba(40, 40, 40, 0.05);
+    border-radius: 10px;
+}
+
+.product-list button {
+    color: white;
+}
+
+.product-list button:hover,
+.product-list button:focus,
+.product-list button:visited{
+    color: white;
+}
