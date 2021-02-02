@@ -6,14 +6,16 @@ import './app.css';
 
 const App = () => {
     return (
-        <Switch>
-            <Route path={'/'}
-                   component={HomePage}
-                   exact/>
+        <div className={'wrapper'}>
+            <Switch>
+                <Route path={'/'}
+                       component={HomePage}
+                       exact/>
 
-            <Route path={'/property-list'}
-                   component={PropertyPage}/>
-        </Switch>
+                <Route path={'/property-list'}
+                       component={PropertyPage}/>
+            </Switch>
+        </div>
     )
 }
 

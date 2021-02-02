@@ -1,18 +1,45 @@
-.product-list .box-wrap{
-    width: 1110px;
-    height: 754px;
-    margin: 0 auto;
+.product-list {
     background: #FFFFFF;
     box-shadow: 0 20px 20px rgba(40, 40, 40, 0.05);
     border-radius: 10px;
 }
 
+.product-list .button-wrap {
+display: flex;
+    flex-direction: row-reverse;
+}
+
 .product-list button {
     color: white;
+    margin: 24px 95px 20px 0;
 }
 
 .product-list button:hover,
 .product-list button:focus,
 .product-list button:visited{
     color: white;
+}
+
+.product-list .product-list-table a {
+    text-decoration: underline;
+}
+
+.product-list .product-list-table .bold-text {
+    color: #000000;
+    opacity: 0.8;
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.product-list .product-list-table .gray-text {
+    color: #828282;
+    opacity: 0.8;
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
 }
