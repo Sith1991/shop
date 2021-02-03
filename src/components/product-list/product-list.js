@@ -3,19 +3,28 @@ import {Link} from 'react-router-dom';
 
 import './product-list.css';
 
-const ProductList = ({products}) => {
+const ProductList = () => {
 
-    const numberFormat = (price) => {
-        if (!isFinite(price)) {
-            return price;
+    const products = [
+        {
+            id: 1,
+            itemName: 'CASHES VALLEY LANE',
+            price: 500000,
+            dateOfChange: '01.11.18'
+        },
+        {
+            id: 2,
+            itemName: 'DURUN DURUN HOUSE',
+            price: 1216000,
+            dateOfChange: '01.11.18'
+        },
+        {
+            id: 3,
+            itemName: 'CASHES VALLEY LANE',
+            price: 500000,
+            dateOfChange: '31.10.18'
         }
-
-        let parts = price.toString().split('.');
-
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
-        return parts.join('.');
-    }
+    ];
 
     return (
         <div className={'product-list'}>
@@ -41,7 +50,7 @@ const ProductList = ({products}) => {
 
                     {products.map((product) => {
                         const {id, itemName, price, dateOfChange} = product;
-                        const formatedPrice = numberFormat(price);
+                        const formatedPrice = price.toLocaleString('ru-RU');
                         return (
                             <tr key={id}>
                                 <td className={'product-name'}><Link to={`/item-card/${id}`}>{itemName}</Link></td>

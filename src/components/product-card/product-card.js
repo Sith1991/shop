@@ -3,9 +3,9 @@ import {Link} from "react-router-dom";
 
 import './product-card.css';
 
-class ProductCard extends Component {
+const ProductCard = () => {
 
-    data = {
+    const data = {
         id: 1,
         itemName: 'Mercedes S550 4matic',
         imgUrl: 'https://i.ibb.co/bs9QvD9/image.png',
@@ -22,23 +22,11 @@ class ProductCard extends Component {
         propertyDescription_3: 'Бензин',
     }
 
-    numberFormat = (price) => {
-        if (!isFinite(price)) {
-            return price;
-        }
-
-        let parts = price.toString().split('.');
-
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
-        return parts.join('.');
-    }
-
-render () {
-
-        const { id, itemName, imgUrl, description, price,
-            propertyName_1, propertyName_2, propertyName_3,
-            propertyDescription_1: {subproperty_1, subproperty_2}, propertyDescription_2, propertyDescription_3 } = this.data;
+    const {
+        itemName, imgUrl, description, price,
+        propertyName_1, propertyName_2, propertyName_3,
+        propertyDescription_1: {subproperty_1, subproperty_2}, propertyDescription_2, propertyDescription_3
+    } = data;
 
     return (
         <div className={'product-card'}>
@@ -70,7 +58,7 @@ render () {
                             <h4>{propertyName_3}</h4>
                             <p>{propertyDescription_3}</p>
                             <h4>Стоимость</h4>
-                            <span>{this.numberFormat(price)}$</span>
+                            <span>{price.toLocaleString('ru-RU')}$</span>
                         </div>
                         <div className={"button-wrap"}>
                             <button type={"button"} className={"btn btn-warning"}>
@@ -83,6 +71,6 @@ render () {
         </div>
     )
 }
-}
+
 
 export default ProductCard;
