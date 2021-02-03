@@ -7,6 +7,9 @@ import AddItemPage from "../pages/add-item-page";
 import './app.css';
 
 const App = () => {
+
+
+
     return (
         <div className={'wrapper'}>
             <Switch>
