@@ -32,7 +32,6 @@
 
 .product-list .product-list-table a {
     text-decoration: underline;
-    margin: 0 33px;
 }
 
 .product-list .product-list-table .bold-text {
@@ -44,7 +43,7 @@
     font-size: 1em;
     line-height: 1.1875em;
     border-top: none;
-    padding-left: 80px;
+
 }
 
 .product-list .product-list-table .gray-text {
@@ -69,18 +68,33 @@
     border-bottom: 1px solid #F7F9FA;
 }
 
-.product-list .product-list-table .product-name {
-    padding-left: 73px;
+.product-list .product-list-table i {
+    margin: 0 6px;
+}
+
+.product-list .product-list-table .catalog {
+    width: 32%;
+    text-align: center;
 }
 
 .product-list .product-list-table .price {
-    padding-right: 50px;
+    width: 18%;
+}
+
+.product-list .product-list-table .date-of-change {
+    width: 24%;
 }
 
 .product-list .product-list-table .administration {
-    padding-left: 45px;
+    width: 26%;
 }
 
-.product-list .product-list-table i {
-    margin: 0 6px;
+.product-list .product-list-table .product-name {
+    text-align: center;
+}
+
+.product-list .product-list-table .links {
+    display: flex;
+    justify-content: space-between;
+    max-width: 150px;
 }

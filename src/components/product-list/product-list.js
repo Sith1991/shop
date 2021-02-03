@@ -27,15 +27,16 @@ const ProductList = ({products}) => {
                 </Link>
 
             </div>
-
             <div className={'product-list-table'}>
                 <table className={'table'}>
                     <tbody>
                     <tr>
-                        <th className={'bold-text'}><i className="fa fa-angle-down" aria-hidden="true"/> Перечень товаров</th>
-                        <th className={'gray-text price'}>Стоимость</th>
-                        <th className={'gray-text date'}>Дата изменения</th>
-                        <th className={'gray-text administration'}>Управление</th>
+                        <td className={'bold-text catalog'}><i className="fa fa-angle-down"
+                                                               aria-hidden="true"/>Перечень товаров
+                        </td>
+                        <td className={'gray-text price'}>Стоимость</td>
+                        <td className={'gray-text date-of-change'}>Дата изменения</td>
+                        <td className={'gray-text administration'}>Управление</td>
                     </tr>
 
                     {products.map((product) => {
@@ -46,8 +47,12 @@ const ProductList = ({products}) => {
                                 <td className={'product-name'}><Link to={`/item-card/${id}`}>{itemName}</Link></td>
                                 <td>{formatedPrice} $</td>
                                 <td>{dateOfChange}</td>
-                                <td><Link to={'#'}>Ред.</Link>
-                                    <Link to={'#'}>Удалить</Link></td>
+                                <td>
+                                    <div className="links">
+                                        <Link to={'#'}>Ред.</Link>
+                                        <Link to={'#'}>Удалить</Link>
+                                    </div>
+                                </td>
                             </tr>
                         )
                     })}
