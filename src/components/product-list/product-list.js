@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {Button} from "react-bootstrap";
 
 import './product-list.css';
 
@@ -30,9 +31,9 @@ const ProductList = () => {
         <div className={'product-list'}>
             <div className={'button-wrap'}>
                 <Link to={'/add-item'}>
-                    <button type={"button"} className={"btn btn-warning"}>
+                    <Button variant={"warning"}>
                         Добавить товар
-                    </button>
+                    </Button>
                 </Link>
 
             </div>

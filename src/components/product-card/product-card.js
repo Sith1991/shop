@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
+import {Button, Form} from "react-bootstrap";
 
 import './product-card.css';
 
@@ -15,8 +16,8 @@ const ProductCard = () => {
         propertyName_2: 'Год выпуска',
         propertyName_3: 'Тип топлива',
         propertyDescription_1: {
-            subproperty_1: 'Черный',
-            subproperty_2: 'Синий',
+            subproperty_1: 'Синий',
+            subproperty_2: 'Черный',
         },
         propertyDescription_2: 2017,
         propertyDescription_3: 'Бензин',
@@ -49,10 +50,10 @@ const ProductCard = () => {
                     <div className={"bottom-items-row"}>
                         <div className={"item-properties"}>
                             <h4>{propertyName_1}</h4>
-                            <select className={"custom-select"}>
-                                <option defaultValue>{subproperty_1}</option>
-                                <option value="1">{subproperty_2}</option>
-                            </select>
+                            <Form.Control as="select" custom>
+                                <option>{subproperty_1}</option>
+                                <option>{subproperty_2}</option>
+                            </Form.Control>
                             <h4>{propertyName_2}</h4>
                             <p>{propertyDescription_2}</p>
                             <h4>{propertyName_3}</h4>
@@ -61,9 +62,9 @@ const ProductCard = () => {
                             <span>{price.toLocaleString('ru-RU')}$</span>
                         </div>
                         <div className={"button-wrap"}>
-                            <button type={"button"} className={"btn btn-warning"}>
+                            <Button variant={"warning"}>
                                 Беру!!!
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

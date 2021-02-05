@@ -7,6 +7,7 @@ import ErrorBoundry from './components/error-boundry';
 import App from './components/app';
 import {ShopstoreServiceProvider} from './services/shopstore-service-context';
 import ShopstoreService from './services/shopstore-service';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const shopstoreService = new ShopstoreService();
 
