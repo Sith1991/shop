@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {Button} from "react-bootstrap";
 
 import './product-list.css';
+import EnhancedTable from "../material-ui-component";
 
 const ProductList = () => {
 
@@ -69,6 +70,8 @@ const ProductList = () => {
                     </tbody>
                 </table>
             </div>
+
+            <EnhancedTable/>
         </div>
     )
 };
