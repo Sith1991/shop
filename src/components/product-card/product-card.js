@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {Button, Form} from "react-bootstrap";
 
-import './product-card.css';
+import './product-card.scss';
 
 const ProductCard = () => {
 
