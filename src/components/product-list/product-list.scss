@@ -11,7 +11,7 @@
     flex-direction: row-reverse;
 }
 
-.product-list button {
+.product-list .add-item {
     color: white;
     margin: 24px 95px 20px 0;
     width: 160px;
@@ -28,73 +28,4 @@
 .product-list button:focus,
 .product-list button:visited {
     color: white;
-}
-
-.product-list .product-list-table a {
-    text-decoration: underline;
-}
-
-.product-list .product-list-table .bold-text {
-    color: #000000;
-    opacity: 0.8;
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 1em;
-    line-height: 1.1875em;
-    border-top: none;
-
-}
-
-.product-list .product-list-table .gray-text {
-    color: #828282;
-    opacity: 0.8;
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 1em;
-    line-height: 1.1875em;
-    border-top: none;
-}
-
-.product-list .product-list-table td {
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 0.875em;
-    line-height: 1em;
-    opacity: 0.8;
-    border-top: 1px solid #F7F9FA;
-    border-bottom: 1px solid #F7F9FA;
-}
-
-.product-list .product-list-table i {
-    margin: 0 6px;
-}
-
-.product-list .product-list-table .catalog {
-    width: 32%;
-    text-align: center;
-}
-
-.product-list .product-list-table .price {
-    width: 18%;
-}
-
-.product-list .product-list-table .date-of-change {
-    width: 24%;
-}
-
-.product-list .product-list-table .administration {
-    width: 26%;
-}
-
-.product-list .product-list-table .product-name {
-    text-align: center;
-}
-
-.product-list .product-list-table .links {
-    display: flex;
-    justify-content: space-between;
-    max-width: 150px;
 }
