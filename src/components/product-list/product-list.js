@@ -11,7 +11,7 @@ const ProductList = () => {
         <div className={'product-list'}>
             <div className={'button-wrap'}>
                 <Link to={'/add-item'}>
-                    <Button className={'add-item'} variant={"warning"}>
+                    <Button className={'add-button'} variant={"warning"}>
                         Добавить товар
                     </Button>
                 </Link>
