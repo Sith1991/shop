@@ -205,7 +205,7 @@ const ProductListTable = () => {
                 </IconButton>
             </div>
         );
-    };
+    }
 
     TablePaginationActions.propTypes = {
         count: PropTypes.number.isRequired,
@@ -296,7 +296,7 @@ const ProductListTable = () => {
                 </TableRow>
             </TableHead>
         );
-    };
+    }
 
     EnhancedTableHead.propTypes = {
         classes: PropTypes.object.isRequired,
@@ -339,6 +339,8 @@ const ProductListTable = () => {
     }));
 
     const classes = useStyles();
+
+    // делаем поиск по таблице
 
     return (
         <div className={'product-list-table'}>
