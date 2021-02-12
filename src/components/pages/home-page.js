@@ -1,13 +1,13 @@
 import React from 'react';
 import ProductList from "../product-list";
-import HeaderLists from "../header";
+import HeaderTabs from "../header";
 
 
 const HomePage = () => {
 
     return (
         <div className={'home-page'}>
-            <HeaderLists />
+            <HeaderTabs />
             <ProductList />
         </div>
     )

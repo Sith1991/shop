@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 import './header.css';
 
-const HeaderLists = () => {
+const HeaderTabs = () => {
     return (
         <div className={'header'}>
             <div className={'wrap colored'}>
@@ -22,4 +22,4 @@ const HeaderLists = () => {
     )
 }
 
-export default HeaderLists;
+export default HeaderTabs;
