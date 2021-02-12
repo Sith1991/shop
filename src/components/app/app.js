@@ -6,28 +6,30 @@ import AddItemPage from "../pages/add-item-page";
 import Login from "../login";
 import Registration from "../registration";
 
-import './app.css';
+import './app.scss';
 
 const App = () => {
 
     return (
-        <div className={'wrapper'}>
-            <Switch>
-                <Route path={'/'}
-                       component={HomePage}
-                       exact/>
+        <div className={'app'}>
+            <div className={'wrapper'}>
+                <Switch>
+                    <Route path={'/'}
+                           component={HomePage}
+                           exact/>
 
-                <Route path={'/property-list'}
-                       component={PropertyPage}/>
-                <Route path={'/item-card/:id'}
-                       component={ProductCard}/>
-                <Route path={'/add-item'}
-                       component={AddItemPage}/>
-                <Route path={'/login'}
-                       component={Login}/>
-                <Route path={'/registration'}
-                       component={Registration}/>
-            </Switch>
+                    <Route path={'/property-list'}
+                           component={PropertyPage}/>
+                    <Route path={'/item-card/:id'}
+                           component={ProductCard}/>
+                    <Route path={'/add-item'}
+                           component={AddItemPage}/>
+                    <Route path={'/login'}
+                           component={Login}/>
+                    <Route path={'/registration'}
+                           component={Registration}/>
+                </Switch>
+            </div>
         </div>
     )
 }

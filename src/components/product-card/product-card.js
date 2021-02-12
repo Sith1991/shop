@@ -31,40 +31,42 @@ const ProductCard = () => {
 
     return (
         <div className={'product-card'}>
-            <div className={"product-card-wrap"}>
-                <div className={'link'}>
-                    <Link to={'/'}>
-                        Вернуться
-                    </Link>
-                </div>
-                <div className={'wrapper'}>
-                    <div className={'header-items-row'}>
-                        <div className={'item-image'}>
-                            <img src={imgUrl} alt="product"/>
-                        </div>
-                        <div className={'item-information'}>
-                            <h3>{itemName}</h3>
-                            <p>{description}</p>
-                        </div>
+            <div className={'product-card-bordered-wrap'}>
+                <div className={"product-card-wrap"}>
+                    <div className={'link'}>
+                        <Link to={'/'}>
+                            Вернуться
+                        </Link>
                     </div>
-                    <div className={"bottom-items-row"}>
-                        <div className={"item-properties"}>
-                            <h4>{propertyName_1}</h4>
-                            <Form.Control as="select" custom>
-                                <option>{subproperty_1}</option>
-                                <option>{subproperty_2}</option>
-                            </Form.Control>
-                            <h4>{propertyName_2}</h4>
-                            <p>{propertyDescription_2}</p>
-                            <h4>{propertyName_3}</h4>
-                            <p>{propertyDescription_3}</p>
-                            <h4>Стоимость</h4>
-                            <span>{price.toLocaleString('ru-RU')}$</span>
+                    <div className={'product-card-wrapper'}>
+                        <div className={'header-items-row'}>
+                            <div className={'item-image'}>
+                                <img src={imgUrl} alt="product"/>
+                            </div>
+                            <div className={'item-information'}>
+                                <h3>{itemName}</h3>
+                                <p>{description}</p>
+                            </div>
                         </div>
-                        <div className={"button-wrap"}>
-                            <Button variant={"warning"}>
-                                Беру!!!
-                            </Button>
+                        <div className={"bottom-items-row"}>
+                            <div className={"item-properties"}>
+                                <h4>{propertyName_1}</h4>
+                                <Form.Control as="select" custom>
+                                    <option>{subproperty_1}</option>
+                                    <option>{subproperty_2}</option>
+                                </Form.Control>
+                                <h4>{propertyName_2}</h4>
+                                <p>{propertyDescription_2}</p>
+                                <h4>{propertyName_3}</h4>
+                                <p>{propertyDescription_3}</p>
+                                <h4>Стоимость</h4>
+                                <span>{price.toLocaleString('ru-RU')}$</span>
+                            </div>
+                            <div className={"button-wrap"}>
+                                <Button variant={"warning"}>
+                                    Беру!!!
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

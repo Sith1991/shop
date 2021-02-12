@@ -2,7 +2,9 @@ import React from 'react';
 
 const PropertyPage = () => {
     return (
-        <div>Property Page</div>
+        <div>
+            Property Page
+        </div>
     )
 }
 
