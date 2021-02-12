@@ -4,6 +4,7 @@ import {HomePage, PropertyPage} from "../pages";
 import ProductCard from "../product-card";
 import AddItemPage from "../pages/add-item-page";
 import Login from "../login";
+import Registration from "../registration";
 
 import './app.css';
 
@@ -24,6 +25,8 @@ const App = () => {
                        component={AddItemPage}/>
                 <Route path={'/login'}
                        component={Login}/>
+                <Route path={'/registration'}
+                       component={Registration}/>
             </Switch>
         </div>
     )

@@ -4,7 +4,6 @@ import {Button, Form} from "react-bootstrap";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
@@ -39,8 +38,7 @@ const Login = () => {
                 <div className={'form-wrap'}>
                     <FormGroup>
                         <FormLabel>Логин</FormLabel>
-                        <OutlinedInput label="Поиск"
-                                       type="email"
+                        <OutlinedInput type="email"
                                        variant="outlined"
                                        notched={false}
                                        placeholder='Введите логин'>
