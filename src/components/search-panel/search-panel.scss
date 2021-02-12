@@ -1,7 +1,10 @@
 .search-panel {
   display: flex;
-align-items: center;
+  .input {
+  margin: 15px;
+  }
   .select {
     min-width: 200px;
+    margin: 15px;
   }
 }
