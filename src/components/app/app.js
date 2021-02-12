@@ -3,12 +3,11 @@ import {Route, Switch} from 'react-router-dom';
 import {HomePage, PropertyPage} from "../pages";
 import ProductCard from "../product-card";
 import AddItemPage from "../pages/add-item-page";
+import Login from "../login";
 
 import './app.css';
 
 const App = () => {
-
-
 
     return (
         <div className={'wrapper'}>
@@ -23,6 +22,8 @@ const App = () => {
                        component={ProductCard}/>
                 <Route path={'/add-item'}
                        component={AddItemPage}/>
+                <Route path={'/login'}
+                       component={Login}/>
             </Switch>
         </div>
     )

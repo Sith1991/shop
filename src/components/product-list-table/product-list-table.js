@@ -21,6 +21,8 @@ import PropTypes from 'prop-types';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
 
+import './product-list-table.scss';
+
 
 const ProductListTable = ({products, onDeleted}) => {
 
@@ -259,7 +261,7 @@ const ProductListTable = ({products, onDeleted}) => {
                                     );
                                 })}
                             {emptyRows > 0 && (
-                                <TableRow style={{height: 53 * emptyRows}}>
+                                <TableRow style={{height: 47 * emptyRows}}>
                                     <TableCell colSpan={6}/>
                                 </TableRow>
                             )}

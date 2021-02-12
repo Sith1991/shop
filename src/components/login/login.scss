@@ -1,0 +1,67 @@
+@mixin font-params($fw, $fs, $lh, $cl) {
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: $fw;
+  font-size: $fs;
+  line-height: $lh;
+  color: $cl;
+}
+
+.login {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .login-wrap {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    min-width: 350px;
+    min-height: 336px;
+    background: #FFFFFF;
+    box-shadow: 0 20px 20px rgba(40, 40, 40, 0.05);
+    border-radius: 10px;
+  }
+
+  .form-wrap {
+    width: 318px;
+  }
+
+  h4 {
+    @include font-params(300, 22px, 26px, #000000)
+  }
+
+  label {
+    margin-top: 16px;
+    @include font-params(bold, 12px, 14px, #828282);
+  }
+
+  input {
+    padding: 7px 16px 6px;
+    @include font-params(normal, 16px, 19px, #000000);
+  }
+
+  a {
+    @include font-params(normal, 14px, 16px, #0258FF);
+    text-decoration: underline;
+  }
+
+ .login-button {
+    color: white;
+    width: 160px;
+    height: 32px;
+   @include font-params(normal, 16px, 19px, #FFFFFF);
+
+    &:hover,
+    &:focus,
+    &:visited {
+      color: white;
+    }
+  }
+}
+
+
