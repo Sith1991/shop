@@ -1,6 +1,14 @@
+@import "../../styles/mixins";
+
 .product-list-table {
-  a {
+  .link {
   text-decoration: underline;
+    margin-right: 10px;
+  }
+  .links {
+    display: flex;
+    justify-content: space-between;
+    max-width: 150px;
   }
 }
 
@@ -38,9 +46,6 @@
   border-bottom: 1px solid #F7F9FA;
 }
 
-.product-list .product-list-table i {
-  margin: 0 6px;
-}
 
 .product-list .product-list-table .catalog {
   width: 32%;
@@ -57,14 +62,4 @@
 
 .product-list .product-list-table .administration {
   width: 26%;
-}
-
-.product-list .product-list-table .product-name {
-  text-align: center;
-}
-
-.product-list .product-list-table .links {
-  display: flex;
-  justify-content: space-between;
-  max-width: 150px;
 }

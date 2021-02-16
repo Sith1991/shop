@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductList from "../product-list";
-import HeaderTabs from "../header";
+import HeaderTabs from "../header-tabs";
 
 
 const HomePage = () => {

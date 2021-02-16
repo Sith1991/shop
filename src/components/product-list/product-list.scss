@@ -1,31 +1,45 @@
+@import "../../styles/mixins";
+
 .product-list {
     background: #FFFFFF;
     box-shadow: 0 20px 20px rgba(40, 40, 40, 0.05);
     border-radius: 10px;
     min-height: 754px;
-    min-width: 360px;
+    min-width: 320px;
+
+    .button-wrap {
+        display: flex;
+        flex-direction: row-reverse;
+        .add-item-link {
+            margin: 24px 95px 20px 0;
+        }
+
+        @include media("max", "sm") {
+            & {
+                justify-content: center;
+            }
+            .add-item-link {
+                margin: 24px auto;
+            }
+        }
+    }
+
+    .add-button {
+        color: white;
+        width: 160px;
+        height: 32px;
+        padding: 1px 6px;
+        @include font-params(normal, 16px, 19px, #FFFFFF);
+        &:hover,
+        &:focus,
+        &:visited {
+            color: white;
+        }
+    }
 }
 
-.product-list .button-wrap {
-    display: flex;
-    flex-direction: row-reverse;
-}
 
-.product-list .add-button {
-    color: white;
-    margin: 24px 95px 20px 0;
-    width: 160px;
-    height: 32px;
-    padding: 1px 6px;
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 1em;
-    line-height: 1.1875em;
-}
 
-.product-list button:hover,
-.product-list button:focus,
-.product-list button:visited {
-    color: white;
-}
+
+
+

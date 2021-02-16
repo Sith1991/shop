@@ -1,11 +1,4 @@
-@mixin font-params($fw, $fs, $lh, $cl) {
-  font-family: Roboto, serif;
-  font-style: normal;
-  font-weight: $fw;
-  font-size: $fs;
-  line-height: $lh;
-  color: $cl;
-}
+@import "../../styles/mixins";
 
 .registration {
 
@@ -30,8 +23,6 @@
   .form-wrap {
     width: 318px;
   }
-
-
 
   h4 {
     @include font-params(300, 22px, 26px, #000000)

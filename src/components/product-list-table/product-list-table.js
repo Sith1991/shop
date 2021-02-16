@@ -18,8 +18,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { ruRU } from '@material-ui/core/locale';
+import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
+import {ruRU} from '@material-ui/core/locale';
 
 import './product-list-table.scss';
 
@@ -30,7 +30,7 @@ const ProductListTable = ({products, onDeleted}) => {
 
     const theme = createMuiTheme({
         palette: {
-            primary: { main: '#1976d2' },
+            primary: {main: '#1976d2'},
         },
     }, ruRU);
 
@@ -226,8 +226,6 @@ const ProductListTable = ({products, onDeleted}) => {
 
     const classes = useStyles();
 
-    // делаем поиск по таблице
-
     return (
         <div className={'product-list-table'}>
             <ThemeProvider theme={theme}>
@@ -247,14 +245,15 @@ const ProductListTable = ({products, onDeleted}) => {
                                     const formatedPrice = price.toLocaleString('ru-RU');
                                     return (
                                         <TableRow key={id}>
-                                            <TableCell className={'product-name'}><Link
+                                            <TableCell className={'link'}><Link
                                                 to={`/item-card/${id}`}>{itemName}</Link></TableCell>
                                             <TableCell>{formatedPrice} $</TableCell>
                                             <TableCell>{dateOfChange}</TableCell>
                                             <TableCell>
                                                 <div className="links">
-                                                    <Link to={'#'}>Ред.</Link>
-                                                    <Link to={'#'} onClick={() => onDeleted(id)}>Удалить</Link>
+                                                    <Link to={'#'} className={'link'}>Ред.</Link>
+                                                    <Link to={'#'} onClick={() => onDeleted(id)}
+                                                          className={'link'}>Удалить</Link>
                                                 </div>
                                             </TableCell>
                                         </TableRow>

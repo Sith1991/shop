@@ -13,6 +13,12 @@ class ProductList extends Component {
     state = {
         products:   [
             {
+                id: 0,
+                itemName: 'Mercedes S550 4matic',
+                price: 118000,
+                dateOfChange: '31.10.18'
+            },
+            {
                 id: 1,
                 itemName: 'CASHES VALLEY LANE',
                 price: 500000,
@@ -175,7 +181,7 @@ class ProductList extends Component {
         return (
             <div className={'product-list'}>
                 <div className={'button-wrap'}>
-                    <Link to={'/add-item'}>
+                    <Link to={'/add-item'} className={'add-item-link'}>
                         <Button className={'add-button'} variant={"warning"}>
                             Добавить товар
                         </Button>

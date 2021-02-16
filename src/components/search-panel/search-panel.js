@@ -36,7 +36,7 @@ export default class SearchPanel extends Component {
                                    </InputAdornment>
                                ),}}/>
                 <FormControl className={'select'} variant="outlined">
-                    <InputLabel>Столбце</InputLabel>
+                    <InputLabel>Категория</InputLabel>
                     <Select
                         label={'Категория'}
                         defaultValue={'itemName'}
