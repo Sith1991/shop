@@ -11,9 +11,18 @@
   }
 }
 
+  td {
+    padding: 13.5px 16px;
+  }
+
   .MuiTableSortLabel-root {
     flex-direction: row-reverse;
     margin-right: 90px;
+  }
+
+  .MuiTableSortLabel-root.MuiTableSortLabel-active .table-header {
+    color: black;
+    font-weight: bold;
   }
 
   .table-body {

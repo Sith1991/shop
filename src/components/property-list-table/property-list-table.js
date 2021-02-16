@@ -143,33 +143,9 @@ const PropertyListTable = ({properties, onDeleted}) => {
     }
 
     let headCells = [
-        {id: 'propName', label: 'Перечень проперти', isClicked: false},
-        {id: 'propType', label: 'Тип', isClicked: false},
+        {id: 'propName', label: 'Перечень проперти'},
+        {id: 'propType', label: 'Тип'},
     ];
-
-    const toggleIsClicked = (id) => {
-        if (id === 'propName') {
-            const oldItmPropName = headCells[0];
-            const newItmPropName = {...oldItmPropName, isClicked: true};
-            const oldItmPropType = headCells[1];
-            const newItmPropType = {...oldItmPropType, isClicked: false};
-            console.log(id);
-            return {
-                newItmPropName,
-                newItmPropType
-            }
-        } else if (id === 'propType') {
-            const oldItmPropName = headCells[0];
-            const newItmPropName = {...oldItmPropName, isClicked: false};
-            const oldItmPropType = headCells[1];
-            const newItmPropType = {...oldItmPropType, isClicked: true};
-            console.log(id);
-            return [
-                newItmPropName,
-                newItmPropType
-            ]
-        }
-    }
 
     function EnhancedTableHead(props) {
         const {classes, order, orderBy, onRequestSort} = props;
@@ -194,9 +170,9 @@ const PropertyListTable = ({properties, onDeleted}) => {
                                 IconComponent={ExpandMoreIcon}
                             >
                                 <div
-                                    className={`table-header ${headCell.isClicked ? 'isClicked' : null}`}>{headCell.label}</div>
+                                    className={'table-header'}>{headCell.label}</div>
                                 {orderBy === headCell.id ? (
-                                    <span className={classes.visuallyHidden} onClick={toggleIsClicked(headCell.id)}>
+                                    <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>) : null}
                             </TableSortLabel>
                         </TableCell>
@@ -284,7 +260,7 @@ const PropertyListTable = ({properties, onDeleted}) => {
                                     );
                                 })}
                             {emptyRows > 0 && (
-                                <TableRow style={{height: 53 * emptyRows}}>
+                                <TableRow style={{height: 47 * emptyRows}}>
                                     <TableCell colSpan={6}/>
                                 </TableRow>
                             )}
