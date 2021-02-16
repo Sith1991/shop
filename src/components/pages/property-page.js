@@ -1,9 +1,12 @@
 import React from 'react';
+import HeaderTabs from "../header-tabs";
+import PropertyList from "../property-list";
 
 const PropertyPage = () => {
     return (
-        <div>
-            Property Page
+        <div className={'property-page'}>
+            <HeaderTabs />
+            <PropertyList />
         </div>
     )
 }

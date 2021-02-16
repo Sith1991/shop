@@ -5,6 +5,7 @@ import ProductCard from "../product-card";
 import AddItemPage from "../pages/add-item-page";
 import Login from "../login";
 import Registration from "../registration";
+import AddProperty from "../add-property";
 
 import './app.scss';
 
@@ -20,6 +21,8 @@ const App = () => {
 
                     <Route path={'/property-list'}
                            component={PropertyPage}/>
+                    <Route path={'/add-property'}
+                           component={AddProperty}/>
                     <Route path={'/item-card/:id'}
                            component={ProductCard}/>
                     <Route path={'/add-item'}
