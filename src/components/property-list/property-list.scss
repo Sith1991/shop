@@ -1,0 +1,39 @@
+@import "../../styles/mixins";
+
+.property-list {
+  background: #FFFFFF;
+  box-shadow: 0 20px 20px rgba(40, 40, 40, 0.05);
+  border-radius: 10px;
+  min-height: 754px;
+  min-width: 320px;
+
+  .button-wrap {
+    display: flex;
+    flex-direction: row-reverse;
+    .add-property-link {
+      margin: 24px 95px 20px 0;
+    }
+
+    @include media("max", "sm") {
+      & {
+        justify-content: center;
+      }
+      .add-property-link {
+        margin: 24px auto;
+      }
+    }
+  }
+
+  .add-prop-button {
+    color: white;
+    width: 160px;
+    height: 32px;
+    padding: 1px 5px;
+    @include font-params(normal, 16px, 19px, #FFFFFF);
+    &:hover,
+    &:focus,
+    &:visited {
+      color: white;
+    }
+  }
+}

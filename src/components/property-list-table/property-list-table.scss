@@ -1,0 +1,49 @@
+@import "../../styles/mixins";
+
+.property-list-table {
+
+.table-header {
+  @include font-params(normal, 16px, 19px, #828282);
+  opacity: 0.8;
+
+  &.isClicked {
+    @include font-params(bold, 16px, 19px, #000000);
+  }
+}
+
+  .MuiTableSortLabel-root {
+    flex-direction: row-reverse;
+    margin-right: 90px;
+  }
+
+  .table-body {
+    @include font-params(normal, 14px, 16px, #000000);
+    opacity: 0.8;
+  }
+
+  .property-name {
+    margin-left: 95px;
+  }
+
+  .property-type {
+    margin-left: 25px;
+  }
+
+  .link {
+    text-decoration: underline;
+    @include font-params(normal, 14px, 16px, #0258FF);
+    opacity: 0.8;
+    margin-right: 105px;
+  }
+
+  #propName {
+    width: 33%;
+
+  }
+  #propType {
+    width: 42%;
+  }
+  #administration {
+    width: 25%;
+  }
+}
