@@ -5,10 +5,6 @@
 .table-header {
   @include font-params(normal, 16px, 19px, #828282);
   opacity: 0.8;
-
-  &.isClicked {
-    @include font-params(bold, 16px, 19px, #000000);
-  }
 }
 
   td {
@@ -18,11 +14,22 @@
   .MuiTableSortLabel-root {
     flex-direction: row-reverse;
     margin-right: 90px;
+    @include media('max', 'lg') {
+      margin-right: 42px;
+    }
+    @include media('max', 'md') {
+      margin-right: 0;
+    }
+    &.MuiTableSortLabel-active .table-header {
+      color: black;
+      font-weight: bold;
+    }
   }
 
-  .MuiTableSortLabel-root.MuiTableSortLabel-active .table-header {
-    color: black;
-    font-weight: bold;
+  .MuiTableCell-alignRight {
+    @include media('max', 'md') {
+      text-align: left;
+    }
   }
 
   .table-body {
@@ -32,10 +39,26 @@
 
   .property-name {
     margin-left: 95px;
+    @include media('max', 'lg') {
+      margin-left: 65px;
+    }
+
+    @include media('max', 'md') {
+      margin-left: 15px;
+    }
+    @include media('max', 'sm') {
+      margin-left: 0;
+    }
   }
 
   .property-type {
     margin-left: 25px;
+    @include media('max', 'lg') {
+      margin-left: 25px;
+    }
+    @include media('max', 'sm') {
+      margin-left: 0;
+    }
   }
 
   .link {
@@ -43,11 +66,16 @@
     @include font-params(normal, 14px, 16px, #0258FF);
     opacity: 0.8;
     margin-right: 105px;
+    @include media('max', 'md') {
+      margin-right: 65px;
+    }
+    @include media('max', 'sm') {
+      margin-right: 0;
+    }
   }
 
   #propName {
     width: 33%;
-
   }
   #propType {
     width: 42%;
