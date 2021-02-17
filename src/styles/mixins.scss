@@ -18,3 +18,22 @@ $sizes: ("xs":320px, "sm":576px, "md":768px, "lg":992px, "xl":1200px);
   line-height: $lh;
   color: $cl;
 }
+
+@mixin buttons($cl, $hvcl) {
+  display: inline-block;
+  @include font-params(normal, 16px, 19px, #FFFFFF);
+  height: 32px;
+  width: 160px;
+  background-color: $cl;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+  padding: 7px 15px;
+  transition: background-color .5s;
+  margin-left: 30px;
+  margin-bottom: 20px;
+  &:hover {
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.05);
+    background-color: $hvcl;
+  }
+};

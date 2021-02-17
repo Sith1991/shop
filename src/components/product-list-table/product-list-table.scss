@@ -7,6 +7,14 @@
     opacity: 0.8;
   }
 
+  th {
+    padding: 12px 16px;
+  }
+
+  td {
+    padding: 13.5px 16px;
+  }
+
   .MuiTableSortLabel-root {
     flex-direction: row-reverse;
     &.MuiTableSortLabel-active .table-header {
