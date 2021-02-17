@@ -1,3 +1,5 @@
+@import "../../styles/mixins";
+
 .search-panel {
   display: flex;
   flex-wrap: wrap;
@@ -5,10 +7,16 @@
   .input {
     margin: 15px;
     min-width: 240px;
+    .MuiOutlinedInput-adornedStart {
+      @include font-params(normal, 16px, 19px, #000000);
+    }
   }
 
   .select {
-    min-width: 220px;
+    min-width: 240px;
     margin: 15px;
+    .MuiOutlinedInput-root {
+      @include font-params(normal, 16px, 19px, #000000);
+    }
   }
 }

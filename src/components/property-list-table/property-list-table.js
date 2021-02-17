@@ -169,17 +169,14 @@ const PropertyListTable = ({properties, onDeleted}) => {
                                 onClick={createSortHandler(headCell.id)}
                                 IconComponent={ExpandMoreIcon}
                             >
-                                <div
-                                    className={'table-header'}>{headCell.label}</div>
-                                {orderBy === headCell.id ? (
-                                    <span className={classes.visuallyHidden}>
+                                <div className={'table-header'}>{headCell.label}</div>
+                                {orderBy === headCell.id ? (<span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>) : null}
                             </TableSortLabel>
                         </TableCell>
                     ))}
                     <TableCell key={'administration'}
-                               id={'administration'}>
-                        <div className={'table-header'}>Управление</div>
+                               id={'administration'}><div className={'table-header'}>Управление</div>
                     </TableCell>
                 </TableRow>
             </TableHead>

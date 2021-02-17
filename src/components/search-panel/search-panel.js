@@ -25,7 +25,8 @@ export default class SearchPanel extends Component {
         return (
             <div className={'search-panel'}>
                 <TextField className={'input'}
-                    label="Поиск"
+                           size="small"
+                           label="Поиск"
                            type="search"
                            variant="outlined"
                            onChange={this.onSearchChange}
@@ -34,8 +35,9 @@ export default class SearchPanel extends Component {
                                    <InputAdornment position="start">
                                        <SearchIcon/>
                                    </InputAdornment>
-                               ),}}/>
-                <FormControl className={'select'} variant="outlined">
+                               ),
+                           }}/>
+                <FormControl className={'select'} variant="outlined" size="small">
                     <InputLabel>Категория</InputLabel>
                     <Select
                         label={'Категория'}

@@ -162,6 +162,7 @@ const ProductListTable = ({products, onDeleted}) => {
                         <TableCell
                             key={headCell.id}
                             sortDirection={orderBy === headCell.id ? order : false}
+                            id={`${headCell.id}`}
                         >
                             <TableSortLabel
                                 active={orderBy === headCell.id}
@@ -169,16 +170,15 @@ const ProductListTable = ({products, onDeleted}) => {
                                 onClick={createSortHandler(headCell.id)}
                                 IconComponent={ExpandMoreIcon}
                             >
-                                {headCell.label}
-                                {orderBy === headCell.id ? (
-                                    <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-                                ) : null}
+                                <div className={'table-header'}>{headCell.label}</div>
+                                {orderBy === headCell.id ? (<span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>) : null}
                             </TableSortLabel>
                         </TableCell>
                     ))}
-                    <TableCell key={'administration'}>Управление</TableCell>
+                    <TableCell key={'administration'}
+                               id={'administration'}><div className={'table-header'}>Управление</div>
+                    </TableCell>
                 </TableRow>
             </TableHead>
         );
@@ -245,10 +245,10 @@ const ProductListTable = ({products, onDeleted}) => {
                                     const formatedPrice = price.toLocaleString('ru-RU');
                                     return (
                                         <TableRow key={id}>
-                                            <TableCell className={'link'}><Link
+                                            <TableCell className={'link table-body'}><Link
                                                 to={`/item-card/${id}`}>{itemName}</Link></TableCell>
-                                            <TableCell>{formatedPrice} $</TableCell>
-                                            <TableCell>{dateOfChange}</TableCell>
+                                            <TableCell className={'table-body'}>{formatedPrice} $</TableCell>
+                                            <TableCell className={'table-body'}>{dateOfChange}</TableCell>
                                             <TableCell>
                                                 <div className="links">
                                                     <Link to={'#'} className={'link'}>Ред.</Link>
