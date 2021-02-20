@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {HomePage, PropertyPage} from "../pages";
 import ProductCard from "../product-card";
-import AddItemPage from "../pages/add-item-page";
+import AddItem from "../add-item";
 import Login from "../login";
 import Registration from "../registration";
 import AddProperty from "../add-property";
@@ -26,7 +26,7 @@ const App = () => {
                     <Route path={'/item-card/:id'}
                            component={ProductCard}/>
                     <Route path={'/add-item'}
-                           component={AddItemPage}/>
+                           component={AddItem}/>
                     <Route path={'/login'}
                            component={Login}/>
                     <Route path={'/registration'}

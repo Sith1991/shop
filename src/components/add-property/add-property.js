@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Form} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 import './add-property.scss';
