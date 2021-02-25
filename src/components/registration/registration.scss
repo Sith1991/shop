@@ -30,6 +30,7 @@
 
   label {
     margin-top: 16px;
+    margin-bottom: 8px;
     @include font-params(bold, 12px, 14px, #828282);
   }
 
@@ -48,15 +49,10 @@
   }
 
   .registration-button {
-    color: white;
-    width: 200px;
-    height: 32px;
-    @include font-params(normal, 16px, 19px, #FFFFFF);
+    margin-top: 14px;
+  }
 
-    &:hover,
-    &:focus,
-    &:visited {
-      color: white;
-    }
+  .MuiIconButton-root {
+    padding: 8px;
   }
 }
