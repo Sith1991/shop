@@ -8,7 +8,7 @@
   flex-direction: column;
   min-height: 100vh;
 
-  .login-wrap {
+  .form-wrap {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -20,7 +20,7 @@
     border-radius: 10px;
   }
 
-  .form-wrap {
+  .login-wrap {
     width: 318px;
   }
 
@@ -43,18 +43,7 @@
     text-decoration: underline;
   }
 
- .login-button {
-    color: white;
-    width: 160px;
-    height: 32px;
-   @include font-params(normal, 16px, 19px, #FFFFFF);
-
-    &:hover,
-    &:focus,
-    &:visited {
-      color: white;
-    }
+  .MuiIconButton-root {
+    padding: 8px;
   }
 }
-
-

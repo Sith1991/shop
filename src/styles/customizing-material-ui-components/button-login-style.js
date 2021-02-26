@@ -1,6 +1,6 @@
 import {makeStyles} from "@material-ui/core/styles";
 
-const useRegistrationButtonStyles = makeStyles({
+const useLoginButtonStyles = makeStyles({
     root: {
         background: '#ffb800',
         '&:hover': {
@@ -10,11 +10,11 @@ const useRegistrationButtonStyles = makeStyles({
         border: 0,
         color: '#FFFFFF',
         height: 32,
-        width: 200,
+        width: 160,
     },
     label: {
         textTransform: 'capitalize',
     },
 });
 
-export default useRegistrationButtonStyles;
+export default useLoginButtonStyles;
