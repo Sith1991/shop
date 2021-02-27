@@ -37,7 +37,8 @@
   }
 
   .button-save {
-    @include buttons(#34C15C, #229641);
+    margin-left: 30px;
+    margin-bottom: 20px;
   }
 
   .add-item-head {
@@ -89,6 +90,13 @@
     .upload-image {
       cursor: pointer;
     }
+
+    .MuiButton-label {
+      justify-content: space-between;
+    }
   }
 
+  .upload-input {
+    display: none;
+  }
 }

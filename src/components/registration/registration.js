@@ -103,7 +103,7 @@ const Registration = () => {
                                     <InputAdornment position="end">
                                         <IconButton
                                             name={'showPassword'}
-                                            onClick={() => setFieldValue('showPassword', !values.showPassword)}
+                                            onClick={() => setFieldValue('showPassword', !values.showPassword)}     // меняю значение в showPassword на обратное, что бы показать или скрыть пароль
                                             edge="end"
                                         >
                                             {values.showPassword ? <Visibility/> : <VisibilityOff/>}
