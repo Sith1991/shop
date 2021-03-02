@@ -9,13 +9,15 @@ const useUploadButtonStyles = makeStyles({
         },
         borderRadius: 4,
         color: '#828282',
-        height: 32,
+        minHeight: 32,
         width: 255,
         boxShadow: 'none',
         border: '1px solid #E0E0E0',
+        padding: '4px 8px'
     },
     label: {
-        textTransform: 'capitalize',
+        textTransform: 'none',
+        justifyContent: 'space-between',
     },
 });
 

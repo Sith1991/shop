@@ -2,32 +2,41 @@ import React from 'react';
 import AddPropertyToProduct from "../add-property-to-product";
 import {Link} from "react-router-dom";
 import * as yup from "yup";
-import {FieldArray, FormikProvider, useFormik} from "formik";
-
-
-import "./add-item.scss";
 import {ThemeProvider} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import theme from "../../styles/customizing-material-ui-components/theme";
+import {FieldArray, FormikProvider, useFormik} from "formik";
 import useSaveButtonStyles from "../../styles/customizing-material-ui-components/button-save-style";
 import useUploadButtonStyles from "../../styles/customizing-material-ui-components/button-upload-style";
+import useAddItemLabelStyles from "../../styles/customizing-material-ui-components/add-item-label-style";
 import {FormControl, FormHelperText, FormLabel} from "@material-ui/core";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 
+import "./add-item.scss";
+import themeUploadBtn from "../../styles/customizing-material-ui-components/theme-upload-btn";
+import useAddItemInputStyles from "../../styles/customizing-material-ui-components/add-item-input-style";
+import useAddItemTextareaStyles from "../../styles/customizing-material-ui-components/add-item-textarea-style";
+
 
 const AddItem = () => {
 
-    const classes = useSaveButtonStyles();
+    const classesLabel = useAddItemLabelStyles();
 
-    const classesUpload = useUploadButtonStyles();
+    const classesInput = useAddItemInputStyles();
+
+    const classesSaveBtn = useSaveButtonStyles();
+
+    const classesUploadBtn = useUploadButtonStyles();
+
+    const classesTextarea = useAddItemTextareaStyles();
 
     const handleFileSelect = (event) => {
-        document.getElementById('file-name').textContent=event.target.files[0].name;
+        document.getElementById('file-name').textContent = event.target.files[0].name;
 
         const output = document.getElementById('output');
         output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function() {
+        output.onload = function () {
             URL.revokeObjectURL(output.src) // free memory
         }
     }
@@ -38,8 +47,8 @@ const AddItem = () => {
         file: yup.array().of(yup.object().shape({
             file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 100кб', (value) => {
                 if (!value) return false
-                    return value.size < 102400
-                }).required(),
+                return value.size < 102400
+            }).required(),
             type: yup.string().oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png').required(),
             name: yup.string().required()
         }).typeError('Добавьте файл')).required(),
@@ -58,7 +67,9 @@ const AddItem = () => {
             if (typeof value === 'string') {
                 result.push(value)
             } else {
-                Object.values(value).forEach((error) => { result.push(error) })
+                Object.values(value).forEach((error) => {
+                    result.push(error)
+                })
             }
         })
         return result
@@ -82,127 +93,155 @@ const AddItem = () => {
         validateOnBlur: true,
     });
 
-    const {values, errors, touched, handleChange,
-        handleBlur, isValid, handleSubmit, dirty} = formik;
+    const {
+        values, errors, touched, handleChange,
+        handleBlur, isValid, handleSubmit, dirty, setFieldTouched
+    } = formik;
+
 
 
     return (
         <FormikProvider value={formik}>
-            <div className={'add-item'}>
-                <div className={'add-item-bordered-wrap'}>
-                    <form onSubmit={handleSubmit} className={'add-item-wrap'}>
-                        <div className={'buttons-wrap'}>
-                            <Link to={'/'} className={'button-back'}>
-                                Вернуться
-                            </Link>
-                            <ThemeProvider theme={theme}>
-                                <Button
-                                    className={'button-save'}
-                                    classes={{
-                                        root: classes.root,
-                                        label: classes.label,
-                                    }}
-                                    type={'submit'}
-                                    disabled={!isValid || !dirty}
-                                    onClick={handleSubmit}>
-                                    Сохранить
-                                </Button>
-                            </ThemeProvider>
-                        </div>
-                        <div className={'add-item-head'}>
-                            <h5>Добавление товара</h5>
-                        </div>
-                        <div className={'add-item-body'}>
-                            <FormControl fullWidth error={touched.itemName && errors.itemName}>
-                                <FormLabel>Название товара</FormLabel>
-                                <OutlinedInput type="text"
-                                               variant="outlined"
-                                               notched={false}
-                                               placeholder='Название товара'
-                                               name={'itemName'}
-                                               onChange={handleChange}
-                                               onBlur={handleBlur}
-                                               value={values.itemName}>
-                                </OutlinedInput>
-                                {getError(touched.itemName, errors.itemName)}
-                            </FormControl>
-                            <FormControl fullWidth error={touched.price && errors.price}>
-                                <FormLabel>Стоимость товара</FormLabel>
-                                <OutlinedInput type="text"
-                                               variant="outlined"
-                                               notched={false}
-                                               placeholder='Стоимость товара'
-                                               name={'price'}
-                                               onChange={handleChange}
-                                               onBlur={handleBlur}
-                                               value={values.price}>
-                                </OutlinedInput>
-                                {getError(touched.price, errors.price)}
-                            </FormControl>
+            <ThemeProvider theme={theme}>
+                <div className={'add-item'}>
+                    <div className={'add-item-bordered-wrap'}>
+                        <form onSubmit={handleSubmit} className={'add-item-wrap'}>
+                            <div className={'buttons-wrap'}>
+                                <Link to={'/'} className={'button-back'}>
+                                    Вернуться
+                                </Link>
+                                    <Button
+                                        className={'button-save'}
+                                        classes={{
+                                            root: classesSaveBtn.root,
+                                            label: classesSaveBtn.label,
+                                        }}
+                                        type={'submit'}
+                                        disabled={!isValid || !dirty}
+                                        onClick={handleSubmit}>
+                                        Сохранить
+                                    </Button>
+                            </div>
+                            <div className={'add-item-head'}>
+                                <h5>Добавление товара</h5>
+                            </div>
+                            <div className={'add-item-body'}>
+                                <FormControl error={touched.itemName && errors.itemName}>
+                                    <FormLabel classes={{root: classesLabel.root}}
+                                               className={'labels'}>Название товара</FormLabel>
+                                    <OutlinedInput type="text"
+                                                   variant="outlined"
+                                                   notched={false}
+                                                   placeholder='Название товара'
+                                                   multiline
+                                                   classes={{
+                                                       root: classesInput.root,
+                                                   }}
+                                                   name={'itemName'}
+                                                   onChange={handleChange}
+                                                   onBlur={handleBlur}
+                                                   value={values.itemName}>
+                                    </OutlinedInput>
+                                    {getError(touched.itemName, errors.itemName)}
+                                </FormControl>
 
-                            <FormControl error={errors.file}>
-                                <FormLabel>Изображение</FormLabel>
-                                {console.log('file', values.file)}
-                                {console.log('fileErrors', errors.file)}
-                                <FieldArray name={'file'}>
-                                    { (arrayHelper) => (
-                                        <div>
-                                            <input
-                                                accept=".jpg,.jpeg,.png"
-                                                className={'upload-input'}
-                                                id="contained-button-file"
-                                                multiple
-                                                type="file"
-                                                name={'file'}
-                                                onChange={(event) => {
-                                                    const { files } = event.target
-                                                    const file = getFileSchema(files.item(0))
-                                                    if (!file) {
-                                                        arrayHelper.remove(0)
-                                                    }
-                                                    if (Array.isArray(values.file)) {
-                                                        arrayHelper.replace(0, file)
-                                                    } else {
-                                                        arrayHelper.push(file)
-                                                    }
-                                                }}
-                                            />
-                                            <label htmlFor="contained-button-file">
-                                                <Button variant="contained"
-                                                        component="span"
-                                                        classes={{
-                                                            root: classesUpload.root,
-                                                            label: classesUpload.label,
-                                                        }}
-                                                        endIcon={<i className="fa fa-upload" aria-hidden="true"/>}>
-                                                    image
-                                                </Button>
-                                            </label>
-                                        </div>
-                                    ) }
-                                </FieldArray>
-                                {getArrErrorsMessages(errors.file).map((error) => getError(true, error))}
-                            </FormControl>
+                                <FormControl error={touched.price && errors.price}>
+                                    <FormLabel classes={{root: classesLabel.root}}
+                                               className={'labels'}>Стоимость товара</FormLabel>
+                                    <OutlinedInput type="text"
+                                                   variant="outlined"
+                                                   notched={false}
+                                                   placeholder='Стоимость товара'
+                                                   classes={{
+                                                       root: classesInput.root,
+                                                       input: classesInput.input
+                                                   }}
+                                                   name={'price'}
+                                                   onChange={handleChange}
+                                                   onBlur={handleBlur}
+                                                   value={values.price}>
+                                    </OutlinedInput>
+                                    {getError(touched.price, errors.price)}
+                                </FormControl>
 
-                            <FormControl fullWidth error={touched.description && errors.description}>
-                                <FormLabel>Описание</FormLabel>
-                                <OutlinedInput type="text"
-                                               multiline={true}
-                                               rows={6}
-                                               inputProps={{ maxLength: 1000 }}
-                                               variant="outlined"
-                                               notched={false}
-                                               placeholder='Описание товара'
-                                               name={'description'}
-                                               onChange={handleChange}
-                                               onBlur={handleBlur}
-                                               value={values.description}>
-                                </OutlinedInput>
-                                {getError(touched.description, errors.description)}
-                            </FormControl>
-                        </div>
+                                <FormControl error={touched.file && errors.file}>
+                                    <FormLabel classes={{root: classesLabel.root}}
+                                               className={'labels'}>Изображение</FormLabel>
+                                    {console.log('file', values.file)}
+                                    {console.log('fileErrors', errors.file)}
+                                    {console.log('fileTouched', touched.file)}
+                                    <FieldArray name={'file'}>
+                                        {(arrayHelper) => (
+                                            <div>
+                                                <input
+                                                    accept=".jpg,.jpeg,.png"
+                                                    className={'upload-input'}
+                                                    id="contained-button-file"
+                                                    multiple
+                                                    type="file"
+                                                    name={'file'}
+                                                    onBlur={handleBlur}
+                                                    onChange={(event) => {
+                                                        const {files} = event.target;
+                                                        const file = getFileSchema(files.item(0));
+                                                        setFieldTouched('file', true, false);
+                                                        if (!file) {
+                                                            arrayHelper.remove(0)
+                                                            setFieldTouched('file', true, false);
+                                                        }
+                                                        if (Array.isArray(values.file)) {
+                                                            arrayHelper.replace(0, file)
+                                                        } else {
+                                                            arrayHelper.push(file)
+                                                        }
+                                                    }}
+                                                />
+                                                <label className={'upload-bnt-label'} htmlFor="contained-button-file">
+                                                    <ThemeProvider theme={themeUploadBtn}>
+                                                        <Button variant="contained"
+                                                                component="span"
+                                                                classes={{
+                                                                    root: classesUploadBtn.root,
+                                                                    label: classesUploadBtn.label,
+                                                                }}
+                                                                endIcon={<i className="fa fa-upload" aria-hidden="true"/>}>
 
-                        {/*                    <div>
+                                                            {(values.file === undefined || values.file[0] === null)
+                                                                ? <div className={'upload-btn-name'}>Выберите изображение</div> : values.file[0].file.name}
+                                                        </Button>
+                                                    </ThemeProvider>
+
+                                                </label>
+                                            </div>
+                                        )}
+                                    </FieldArray>
+                                    {getArrErrorsMessages(errors.file).map((error) => getError(true, error))}
+                                </FormControl>
+
+                                <FormControl error={touched.description && errors.description}>
+                                    <FormLabel classes={{root: classesLabel.root}}
+                                               className={'labels'}>Описание</FormLabel>
+                                    <OutlinedInput type="text"
+                                                   multiline={true}
+                                                   rows={6}
+                                                   inputProps={{maxLength: 1000}}
+                                                   variant="outlined"
+                                                   notched={false}
+                                                   placeholder='Описание товара'
+                                                   classes={{
+                                                       root: classesTextarea.root,
+                                                   }}
+                                                   name={'description'}
+                                                   onChange={handleChange}
+                                                   onBlur={handleBlur}
+                                                   value={values.description}>
+                                    </OutlinedInput>
+                                    {getError(touched.description, errors.description)}
+                                </FormControl>
+                            </div>
+
+
+                            {/*                    <div>
                         <Form.Group>
                             <Form.Label>Название товара</Form.Label>
                             <Form.Control type="text" placeholder='Название товара' className={'item-input'}/>
@@ -234,11 +273,13 @@ const AddItem = () => {
                         </Form.Group>
                     </div>*/}
 
-                        <AddPropertyToProduct />
-                    </form>
+                            <AddPropertyToProduct/>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            </FormikProvider>
+            </ThemeProvider>
+
+        </FormikProvider>
 
     )
 }

@@ -13,7 +13,7 @@ const useRegistrationButtonStyles = makeStyles({
         width: 200,
     },
     label: {
-        textTransform: 'capitalize',
+        textTransform: 'none',
     },
 });
 

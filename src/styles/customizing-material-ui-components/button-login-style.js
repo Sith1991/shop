@@ -13,7 +13,7 @@ const useLoginButtonStyles = makeStyles({
         width: 160,
     },
     label: {
-        textTransform: 'capitalize',
+        textTransform: 'none',
     },
 });
 

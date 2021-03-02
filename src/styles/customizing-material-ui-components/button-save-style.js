@@ -14,7 +14,7 @@ const useSaveButtonStyles = makeStyles({
         boxShadow: '5px 10px 10px rgba(0, 0, 0, 0.05)'
     },
     label: {
-        textTransform: 'capitalize',
+        textTransform: 'none',
     },
 });
 
