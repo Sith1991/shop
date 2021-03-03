@@ -42,8 +42,9 @@ const AddItem = () => {
     }
 
     const validationSchema = yup.object().shape({
-        itemName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-        price: yup.number().typeError('Должно быть числом').required('Обязательное поле'),
+        itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
+        price: yup.number().typeError('Должно быть числом').positive('Стоимсоть должна быть больше нуля')
+            .integer('Должно быть целым числом').required('Обязательное поле'),
         file: yup.array().of(yup.object().shape({
             file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 100кб', (value) => {
                 if (!value) return false
@@ -88,7 +89,11 @@ const AddItem = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values)
+            const {itemName, description} = values;
+            const trimmedItemName = itemName.trim();
+            const trimmedDescription = description.trim();
+            const newValues = {...values, itemName: trimmedItemName, description: trimmedDescription};
+            console.log(newValues)
         },
         validateOnBlur: true,
     });
@@ -111,6 +116,7 @@ const AddItem = () => {
                                     Вернуться
                                 </Link>
                                     <Button
+                                        disableRipple={true}
                                         className={'button-save'}
                                         classes={{
                                             root: classesSaveBtn.root,
@@ -148,10 +154,11 @@ const AddItem = () => {
                                 <FormControl error={touched.price && errors.price}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Стоимость товара</FormLabel>
-                                    <OutlinedInput type="text"
+                                    <OutlinedInput type="number"
                                                    variant="outlined"
                                                    notched={false}
                                                    placeholder='Стоимость товара'
+                                                   className={'number-input'}
                                                    classes={{
                                                        root: classesInput.root,
                                                        input: classesInput.input
@@ -200,6 +207,7 @@ const AddItem = () => {
                                                     <ThemeProvider theme={themeUploadBtn}>
                                                         <Button variant="contained"
                                                                 component="span"
+                                                                disableRipple={true}
                                                                 classes={{
                                                                     root: classesUploadBtn.root,
                                                                     label: classesUploadBtn.label,
