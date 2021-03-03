@@ -11,13 +11,32 @@ import useUploadButtonStyles from "../../styles/customizing-material-ui-componen
 import useAddItemLabelStyles from "../../styles/customizing-material-ui-components/add-item-label-style";
 import {FormControl, FormHelperText, FormLabel} from "@material-ui/core";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
-
-
-import "./add-item.scss";
 import themeUploadBtn from "../../styles/customizing-material-ui-components/theme-upload-btn";
 import useAddItemInputStyles from "../../styles/customizing-material-ui-components/add-item-input-style";
 import useAddItemTextareaStyles from "../../styles/customizing-material-ui-components/add-item-textarea-style";
+import NumberFormat from 'react-number-format';
 
+import "./add-item.scss";
+
+const PriceFormatInput = ({classesInput, onChange, onBlur, values}) => {
+
+    return (
+        <OutlinedInput /*type="number"*/
+            variant="outlined"
+            notched={false}
+            placeholder='Стоимость товара'
+            className={'number-input'}
+            classes={{
+                root: classesInput.root,
+                input: classesInput.input
+            }}
+            name={'price'}
+            onChange={onChange}                      // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
+            onBlur={onBlur}                          // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
+            value={values.price}>
+        </OutlinedInput>
+    )
+}
 
 const AddItem = () => {
 
@@ -30,16 +49,6 @@ const AddItem = () => {
     const classesUploadBtn = useUploadButtonStyles();
 
     const classesTextarea = useAddItemTextareaStyles();
-
-    const handleFileSelect = (event) => {
-        document.getElementById('file-name').textContent = event.target.files[0].name;
-
-        const output = document.getElementById('output');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function () {
-            URL.revokeObjectURL(output.src) // free memory
-        }
-    }
 
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
@@ -89,10 +98,16 @@ const AddItem = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            const {itemName, description} = values;
+            const {itemName, description, price} = values;
             const trimmedItemName = itemName.trim();
             const trimmedDescription = description.trim();
-            const newValues = {...values, itemName: trimmedItemName, description: trimmedDescription};
+            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+            const newValues = {
+                ...values,
+                itemName: trimmedItemName,
+                description: trimmedDescription,
+                price: numberedPrice
+            };
             console.log(newValues)
         },
         validateOnBlur: true,
@@ -103,7 +118,9 @@ const AddItem = () => {
         handleBlur, isValid, handleSubmit, dirty, setFieldTouched
     } = formik;
 
-
+    const priceFormat = (value) => {
+        return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
+    }
 
     return (
         <FormikProvider value={formik}>
@@ -115,18 +132,18 @@ const AddItem = () => {
                                 <Link to={'/'} className={'button-back'}>
                                     Вернуться
                                 </Link>
-                                    <Button
-                                        disableRipple={true}
-                                        className={'button-save'}
-                                        classes={{
-                                            root: classesSaveBtn.root,
-                                            label: classesSaveBtn.label,
-                                        }}
-                                        type={'submit'}
-                                        disabled={!isValid || !dirty}
-                                        onClick={handleSubmit}>
-                                        Сохранить
-                                    </Button>
+                                <Button
+                                    disableRipple={true}
+                                    className={'button-save'}
+                                    classes={{
+                                        root: classesSaveBtn.root,
+                                        label: classesSaveBtn.label,
+                                    }}
+                                    type={'submit'}
+                                    disabled={!isValid || !dirty}
+                                    onClick={handleSubmit}>
+                                    Сохранить
+                                </Button>
                             </div>
                             <div className={'add-item-head'}>
                                 <h5>Добавление товара</h5>
@@ -154,20 +171,14 @@ const AddItem = () => {
                                 <FormControl error={touched.price && errors.price}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Стоимость товара</FormLabel>
-                                    <OutlinedInput type="number"
-                                                   variant="outlined"
-                                                   notched={false}
-                                                   placeholder='Стоимость товара'
-                                                   className={'number-input'}
-                                                   classes={{
-                                                       root: classesInput.root,
-                                                       input: classesInput.input
-                                                   }}
-                                                   name={'price'}
-                                                   onChange={handleChange}
-                                                   onBlur={handleBlur}
-                                                   value={values.price}>
-                                    </OutlinedInput>
+
+                                    <NumberFormat classesInput={classesInput}
+                                                  onChange={handleChange}                   // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
+                                                  onBlur={handleBlur}                       // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
+                                                  values={values}
+                                                  customInput={PriceFormatInput}
+                                                  format={priceFormat}
+                                    />
                                     {getError(touched.price, errors.price)}
                                 </FormControl>
 
@@ -212,10 +223,12 @@ const AddItem = () => {
                                                                     root: classesUploadBtn.root,
                                                                     label: classesUploadBtn.label,
                                                                 }}
-                                                                endIcon={<i className="fa fa-upload" aria-hidden="true"/>}>
+                                                                endIcon={<i className="fa fa-upload"
+                                                                            aria-hidden="true"/>}>
 
                                                             {(values.file === undefined || values.file[0] === null)
-                                                                ? <div className={'upload-btn-name'}>Выберите изображение</div> : values.file[0].file.name}
+                                                                ? <div className={'upload-btn-name'}>Выберите
+                                                                    изображение</div> : values.file[0].file.name}
                                                         </Button>
                                                     </ThemeProvider>
 
@@ -247,40 +260,6 @@ const AddItem = () => {
                                     {getError(touched.description, errors.description)}
                                 </FormControl>
                             </div>
-
-
-                            {/*                    <div>
-                        <Form.Group>
-                            <Form.Label>Название товара</Form.Label>
-                            <Form.Control type="text" placeholder='Название товара' className={'item-input'}/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Стоимость товара</Form.Label>
-                            <Form.Control type="number" placeholder='Стоимость товара' className={'item-input'}/>
-                        </Form.Group>
-
-                        <label>Изображение</label>
-                        <input type="file"
-                               accept=".jpg,.jpeg,.png"
-                               placeholder={'image'}
-                               className={'upload-image'}
-                               onChange={handleFileSelect}/>
-                        <i className="fa fa-upload" aria-hidden="true"></i>
-                        <span id={'file-name'}></span>
-                        <img id="output"/>
-
-                        <Form.Group>
-                            <Form.Label>Описание</Form.Label>
-                            <Form.Control as="textarea"
-                                          type="text"
-                                          placeholder='Описание товара'
-                                          className={'item-input-textarea'}
-                                          maxLength={1000}
-                                          rows={6}
-                            />
-                        </Form.Group>
-                    </div>*/}
-
                             <AddPropertyToProduct/>
                         </form>
                     </div>
