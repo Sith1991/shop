@@ -15,6 +15,7 @@ import themeUploadBtn from "../../styles/customizing-material-ui-components/them
 import useAddItemInputStyles from "../../styles/customizing-material-ui-components/add-item-input-style";
 import useAddItemTextareaStyles from "../../styles/customizing-material-ui-components/add-item-textarea-style";
 import NumberFormat from 'react-number-format';
+import Thumb from "../thumb";
 
 import "./add-item.scss";
 
@@ -52,8 +53,11 @@ const AddItem = () => {
 
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
-        price: yup.number().typeError('Должно быть числом').positive('Стоимсоть должна быть больше нуля')
-            .integer('Должно быть целым числом').required('Обязательное поле'),
+        price: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом')
+            .test('firstSymbol', 'Стоимость не должна ровняться нулю', (value) => {
+                if (!value && value !== 0) return true
+                else return value.toString().charAt(0) !== '0';
+            }).required('Обязательное поле'),
         file: yup.array().of(yup.object().shape({
             file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 100кб', (value) => {
                 if (!value) return false
@@ -171,7 +175,6 @@ const AddItem = () => {
                                 <FormControl error={touched.price && errors.price}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Стоимость товара</FormLabel>
-
                                     <NumberFormat classesInput={classesInput}
                                                   onChange={handleChange}                   // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
                                                   onBlur={handleBlur}                       // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
@@ -185,9 +188,7 @@ const AddItem = () => {
                                 <FormControl error={touched.file && errors.file}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Изображение</FormLabel>
-                                    {console.log('file', values.file)}
-                                    {console.log('fileErrors', errors.file)}
-                                    {console.log('fileTouched', touched.file)}
+                                    {console.log('file:', values.file)}
                                     <FieldArray name={'file'}>
                                         {(arrayHelper) => (
                                             <div>
@@ -231,14 +232,13 @@ const AddItem = () => {
                                                                     изображение</div> : values.file[0].file.name}
                                                         </Button>
                                                     </ThemeProvider>
-
                                                 </label>
                                             </div>
                                         )}
                                     </FieldArray>
                                     {getArrErrorsMessages(errors.file).map((error) => getError(true, error))}
                                 </FormControl>
-
+                                    <Thumb file={(values.file === undefined || values.file[0] === null) ? null : values.file[0].file} />
                                 <FormControl error={touched.description && errors.description}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Описание</FormLabel>
