@@ -101,7 +101,8 @@ const AddItem = () => {
             description: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
+            await new Promise((r) => setTimeout(r, 500));
             const {itemName, description, price} = values;
             const trimmedItemName = itemName.trim();
             const trimmedDescription = description.trim();
@@ -188,7 +189,6 @@ const AddItem = () => {
                                 <FormControl error={touched.file && errors.file}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Изображение</FormLabel>
-                                    {console.log('file:', values.file)}
                                     <FieldArray name={'file'}>
                                         {(arrayHelper) => (
                                             <div>
@@ -265,9 +265,7 @@ const AddItem = () => {
                     </div>
                 </div>
             </ThemeProvider>
-
         </FormikProvider>
-
     )
 }
 

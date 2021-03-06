@@ -1,7 +1,11 @@
 import {makeStyles} from "@material-ui/core/styles";
 
-const useAddItemLabelStyles = makeStyles({
+const usePropertyLabelStyles = makeStyles({
     root: {
+        maxWidth: '120px',
+        marginLeft: 0,
+    },
+    label: {
         fontFamily: 'Roboto, serif',
         fontStyle: 'normal',
         fontWeight: 'normal',
@@ -12,4 +16,4 @@ const useAddItemLabelStyles = makeStyles({
     },
 });
 
-export default useAddItemLabelStyles;
+export default usePropertyLabelStyles;

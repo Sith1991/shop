@@ -1,0 +1,17 @@
+@import "../../styles/mixins";
+
+.add-property-to-product {
+  .add-property-head {
+    h5 {
+      @include font-params(bold, 16px, 19px, #000000);
+      opacity: 0.8;
+      margin: 0;
+    }
+    display: flex;
+    align-items: center;
+    height: 48px;
+    background: #FEFEFE;
+    mix-blend-mode: normal;
+    border: 1px solid #F7F9FA;
+  }
+}
