@@ -7,6 +7,7 @@ const useAddItemInputStyles = makeStyles({
     },
     input: {
         padding: '0',
+        height:'100%'
     }
 });
 

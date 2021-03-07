@@ -73,6 +73,13 @@
       opacity: 0.8;
     }
 
+    .add-item-textarea {
+      textarea {
+        @include font-params(normal, 16px, 19px, #828282);
+        opacity: 0.8;
+      }
+    }
+
     input[type="number"] {
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
@@ -89,6 +96,7 @@
 
     .upload-btn-name {
       opacity: 0.5;
+      margin-top: 3px;
     }
   }
 

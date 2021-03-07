@@ -5,7 +5,7 @@
     h5 {
       @include font-params(bold, 16px, 19px, #000000);
       opacity: 0.8;
-      margin: 0;
+      margin: 0 28px 0 0;
     }
     display: flex;
     align-items: center;
@@ -13,5 +13,49 @@
     background: #FEFEFE;
     mix-blend-mode: normal;
     border: 1px solid #F7F9FA;
+  }
+  .add-property-body {
+    display: flex;
+    flex-wrap: wrap;
+
+    .add-prop-left-column {
+      margin-right: 30px;
+    }
+
+    .property-name {
+      @include font-params(normal, 14px, 16px, #000000);
+      opacity: 0.8;
+      margin: 12px 0 8px 0;
+    }
+
+    textarea {
+      @include font-params(normal, 14px, 16px, #000000);
+      opacity: 0.8;
+    }
+
+    .add-prop-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+      .add-prop-left-button-wrap {
+        position: absolute;
+        left: -60px;
+        @include media('max', 'sm') {
+          position: relative;
+          left: 0;
+        }
+      }
+    }
+
+    .add-property-right-column {
+      .input-with-remove-button {
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+      }
+      .right-column-add-button {
+        margin-left: -8px;
+      }
+    }
   }
 }

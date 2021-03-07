@@ -16,28 +16,9 @@ import useAddItemInputStyles from "../../styles/customizing-material-ui-componen
 import useAddItemTextareaStyles from "../../styles/customizing-material-ui-components/add-item-textarea-style";
 import NumberFormat from 'react-number-format';
 import Thumb from "../thumb";
+import PriceFormatInput from "../price-format-input";
 
 import "./add-item.scss";
-
-const PriceFormatInput = ({classesInput, onChange, onBlur, values}) => {
-
-    return (
-        <OutlinedInput /*type="number"*/
-            variant="outlined"
-            notched={false}
-            placeholder='Стоимость товара'
-            className={'number-input'}
-            classes={{
-                root: classesInput.root,
-                input: classesInput.input
-            }}
-            name={'price'}
-            onChange={onChange}                      // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-            onBlur={onBlur}                          // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-            value={values.price}>
-        </OutlinedInput>
-    )
-}
 
 const AddItem = () => {
 
@@ -67,6 +48,8 @@ const AddItem = () => {
             name: yup.string().required()
         }).typeError('Добавьте файл')).required(),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+        propertyName: yup.string().typeError('Должно быть строкой'),
+        propertyValue: yup.string().typeError('Должно быть строкой'),
     });
 
     const getFileSchema = (file) => (file && {
@@ -99,19 +82,23 @@ const AddItem = () => {
             price: '',
             file: undefined,
             description: '',
+            propertyName: '',
+            propertyValue: '',
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             await new Promise((r) => setTimeout(r, 500));
-            const {itemName, description, price} = values;
+            const {itemName, description, price, propertyValue} = values;
             const trimmedItemName = itemName.trim();
             const trimmedDescription = description.trim();
+            const trimmedPropertyValue = propertyValue.trim();
             const numberedPrice = parseInt(String(price).replace(/ /g, ''));
             const newValues = {
                 ...values,
                 itemName: trimmedItemName,
                 description: trimmedDescription,
-                price: numberedPrice
+                price: numberedPrice,
+                propertyValue: trimmedPropertyValue,
             };
             console.log(newValues)
         },
@@ -164,6 +151,7 @@ const AddItem = () => {
                                                    multiline
                                                    classes={{
                                                        root: classesInput.root,
+                                                       input: classesInput.input,
                                                    }}
                                                    name={'itemName'}
                                                    onChange={handleChange}
@@ -244,11 +232,12 @@ const AddItem = () => {
                                                className={'labels'}>Описание</FormLabel>
                                     <OutlinedInput type="text"
                                                    multiline={true}
-                                                   rows={6}
+                                                   rows={5}
                                                    inputProps={{maxLength: 1000}}
                                                    variant="outlined"
                                                    notched={false}
                                                    placeholder='Описание товара'
+                                                   className={'add-item-textarea'}
                                                    classes={{
                                                        root: classesTextarea.root,
                                                    }}
@@ -260,7 +249,12 @@ const AddItem = () => {
                                     {getError(touched.description, errors.description)}
                                 </FormControl>
                             </div>
-                            <AddPropertyToProduct/>
+                            <AddPropertyToProduct handleChange={handleChange}
+                                                  touched={touched}
+                                                  errors={errors}
+                                                  handleBlur={handleBlur}
+                                                  values={values}
+                                                  getError={getError}/>
                         </form>
                     </div>
                 </div>

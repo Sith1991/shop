@@ -36,8 +36,15 @@ const AddProperty = () => {
             propertyType: 'Dropdown',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(values)
+        onSubmit: async (values) => {
+            await new Promise((r) => setTimeout(r, 500));
+            const {propertyName} = values;
+            const trimmedPropertyName = propertyName.trim();
+            const newValues = {
+                ...values,
+                propertyName: trimmedPropertyName,
+            };
+            console.log(newValues)
         },
         validateOnBlur: true,
     });

@@ -16,8 +16,8 @@ const ProductCard = () => {
         propertyName_2: 'Год выпуска',
         propertyName_3: 'Тип топлива',
         propertyDescription_1: {
-            subproperty_1: 'Синий',
-            subproperty_2: 'Черный',
+            propertyValue_1: 'Синий',
+            propertyValue_2: 'Черный',
         },
         propertyDescription_2: 2017,
         propertyDescription_3: 'Бензин',
@@ -26,7 +26,7 @@ const ProductCard = () => {
     const {
         itemName, imgUrl, description, price,
         propertyName_1, propertyName_2, propertyName_3,
-        propertyDescription_1: {subproperty_1, subproperty_2}, propertyDescription_2, propertyDescription_3
+        propertyDescription_1: {propertyValue_1, propertyValue_2}, propertyDescription_2, propertyDescription_3
     } = data;
 
     return (
@@ -52,8 +52,8 @@ const ProductCard = () => {
                             <div className={"item-properties"}>
                                 <h4>{propertyName_1}</h4>
                                 <Form.Control as="select" custom>
-                                    <option>{subproperty_1}</option>
-                                    <option>{subproperty_2}</option>
+                                    <option>{propertyValue_1}</option>
+                                    <option>{propertyValue_2}</option>
                                 </Form.Control>
                                 <h4>{propertyName_2}</h4>
                                 <p>{propertyDescription_2}</p>
