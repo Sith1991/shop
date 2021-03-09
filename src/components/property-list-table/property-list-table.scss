@@ -57,9 +57,7 @@
 
   .property-type {
     margin-left: 25px;
-    @include media('max', 'lg') {
-      margin-left: 25px;
-    }
+
     @include media('max', 'sm') {
       margin-left: 0;
     }

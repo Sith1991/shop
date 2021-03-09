@@ -1,11 +1,12 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {HomePage, PropertyPage} from "../pages";
 import ProductCard from "../product-card";
 import AddItem from "../add-item";
 import Login from "../login";
 import Registration from "../registration";
 import AddProperty from "../add-property";
+import ProductList from "../product-list";
+import PropertyList from "../property-list";
 
 import './app.scss';
 
@@ -16,11 +17,11 @@ const App = () => {
             <div className={'wrapper'}>
                 <Switch>
                     <Route path={'/'}
-                           component={HomePage}
+                           component={ProductList}
                            exact/>
 
                     <Route path={'/property-list'}
-                           component={PropertyPage}/>
+                           component={PropertyList}/>
                     <Route path={'/add-property'}
                            component={AddProperty}/>
                     <Route path={'/item-card/:id'}

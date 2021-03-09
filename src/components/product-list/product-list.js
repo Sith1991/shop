@@ -179,16 +179,32 @@ class ProductList extends Component {
         const visibleItems = this.searchItems(products, term);
 
         return (
-            <div className={'product-list'}>
-                <div className={'button-wrap'}>
-                    <Link to={'/add-item'} className={'add-item-link'}>
-                        <Button className={'add-button'} variant={"warning"}>
-                            Добавить товар
-                        </Button>
-                    </Link>
+            <div className={'product-list-wrap'}>
+                <div className={'header'}>
+                    <div className={'wrap colored'}>
+                        <div className={'background'}></div>
+                        <Link to={'/'} className={'header-links'}>
+                            Листинг товаров
+                        </Link>
+                    </div>
+                    <div className={'wrap'}>
+                        <div className={'background'}></div>
+                        <Link to={'/property-list'} className={'header-links'}>
+                            Листинг проперти
+                        </Link>
+                    </div>
                 </div>
-                <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
-                <ProductListTable products={visibleItems} onDeleted={this.deleteItem}/>
+                <div className={'product-list'}>
+                    <div className={'button-wrap'}>
+                        <Link to={'/add-item'} className={'add-item-link'}>
+                            <Button className={'add-button'} variant={"warning"}>
+                                Добавить товар
+                            </Button>
+                        </Link>
+                    </div>
+                    <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
+                    <ProductListTable products={visibleItems} onDeleted={this.deleteItem}/>
+                </div>
             </div>
         )}
 }

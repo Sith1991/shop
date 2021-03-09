@@ -74,15 +74,31 @@ export default class PropertyList extends Component {
         const {properties}=this.state;
 
         return (
-            <div className={'property-list'}>
-                <div className={'button-wrap'}>
-                    <Link to={'/add-property'} className={'add-property-link'}>
-                        <Button className={'add-prop-button'} variant={"warning"}>
-                            Добавить проперти
-                        </Button>
-                    </Link>
+            <div className={'property-list-wrap'}>
+                <div className={'header'}>
+                    <div className={'wrap'}>
+                        <div className={'background'}></div>
+                        <Link to={'/'} className={'header-links'}>
+                            Листинг товаров
+                        </Link>
+                    </div>
+                    <div className={'wrap colored'}>
+                        <div className={'background'}></div>
+                        <Link to={'/property-list'} className={'header-links'}>
+                            Листинг проперти
+                        </Link>
+                    </div>
                 </div>
-                <PropertyListTable properties={properties} onDeleted={this.deleteItem} />
+                <div className={'property-list'}>
+                    <div className={'button-wrap'}>
+                        <Link to={'/add-property'} className={'add-property-link'}>
+                            <Button className={'add-prop-button'} variant={"warning"}>
+                                Добавить проперти
+                            </Button>
+                        </Link>
+                    </div>
+                    <PropertyListTable properties={properties} onDeleted={this.deleteItem} />
+                </div>
             </div>
         )
     }

@@ -28,6 +28,14 @@
     opacity: 0.8;
   }
 
+  .table-value {
+    margin-left: 25px;
+
+    @include media('max', 'sm') {
+      margin-left: 0;
+    }
+  }
+
   .link {
   text-decoration: underline;
     margin-right: 10px;

@@ -163,6 +163,7 @@ const ProductListTable = ({products, onDeleted}) => {
                             key={headCell.id}
                             sortDirection={orderBy === headCell.id ? order : false}
                             id={`${headCell.id}`}
+                            align={headCell.id === 'itemName' ? 'center' : 'left'}
                         >
                             <TableSortLabel
                                 active={orderBy === headCell.id}
@@ -200,17 +201,7 @@ const ProductListTable = ({products, onDeleted}) => {
         setOrderBy(property);
     };
 
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            width: '100%',
-        },
-        paper: {
-            width: '100%',
-            marginBottom: theme.spacing(2),
-        },
-        table: {
-            minWidth: 750,
-        },
+    const useStyles = makeStyles(() => ({
         visuallyHidden: {
             border: 0,
             clip: 'rect(0 0 0 0)',
@@ -245,10 +236,11 @@ const ProductListTable = ({products, onDeleted}) => {
                                     const formatedPrice = price.toLocaleString('ru-RU');
                                     return (
                                         <TableRow key={id}>
-                                            <TableCell className={'link table-body'}><Link
-                                                to={`/item-card/${id}`}>{itemName}</Link></TableCell>
-                                            <TableCell className={'table-body'}>{formatedPrice} $</TableCell>
-                                            <TableCell className={'table-body'}>{dateOfChange}</TableCell>
+                                            <TableCell align={'center'} className={'link table-body'}>
+                                                <Link to={`/item-card/${id}`}><div className={'table-value'}>{itemName}</div></Link>
+                                            </TableCell>
+                                            <TableCell className={'table-body'}><div className={'table-value'}>{formatedPrice} $</div></TableCell>
+                                            <TableCell className={'table-body'}><div className={'table-value'}>{dateOfChange}</div></TableCell>
                                             <TableCell>
                                                 <div className="links">
                                                     <Link to={'#'} className={'link'}>Ред.</Link>
