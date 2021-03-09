@@ -2,6 +2,7 @@
 
 .add-property-to-product {
   .add-property-head {
+    margin-top: 12px;
     h5 {
       @include font-params(bold, 16px, 19px, #000000);
       opacity: 0.8;
@@ -14,7 +15,7 @@
     mix-blend-mode: normal;
     border: 1px solid #F7F9FA;
   }
-  .add-property-body {
+  .add-property-body-element {
     display: flex;
     flex-wrap: wrap;
 
