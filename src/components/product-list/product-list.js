@@ -6,6 +6,9 @@ import SearchPanel from "../search-panel";
 
 import './product-list.scss';
 import {connect} from "react-redux";
+import {productsLoaded} from "../../store/actions/propduct-actions";
+import compose from "../../utils";
+import withShopService from "../../hoc";
 
 
 class ProductList extends Component {
@@ -137,6 +140,13 @@ class ProductList extends Component {
         columnName: 'itemName'
     }*/
 
+    componentDidMount() {
+        const {shopService} = this.props;
+        const data = shopService.getItems();
+        this.props.productsLoaded(data);
+
+    }
+
     deleteItem = (id) => {
         this.setState(({products}) => {
             const idx = products.findIndex((el) => el.id === id);
@@ -220,4 +230,11 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(ProductList);
+const mapDispatchToProps = {
+    productsLoaded
+}
+
+export default compose(
+    withShopService(),
+    connect(mapStateToProps, mapDispatchToProps)
+)(ProductList);
