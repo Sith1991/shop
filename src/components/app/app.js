@@ -7,12 +7,11 @@ import Registration from "../registration";
 import AddProperty from "../add-property";
 import ProductList from "../product-list";
 import PropertyList from "../property-list";
-import withShopService from "../../hoc";
 
 import './app.scss';
 
-const App = ({shopService}) => {
-    console.log(shopService.getItems());
+const App = () => {
+
     return (
         <div className={'app'}>
             <div className={'wrapper'}>
@@ -38,4 +37,4 @@ const App = ({shopService}) => {
     )
 }
 
-export default withShopService()(App);
+export default App;

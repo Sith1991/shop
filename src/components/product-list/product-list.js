@@ -5,12 +5,12 @@ import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
 
 import './product-list.scss';
-
+import {connect} from "react-redux";
 
 
 class ProductList extends Component {
 
-    state = {
+    /*state = {
         products:   [
             {
                 id: 0,
@@ -135,7 +135,7 @@ class ProductList extends Component {
         ],
         term: '',
         columnName: 'itemName'
-    }
+    }*/
 
     deleteItem = (id) => {
         this.setState(({products}) => {
@@ -162,8 +162,8 @@ class ProductList extends Component {
             return arr;
         }
 
-        const findedItems = arr.filter( (el) =>
-            el[this.state.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1 )
+        const findedItems = arr.filter((el) =>
+            el[this.props.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1)
         return findedItems;
     }
 
@@ -174,7 +174,9 @@ class ProductList extends Component {
     }
 
     render() {
-        const {products, term} = this.state;
+        /*const {products, term} = this.state;*/
+
+        const {products, term} = this.props;
 
         const visibleItems = this.searchItems(products, term);
 
@@ -206,7 +208,16 @@ class ProductList extends Component {
                     <ProductListTable products={visibleItems} onDeleted={this.deleteItem}/>
                 </div>
             </div>
-        )}
+        )
+    }
 }
 
-export default ProductList;
+const mapStateToProps = (state) => {
+    return {
+        products: state.products.products,
+        term: state.products.term,
+        columnName: state.products.columnName,
+    }
+};
+
+export default connect(mapStateToProps)(ProductList);
