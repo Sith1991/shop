@@ -5,20 +5,20 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import store from '../src/store/store';
 import ErrorBoundry from './components/error-boundry';
 import App from './components/app';
-import {ShopstoreServiceProvider} from './services/shopstore-service-context';
-import ShopstoreService from './services/shopstore-service';
+import {ShopServiceProvider} from './services/shop-service-context';
+import ShopService from './services/shop-service';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const shopstoreService = new ShopstoreService();
+const shopService = new ShopService();
 
 ReactDOM.render(
     <Provider store={store}>
         <ErrorBoundry>  {/*сработает если из стора придет ошибка*/}
-            <ShopstoreServiceProvider value={shopstoreService}>
+            <ShopServiceProvider value={shopService}>
                 <Router>
                     <App/>
                 </Router>
-            </ShopstoreServiceProvider>
+            </ShopServiceProvider>
         </ErrorBoundry>
     </Provider>,
     document.getElementById('root')

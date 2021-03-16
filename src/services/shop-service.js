@@ -1,4 +1,4 @@
-export default class ShopstoreService {
+export default class ShopService {
 getItems () {
     return [
         {
