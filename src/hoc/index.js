@@ -1,3 +1,3 @@
-import withShopstoreService from "./with-shopstore-service";
+import withShopService from "./with-shop-service";
 
-export default withShopstoreService;
+export default withShopService;
