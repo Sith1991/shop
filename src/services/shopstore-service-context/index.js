@@ -1,5 +1,5 @@
 import { ShopstoreServiceProvider,
-    ShopstoreServiceConsumer } from './bookstore-service-context'
+    ShopstoreServiceConsumer } from './shopestore-service-context'
 
 export {
     ShopstoreServiceProvider,
