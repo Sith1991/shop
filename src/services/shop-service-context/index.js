@@ -1,5 +1,4 @@
-import { ShopServiceProvider,
-    ShopServiceConsumer } from './shop-service-context'
+import { ShopServiceProvider, ShopServiceConsumer } from './shop-service-context'
 
 export {
     ShopServiceProvider,

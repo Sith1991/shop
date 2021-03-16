@@ -12,9 +12,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const shopService = new ShopService();
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ErrorBoundry>  {/*сработает если из стора придет ошибка*/}
-            <ShopServiceProvider value={shopService}>
+    <Provider store={store}> {/*Предоставляет доступ к Redux Store*/}
+        <ErrorBoundry> {/*Обработка ошибок в компонентах ниже*/}
+            <ShopServiceProvider value={shopService}> {/*Передает service чуруз ContextAPI*/}
                 <Router>
                     <App/>
                 </Router>

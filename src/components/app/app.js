@@ -7,11 +7,12 @@ import Registration from "../registration";
 import AddProperty from "../add-property";
 import ProductList from "../product-list";
 import PropertyList from "../property-list";
+import withShopService from "../../hoc";
 
 import './app.scss';
 
-const App = () => {
-
+const App = ({shopService}) => {
+    console.log(shopService.getItems());
     return (
         <div className={'app'}>
             <div className={'wrapper'}>
@@ -19,7 +20,6 @@ const App = () => {
                     <Route path={'/'}
                            component={ProductList}
                            exact/>
-
                     <Route path={'/property-list'}
                            component={PropertyList}/>
                     <Route path={'/add-property'}
@@ -38,4 +38,4 @@ const App = () => {
     )
 }
 
-export default App;
+export default withShopService()(App);
