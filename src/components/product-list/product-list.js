@@ -189,9 +189,6 @@ class ProductList extends Component {
 
         const {products, term, loading} = this.props;
 
-        if (loading) {
-            return <Spinner />
-        }
 
         const visibleItems = this.searchItems(products, term);
 
@@ -220,7 +217,7 @@ class ProductList extends Component {
                         </Link>
                     </div>
                     <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
-                    <ProductListTable products={visibleItems} onDeleted={this.deleteItem}/>
+                    <ProductListTable products={visibleItems} onDeleted={this.deleteItem} loading={loading}/>
                 </div>
             </div>
         )

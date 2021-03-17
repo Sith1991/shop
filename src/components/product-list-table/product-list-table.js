@@ -12,10 +12,11 @@ import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import {ruRU} from '@material-ui/core/locale';
 import UniversalTablePagination from "../table-pagination";
 import ProductListTableHeader from "./product-list-table-header";
+import Spinner from "../spinner";
 
 import './product-list-table.scss';
 
-const ProductListTable = ({products, onDeleted}) => {
+const ProductListTable = ({products, onDeleted, loading}) => {
 
     // русская локализация
     const theme = createMuiTheme({
@@ -86,35 +87,43 @@ const ProductListTable = ({products, onDeleted}) => {
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
                         />
-                        <TableBody>
-                            {stableSort(products, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((product) => {
-                                    const {id, itemName, price, dateOfChange} = product;
-                                    const formatedPrice = price.toLocaleString('ru-RU');
-                                    return (
-                                        <TableRow key={id}>
-                                            <TableCell align={'center'} className={'link table-body'}>
-                                                <Link to={`/item-card/${id}`}><div className={'table-value'}>{itemName}</div></Link>
-                                            </TableCell>
-                                            <TableCell className={'table-body'}><div className={'table-value'}>{formatedPrice} $</div></TableCell>
-                                            <TableCell className={'table-body'}><div className={'table-value'}>{dateOfChange}</div></TableCell>
-                                            <TableCell>
-                                                <div className="links">
-                                                    <Link to={'#'} className={'link'}>Ред.</Link>
-                                                    <Link to={'#'} onClick={() => onDeleted(id)}
-                                                          className={'link'}>Удалить</Link>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{height: 47 * emptyRows}}>
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
-                        </TableBody>
+                        {loading ? <Spinner/> :
+                            <TableBody>
+                                {stableSort(products, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((product) => {
+                                        const {id, itemName, price, dateOfChange} = product;
+                                        const formatedPrice = price.toLocaleString('ru-RU');
+                                        return (
+                                            <TableRow key={id}>
+                                                <TableCell align={'center'} className={'link table-body'}>
+                                                    <Link to={`/item-card/${id}`}>
+                                                        <div className={'table-value'}>{itemName}</div>
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell className={'table-body'}>
+                                                    <div className={'table-value'}>{formatedPrice} $</div>
+                                                </TableCell>
+                                                <TableCell className={'table-body'}>
+                                                    <div className={'table-value'}>{dateOfChange}</div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="links">
+                                                        <Link to={'#'} className={'link'}>Ред.</Link>
+                                                        <Link to={'#'} onClick={() => onDeleted(id)}
+                                                              className={'link'}>Удалить</Link>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{height: 47 * emptyRows}}>
+                                        <TableCell colSpan={6}/>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        }
                         <TableFooter>
                             <UniversalTablePagination
                                 array={products}
