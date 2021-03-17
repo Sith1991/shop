@@ -141,16 +141,7 @@ class ProductList extends Component {
     }*/
 
     componentDidMount() {
-        const {
-            shopService,
-            productsLoaded,
-            productsRequested,
-            productsError
-        } = this.props;
-        productsRequested();   // для отображения спинера при переходе на данную страницу с других страниц
-        shopService.getItems()
-            .then((data) => productsLoaded(data))
-            .catch((error) => productsError(error))
+        this.props.fetchProducts();
     }
 
     deleteItem = (id) => {
@@ -244,11 +235,17 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = {
-    productsLoaded,
-    productsRequested,
-    productsError
-}
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const {shopService} = ownProps;
+    return {
+        fetchProducts: () => {
+            dispatch(productsRequested());   // для отображения спинера при переходе на данную страницу с других страниц
+            shopService.getItems()
+                .then((data) => dispatch(productsLoaded(data)))
+                .catch((error) => dispatch(productsError(error)))
+        }
+    }
+};
 
 export default compose(
     withShopService(),
