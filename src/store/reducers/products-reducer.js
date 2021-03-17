@@ -3,6 +3,7 @@ const initialState = {
     term: '',
     columnName: 'itemName',
     loading: true,
+    error: null,
 };
 
 const productsReducer = (state = initialState, action) => {
@@ -10,15 +11,25 @@ const productsReducer = (state = initialState, action) => {
         case 'PRODUCTS_REQUESTED':
             return {
                 ...state,
-                loading: true
+                loading: true,
+                error: null,
             }
         case 'PRODUCTS_LOADED':
             return {
                 ...state,
                 products: action.payload,
-                loading: false
+                loading: false,
+                error: null,
             };
-        default: return state
+        case 'PRODUCTS_ERROR':
+            return {
+                ...state,
+                products: [],
+                loading: false,
+                error: action.payload,
+            }
+        default:
+            return state
     }
 }
 

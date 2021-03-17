@@ -4,11 +4,12 @@ import {Button} from "react-bootstrap";
 import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
 import {connect} from "react-redux";
-import {productsLoaded, productsRequested} from "../../store/actions/propduct-actions";
+import {productsError, productsLoaded, productsRequested} from "../../store/actions/propduct-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
 
 import './product-list.scss';
+import ErrorIndicator from "../error-indicator";
 
 class ProductList extends Component {
 
@@ -140,10 +141,16 @@ class ProductList extends Component {
     }*/
 
     componentDidMount() {
-        const {shopService, productsLoaded, productsRequested} = this.props;
+        const {
+            shopService,
+            productsLoaded,
+            productsRequested,
+            productsError
+        } = this.props;
         productsRequested();   // для отображения спинера при переходе на данную страницу с других страниц
         shopService.getItems()
             .then((data) => productsLoaded(data))
+            .catch((error) => productsError(error))
     }
 
     deleteItem = (id) => {
@@ -185,7 +192,7 @@ class ProductList extends Component {
     render() {
         /*const {products, term} = this.state;*/
 
-        const {products, term, loading} = this.props;
+        const {products, term, loading, error} = this.props;
 
         const visibleItems = this.searchItems(products, term);
 
@@ -213,8 +220,14 @@ class ProductList extends Component {
                             </Button>
                         </Link>
                     </div>
-                    <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
-                    <ProductListTable products={visibleItems} onDeleted={this.deleteItem} loading={loading}/>
+                    {error ? <ErrorIndicator/> :
+                        <div>
+                            <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
+                            <ProductListTable products={visibleItems}
+                                              onDeleted={this.deleteItem}
+                                              loading={loading}/>
+                        </div>
+                    }
                 </div>
             </div>
         )
@@ -227,12 +240,14 @@ const mapStateToProps = (state) => {
         term: state.products.term,
         columnName: state.products.columnName,
         loading: state.products.loading,
+        error: state.products.error,
     }
 };
 
 const mapDispatchToProps = {
     productsLoaded,
-    productsRequested
+    productsRequested,
+    productsError
 }
 
 export default compose(

@@ -1,4 +1,4 @@
-import {PRODUCTS_LOADED, PRODUCTS_REQUESTED} from "../../action-types";
+import {PRODUCTS_ERROR, PRODUCTS_LOADED, PRODUCTS_REQUESTED} from "../../action-types";
 
 const productsLoaded = (newItems) => {
     return {
@@ -13,7 +13,15 @@ const productsRequested = () => {
     }
 }
 
+const productsError = (error) => {
+    return {
+        type: PRODUCTS_ERROR,
+        payload: error,
+    }
+}
+
 export {
     productsLoaded,
-    productsRequested
+    productsRequested,
+    productsError
 }

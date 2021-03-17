@@ -22,10 +22,13 @@ export default class ShopService {
     ];
 
     getItems() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             setTimeout(() => {
+                if (Math.random() > 0.75) {
+                    reject(new Error('Some Error'))
+                }
                 resolve(this.data)
-            }, 1000)
+            }, 800)
         });
     }
 }
