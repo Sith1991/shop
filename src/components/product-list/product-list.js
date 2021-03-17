@@ -3,15 +3,12 @@ import {Link} from 'react-router-dom';
 import {Button} from "react-bootstrap";
 import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
-
-import './product-list.scss';
 import {connect} from "react-redux";
-import {productsLoaded} from "../../store/actions/propduct-actions";
+import {productsLoaded, productsRequested} from "../../store/actions/propduct-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
-import Spinner from "../spinner";
 
-
+import './product-list.scss';
 
 class ProductList extends Component {
 
@@ -143,7 +140,8 @@ class ProductList extends Component {
     }*/
 
     componentDidMount() {
-        const {shopService, productsLoaded} = this.props;
+        const {shopService, productsLoaded, productsRequested} = this.props;
+        productsRequested();   // для отображения спинера при переходе на данную страницу с других страниц
         shopService.getItems()
             .then((data) => productsLoaded(data))
     }
@@ -189,7 +187,6 @@ class ProductList extends Component {
 
         const {products, term, loading} = this.props;
 
-
         const visibleItems = this.searchItems(products, term);
 
         return (
@@ -234,7 +231,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    productsLoaded
+    productsLoaded,
+    productsRequested
 }
 
 export default compose(

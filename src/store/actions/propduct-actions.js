@@ -1,4 +1,4 @@
-import {PRODUCTS_LOADED} from "../../action-types";
+import {PRODUCTS_LOADED, PRODUCTS_REQUESTED} from "../../action-types";
 
 const productsLoaded = (newItems) => {
     return {
@@ -7,6 +7,13 @@ const productsLoaded = (newItems) => {
     }
 }
 
+const productsRequested = () => {
+    return {
+        type: PRODUCTS_REQUESTED,
+    }
+}
+
 export {
-    productsLoaded
+    productsLoaded,
+    productsRequested
 }
