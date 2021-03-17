@@ -1,6 +1,6 @@
 export default class ShopService {
-getItems () {
-    return [
+
+    data = [
         {
             id: 0,
             itemName: 'Mercedes S550 4matic',
@@ -20,5 +20,12 @@ getItems () {
             dateOfChange: '01.11.18'
         },
     ];
-}
+
+    getItems() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(this.data)
+            }, 1000)
+        });
+    }
 }

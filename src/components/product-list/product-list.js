@@ -9,6 +9,8 @@ import {connect} from "react-redux";
 import {productsLoaded} from "../../store/actions/propduct-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
+import Spinner from "../spinner";
+
 
 
 class ProductList extends Component {
@@ -141,10 +143,9 @@ class ProductList extends Component {
     }*/
 
     componentDidMount() {
-        const {shopService} = this.props;
-        const data = shopService.getItems();
-        this.props.productsLoaded(data);
-
+        const {shopService, productsLoaded} = this.props;
+        shopService.getItems()
+            .then((data) => productsLoaded(data))
     }
 
     deleteItem = (id) => {
@@ -186,7 +187,11 @@ class ProductList extends Component {
     render() {
         /*const {products, term} = this.state;*/
 
-        const {products, term} = this.props;
+        const {products, term, loading} = this.props;
+
+        if (loading) {
+            return <Spinner />
+        }
 
         const visibleItems = this.searchItems(products, term);
 
@@ -227,6 +232,7 @@ const mapStateToProps = (state) => {
         products: state.products.products,
         term: state.products.term,
         columnName: state.products.columnName,
+        loading: state.products.loading,
     }
 };
 
