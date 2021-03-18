@@ -1,3 +1,5 @@
+import {FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS} from "../../action-types";
+
 const initialState = {
     products: [],
     term: '',
@@ -8,20 +10,20 @@ const initialState = {
 
 const productsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'PRODUCTS_REQUESTED':
+        case FETCH_PRODUCTS_REQUEST:
             return {
                 ...state,
                 loading: true,
                 error: null,
             }
-        case 'PRODUCTS_LOADED':
+        case FETCH_PRODUCTS_SUCCESS:
             return {
                 ...state,
                 products: action.payload,
                 loading: false,
                 error: null,
             };
-        case 'PRODUCTS_ERROR':
+        case FETCH_PRODUCTS_FAILURE:
             return {
                 ...state,
                 products: [],

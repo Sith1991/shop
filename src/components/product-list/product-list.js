@@ -4,7 +4,7 @@ import {Button} from "react-bootstrap";
 import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
 import {connect} from "react-redux";
-import {productsError, productsLoaded, productsRequested} from "../../store/actions/propduct-actions";
+import {fetchProducts} from "../../store/actions/propduct-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
 
@@ -235,15 +235,9 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    const {shopService} = ownProps;
+const mapDispatchToProps = (dispatch, {shopService}) => {
     return {
-        fetchProducts: () => {
-            dispatch(productsRequested());   // для отображения спинера при переходе на данную страницу с других страниц
-            shopService.getItems()
-                .then((data) => dispatch(productsLoaded(data)))
-                .catch((error) => dispatch(productsError(error)))
-        }
+        fetchProducts: fetchProducts(shopService, dispatch)
     }
 };
 
