@@ -7,140 +7,17 @@ import {connect} from "react-redux";
 import {fetchProducts} from "../../store/actions/propduct-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
+import ErrorIndicator from "../error-indicator";
+import firebase from 'firebase/app';
+import 'firebase/database'
 
 import './product-list.scss';
-import ErrorIndicator from "../error-indicator";
 
 class ProductList extends Component {
 
-    /*state = {
-        products:   [
-            {
-                id: 0,
-                itemName: 'Mercedes S550 4matic',
-                price: 118000,
-                dateOfChange: '31.10.18'
-            },
-            {
-                id: 1,
-                itemName: 'CASHES VALLEY LANE',
-                price: 500000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 2,
-                itemName: 'DURUN DURUN HOUSE',
-                price: 1216000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 3,
-                itemName: 'Mercedes S550 4matic',
-                price: 118000,
-                dateOfChange: '31.10.18'
-            },
-            {
-                id: 4,
-                itemName: 'CASHES VALLEY LANE',
-                price: 500000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 5,
-                itemName: 'DURUN DURUN HOUSE',
-                price: 1216000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 6,
-                itemName: 'Mercedes S550 4matic',
-                price: 118000,
-                dateOfChange: '31.10.18'
-            },
-            {
-                id: 7,
-                itemName: 'CASHES VALLEY LANE',
-                price: 500000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 8,
-                itemName: 'DURUN DURUN HOUSE',
-                price: 1216000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 9,
-                itemName: 'Mercedes S550 4matic',
-                price: 118000,
-                dateOfChange: '31.10.18'
-            },
-            {
-                id: 10,
-                itemName: 'CASHES VALLEY LANE',
-                price: 500000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 11,
-                itemName: 'DURUN DURUN HOUSE',
-                price: 1216000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 12,
-                itemName: 'Mercedes S550 4matic',
-                price: 118000,
-                dateOfChange: '31.10.18'
-            },
-            {
-                id: 13,
-                itemName: 'CASHES VALLEY LANE',
-                price: 500000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 14,
-                itemName: 'DURUN DURUN HOUSE',
-                price: 1216000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 15,
-                itemName: 'Mercedes S550 4matic',
-                price: 118000,
-                dateOfChange: '31.10.18'
-            },
-            {
-                id: 16,
-                itemName: 'CASHES VALLEY LANE',
-                price: 500000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 17,
-                itemName: 'DURUN DURUN HOUSE',
-                price: 1216000,
-                dateOfChange: '01.11.18'
-            },
-            {
-                id: 18,
-                itemName: 'Mercedes S550 4matic',
-                price: 118000,
-                dateOfChange: '31.10.18'
-            },
-            {
-                id: 19,
-                itemName: 'CASHES VALLEY LANE',
-                price: 500000,
-                dateOfChange: '01.11.18'
-            },
-        ],
-        term: '',
-        columnName: 'itemName'
-    }*/
-
     componentDidMount() {
+        const db = firebase.database();
+        console.log(db);
         this.props.fetchProducts();
     }
 
@@ -181,8 +58,6 @@ class ProductList extends Component {
     }
 
     render() {
-        /*const {products, term} = this.state;*/
-
         const {products, term, loading, error} = this.props;
 
         const visibleItems = this.searchItems(products, term);
