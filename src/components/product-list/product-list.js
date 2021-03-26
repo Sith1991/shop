@@ -15,6 +15,11 @@ import './product-list.scss';
 
 class ProductList extends Component {
 
+    state = {
+        term: '',
+        columnName: 'itemName',
+    }
+
     componentDidMount() {
         const db = firebase.database();
         console.log(db);
@@ -47,7 +52,7 @@ class ProductList extends Component {
         }
 
         const findedItems = arr.filter((el) =>
-            el[this.props.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1)
+            el[this.state.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1)
         return findedItems;
     }
 
@@ -58,7 +63,9 @@ class ProductList extends Component {
     }
 
     render() {
-        const {products, term, loading, error} = this.props;
+        const {products, loading, error} = this.props;
+
+        const {term} = this.state;
 
         const visibleItems = this.searchItems(products, term);
 
@@ -103,8 +110,6 @@ class ProductList extends Component {
 const mapStateToProps = (state) => {
     return {
         products: state.products.products,
-        term: state.products.term,
-        columnName: state.products.columnName,
         loading: state.products.loading,
         error: state.products.error,
     }
