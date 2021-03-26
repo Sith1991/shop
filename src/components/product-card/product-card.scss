@@ -7,19 +7,6 @@
   flex-direction: column;
   min-height: 100vh;
 
-  button {
-    width: 160px;
-    height: 32px;
-    padding: 1px 6px;
-    @include font-params(normal, 16px, 19px, white);
-
-    &:hover,
-    &:focus,
-    &:visited {
-      color: white;
-    }
-  }
-
   .product-card-bordered-wrap {
     background: #FFFFFF;
     box-shadow: 0 20px 20px rgba(40, 40, 40, 0.05);
@@ -92,24 +79,10 @@
         display: flex;
         flex-direction: column;
 
-        span {
+        .price {
           @include font-params(300, 22px, 26px, #000000);
         }
 
-        select {
-          @include font-params(normal, 14px, 16px, #828282);
-          max-height: 32px;
-          max-width: 255px;
-          background-image: linear-gradient(45deg, transparent 50%, blue 50%),
-          linear-gradient(135deg, blue 50%, transparent 50%);
-          background-position: calc(100% - 21px) calc(1em + -2px),
-          calc(100% - 14px) calc(1em + -2px),
-          100% 0;
-          background-size: 7px 8px,
-          8px 8px,
-          2.5em 2.5em;
-          background-repeat: no-repeat;
-        }
       }
 
       .button-wrap {

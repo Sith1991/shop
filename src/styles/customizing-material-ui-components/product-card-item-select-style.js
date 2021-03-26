@@ -1,6 +1,6 @@
 import {makeStyles} from "@material-ui/core/styles";
 
-const useAddItemSelectStyles = makeStyles((theme) => ({
+const useProductCardItemSelectStyles = makeStyles((theme) => ({
     formControl: {
         margin: 0,
         width: 255,
@@ -11,7 +11,7 @@ const useAddItemSelectStyles = makeStyles((theme) => ({
         fontWeight: 'normal',
         fontSize: 14,
         lineHeight: '16px',
-        color: '#000000',
+        color: '#828282',
         paddingTop: 8.5,
         paddingBottom: 6.5,
     },
@@ -20,4 +20,4 @@ const useAddItemSelectStyles = makeStyles((theme) => ({
     }
 }));
 
-export default useAddItemSelectStyles;
+export default useProductCardItemSelectStyles;
