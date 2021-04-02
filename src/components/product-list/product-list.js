@@ -21,8 +21,10 @@ class ProductList extends Component {
     }
 
     componentDidMount() {
-        const db = firebase.database();
-        console.log(db);
+/*        const db = firebase.database();
+        const dbDataRef = db.ref().child('data');
+        dbDataRef.on('value', snap => console.log(snap.val()));*/
+
         this.props.fetchProducts();
     }
 
@@ -46,28 +48,31 @@ class ProductList extends Component {
 
     }
 
-    searchItems = (arr, term) => {
-        if (term.length === 0) {
-            return arr;
-        }
-
-        const findedItems = arr.filter((el) =>
-            el[this.state.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1)
-        return findedItems;
-    }
-
     termSetup = (term) => {
         this.setState({
             term
         })
     }
 
+    searchItems = (arr, term) => {
+        if (term.length === 0) {
+            return arr;
+        }
+
+        return arr.filter((el) =>
+            el[this.state.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1)
+    }
+
     render() {
         const {products, loading, error} = this.props;
+
+        console.log('products in render:',products);
 
         const {term} = this.state;
 
         const visibleItems = this.searchItems(products, term);
+
+        console.log('visibleItems in render:',visibleItems);
 
         return (
             <div className={'product-list-wrap'}>
@@ -115,11 +120,10 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch, {shopService}) => {
-    return {
-        fetchProducts: fetchProducts(shopService, dispatch)
-    }
+const mapDispatchToProps = {
+        fetchProducts
 };
+
 
 export default compose(
     withShopService(),
