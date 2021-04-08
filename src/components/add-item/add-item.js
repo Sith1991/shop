@@ -17,10 +17,13 @@ import useAddItemTextareaStyles from "../../styles/customizing-material-ui-compo
 import NumberFormat from 'react-number-format';
 import Thumb from "../thumb";
 import PriceFormatInput from "../price-format-input";
+import firebase from 'firebase/app';
+import 'firebase/database';
+import { withRouter } from 'react-router-dom';
 
 import "./add-item.scss";
 
-const AddItem = () => {
+const AddItem = ({history}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -78,9 +81,11 @@ const AddItem = () => {
 
     const formik = useFormik({
         initialValues: {
+            id: 2,
             itemName: '',
             price: '',
             file: undefined,
+            dateOfChange: '31.10.18',
             description: '',
             propertyName: '',
             propertyValue: '',
@@ -100,6 +105,18 @@ const AddItem = () => {
                 price: numberedPrice,
                 propertyValue: trimmedPropertyValue,
             };
+            const db = firebase.database();
+            const ref = db.ref('data');
+            const dbDataRef = ref.child('2')
+            await dbDataRef.set(newValues, function(error) {
+                if (error) {
+                    alert("Data could not be saved." + error);
+                } else {
+                    history.push('/');
+                    alert("Data saved successfully.");
+                }
+            });;
+
             console.log(newValues)
         },
         validateOnBlur: true,
@@ -263,4 +280,4 @@ const AddItem = () => {
     )
 }
 
-export default AddItem;
+export default withRouter(AddItem);
