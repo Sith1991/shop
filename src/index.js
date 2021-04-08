@@ -25,12 +25,12 @@ firebase.initializeApp(firebaseConfig);
 
 /*const shopService = new ShopService();*/
 
-const shopService = new FirebaseShopService();
+/*const shopService = new FirebaseShopService();*/
 
 ReactDOM.render(
     <Provider store={store}> {/*Предоставляет доступ к Redux Store*/}
         <ErrorBoundry> {/*Обработка ошибок в компонентах ниже*/}
-            <ShopServiceProvider value={shopService}> {/*Передает service через ContextAPI*/}
+            <ShopServiceProvider> {/*Передает service через ContextAPI*/}
                 <Router>
                     <App/>
                 </Router>

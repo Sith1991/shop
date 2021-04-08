@@ -27,7 +27,11 @@ const fetchProducts = () => (dispatch) => {
     const dbDataRef = db.ref().child('data');
     dbDataRef.on('value', snap => {
         const data = snap.val();
-        dispatch((productsLoaded(data)))
+        if (data === null) {
+            dispatch((productsLoaded([])))
+        } else {
+            dispatch((productsLoaded(data)))
+        }
     })
 }
 
@@ -37,13 +41,6 @@ const fetchProducts1 = (shopService, dispatch) => () => {
         .then((data) => dispatch(productsLoaded(data)))
         .catch((error) => dispatch(productsError(error)))
 }
-
-/*const fetchProducts = (shopService, dispatch) => () => {
-    dispatch(productsRequested());   // для отображения спинера при переходе на данную страницу с других страниц
-                dispatch(productsLoaded(data))
-
-        .catch((error) => dispatch(productsError(error)))
-};*/
 
 export {
     fetchProducts

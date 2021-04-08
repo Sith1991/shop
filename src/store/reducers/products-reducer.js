@@ -15,7 +15,6 @@ const productsReducer = (state = initialState, action) => {
                 error: null,
             }
         case FETCH_PRODUCTS_SUCCESS:
-            console.log('data in RED:', action.payload)
             return {
                 ...state,
                 products: action.payload,

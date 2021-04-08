@@ -8,8 +8,6 @@ import {fetchProducts} from "../../store/actions/propduct-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
-import firebase from 'firebase/app';
-import 'firebase/database'
 
 import './product-list.scss';
 
@@ -21,10 +19,6 @@ class ProductList extends Component {
     }
 
     componentDidMount() {
-/*        const db = firebase.database();
-        const dbDataRef = db.ref().child('data');
-        dbDataRef.on('value', snap => console.log(snap.val()));*/
-
         this.props.fetchProducts();
     }
 
@@ -66,13 +60,9 @@ class ProductList extends Component {
     render() {
         const {products, loading, error} = this.props;
 
-        console.log('products in render:',products);
-
         const {term} = this.state;
 
         const visibleItems = this.searchItems(products, term);
-
-        console.log('visibleItems in render:',visibleItems);
 
         return (
             <div className={'product-list-wrap'}>
