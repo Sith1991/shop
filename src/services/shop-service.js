@@ -7,6 +7,7 @@ export default class ShopService {
             price: 118000,
             dateOfChange: '31.10.18',
             file: undefined,
+            description: '',
             properties: {
                 property_1: {
                     property_1_Name: 'Цвет авто',
@@ -29,6 +30,7 @@ export default class ShopService {
             price: 500000,
             dateOfChange: '01.11.18',
             file: undefined,
+            description: '',
             properties: {
                 property_1: {
                     property_1_Name: 'Цвет авто',

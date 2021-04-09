@@ -1,34 +1,37 @@
-import {FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS} from "../../action-types";
+import {
+    FETCH_PRODUCTS_FAILURE, FETCH_SELECTED_PRODUCT_FAILURE,
+    FETCH_SELECTED_PRODUCT_REQUEST,
+    FETCH_SELECTED_PRODUCT_SUCCESS
+} from "../../action-types";
 
-
-const productsReducer = (state, action) => {
+const productCardReducer = (state, action) => {
 
     if (state === undefined) {
         return {
-            products: [],
+            selectedProduct: {},
             loading: true,
             error: null,
         }
     }
 
     switch (action.type) {
-        case FETCH_PRODUCTS_REQUEST:
+        case FETCH_SELECTED_PRODUCT_REQUEST:
             return {
                 ...state,
                 loading: true,
                 error: null,
             }
-        case FETCH_PRODUCTS_SUCCESS:
+        case FETCH_SELECTED_PRODUCT_SUCCESS:
             return {
-                ...state,
-                products: action.payload,
+
+                selectedProduct: action.payload,
                 loading: false,
                 error: null,
             };
-        case FETCH_PRODUCTS_FAILURE:
+        case FETCH_SELECTED_PRODUCT_FAILURE:
             return {
                 ...state,
-                products: [],
+                selectedProduct: {},
                 loading: false,
                 error: action.payload,
             }
@@ -37,4 +40,4 @@ const productsReducer = (state, action) => {
     }
 }
 
-export default productsReducer;
+export default productCardReducer;

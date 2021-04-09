@@ -23,6 +23,7 @@ const productsError = (error) => {
 }
 
 const fetchProducts = () => (dispatch) => {
+    dispatch(productsRequested());
     const db = firebase.database();
     const dbDataRef = db.ref().child('data');
     dbDataRef.on('value', snap => {

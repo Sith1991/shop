@@ -4,7 +4,7 @@ import {Button} from "react-bootstrap";
 import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
 import {connect} from "react-redux";
-import {fetchProducts} from "../../store/actions/propduct-actions";
+import {fetchProducts} from "../../store/actions/propducts-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
@@ -21,6 +21,8 @@ class ProductList extends Component {
     componentDidMount() {
         this.props.fetchProducts();
     }
+
+
 
     deleteItem = (id) => {
         this.setState(({products}) => {

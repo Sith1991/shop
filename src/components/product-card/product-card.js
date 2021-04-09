@@ -4,8 +4,6 @@ import {useFormik} from 'formik';
 import * as yup from 'yup';
 import {ThemeProvider} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-
-import './product-card.scss';
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useLoginButtonStyles from "../../styles/customizing-material-ui-components/button-login-style";
 import Select from "@material-ui/core/Select";
@@ -14,13 +12,29 @@ import FormControl from "@material-ui/core/FormControl";
 import useProductCardItemSelectStyles
     from "../../styles/customizing-material-ui-components/product-card-item-select-style";
 
-const ProductCard = () => {
+import './product-card.scss';
+import compose from "../../utils";
+import withShopService from "../../hoc";
+import {connect} from "react-redux";
+import {useEffect} from "react";
+import Spinner from "../spinner";
+import {fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
+
+
+const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, error}) => {
+    const itemId = match.params.id;
 
     const classes = useLoginButtonStyles();
     const classesSelect = useProductCardItemSelectStyles();
 
+    useEffect(() => {
+        fetchSelectedProduct(itemId);
+    }, [itemId])
+
+    console.log('selectedProduct', selectedProduct);
+
     const data = {
-        id: 1,
+        id: 0,
         itemName: 'Mercedes S550 4matic',
         file: 'https://i.ibb.co/bs9QvD9/image.png',
         description: 'Не следует, однако забывать, что начало повседневной работы по формированию позиции требуют определения и уточнения существенных финансовых и административных условий. Разнообразный и богатый опыт консультация с широким активом способствует подготовки и реализации существенных финансовых и административных условий. ',
@@ -61,6 +75,13 @@ const ProductCard = () => {
         }
     } = data;
 
+    const renderCard = (selectedProduct) => {
+            const {itemName, file, description, price} = selectedProduct;
+            console.log(itemName, file, description, price);
+    }
+
+    renderCard(selectedProduct);
+
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
@@ -75,7 +96,8 @@ const ProductCard = () => {
             description: description,
             file: file,
             price: price,
-            properties: {properties: {
+            properties: {
+                properties: {
                     property_1: {
                         property_1_Name,
                         property_1_Value: '',
@@ -88,7 +110,8 @@ const ProductCard = () => {
                         property_3_Name,
                         property_3_Value_1,
                     },
-                }},
+                }
+            },
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -99,6 +122,10 @@ const ProductCard = () => {
     });
 
     const {values, handleChange, handleBlur, isValid, handleSubmit, dirty} = formik;
+
+    if (loading) {
+        return <Spinner/>
+    }
 
     return (
         <div className={'product-card'}>
@@ -123,18 +150,20 @@ const ProductCard = () => {
                             <div className={"item-properties"}>
                                 <h4>{property_1_Name}</h4>
                                 <FormControl variant="outlined" className={classesSelect.formControl}>
-                                <Select
-                                    classes={{root:classesSelect.root,
-                                        icon:classesSelect.icon}}
-                                    name={'properties.properties.property_1.property_1_Value'}
-                                    value={values.properties.properties.property_1.property_1_Value}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    notched={false}
-                                >
-                                    <MenuItem value={property_1_Value_1}>{property_1_Value_1}</MenuItem>
-                                    <MenuItem value={property_1_Value_2}>{property_1_Value_2}</MenuItem>
-                                </Select>
+                                    <Select
+                                        classes={{
+                                            root: classesSelect.root,
+                                            icon: classesSelect.icon
+                                        }}
+                                        name={'properties.properties.property_1.property_1_Value'}
+                                        value={values.properties.properties.property_1.property_1_Value}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        notched={false}
+                                    >
+                                        <MenuItem value={property_1_Value_1}>{property_1_Value_1}</MenuItem>
+                                        <MenuItem value={property_1_Value_2}>{property_1_Value_2}</MenuItem>
+                                    </Select>
                                 </FormControl>
                                 <h4>{property_2_Name}</h4>
                                 <p>{property_2_Value_1}</p>
@@ -165,4 +194,19 @@ const ProductCard = () => {
     )
 }
 
-export default ProductCard;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.selectedProduct.loading,
+        error: state.selectedProduct.error,
+        selectedProduct: state.selectedProduct.selectedProduct,
+    }
+};
+
+const mapDispatchToProps = {
+    fetchSelectedProduct,
+};
+
+export default compose(
+    withShopService(),
+    connect(mapStateToProps, mapDispatchToProps)
+)(ProductCard);
