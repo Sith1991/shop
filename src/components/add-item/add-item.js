@@ -105,7 +105,7 @@ const AddItem = ({history}) => {
                 price: numberedPrice,
                 propertyValue: trimmedPropertyValue,
             };
-            const db = firebase.database();
+/*          const db = firebase.database();
             const ref = db.ref('data');
             const dbDataRef = ref.child('2')
             await dbDataRef.set(newValues, function(error) {
@@ -115,7 +115,7 @@ const AddItem = ({history}) => {
                     history.push('/');
                     alert("Data saved successfully.");
                 }
-            });;
+            });;*/
 
             console.log(newValues)
         },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ThemeProvider} from "@material-ui/core/styles";
 import theme from "../../styles/customizing-material-ui-components/theme";
 import {useFormik} from "formik";
@@ -12,10 +12,16 @@ import Button from "@material-ui/core/Button";
 import useSaveButtonStyles from "../../styles/customizing-material-ui-components/button-save-style";
 import usePropertyLabelStyles from "../../styles/customizing-material-ui-components/add-property-radio-style";
 import StyledRadio from "../styled-radio-icon";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 import './add-property.scss';
+import compose from "../../utils";
+import withShopService from "../../hoc";
+import {connect} from "react-redux";
+import {fetchProperties} from "../../store/actions/properties-actions";
 
-const AddProperty = () => {
+const AddProperty = ({fetchProperties, history, properties, loading, error}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -25,13 +31,21 @@ const AddProperty = () => {
 
     const classesRadioButtons = usePropertyLabelStyles();
 
+    console.log('properties:', properties);
+
+    useEffect(() => {
+        fetchProperties();
+    }, [])
+
     const validationSchema = yup.object().shape({
+        id: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом').required(),
         propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
     });
 
     const formik = useFormik({
         initialValues: {
+            id: 0,
             propertyName: '',
             propertyType: 'Dropdown',
         },
@@ -44,6 +58,19 @@ const AddProperty = () => {
                 ...values,
                 propertyName: trimmedPropertyName,
             };
+
+            const db = firebase.database();
+            const ref = db.ref('properties');
+            const dbDataRef = ref.child('1')
+            await dbDataRef.set(newValues, function(error) {
+                if (error) {
+                    alert("Data could not be saved." + error);
+                } else {
+                    history.push('/property-list');
+                    alert("Data saved successfully.");
+                }
+            });
+
             console.log(newValues)
         },
         validateOnBlur: true,
@@ -140,4 +167,19 @@ const AddProperty = () => {
     )
 }
 
-export default AddProperty;
+const mapStateToProps = (state) => {
+    return {
+        properties: state.properties.properties,
+        loading: state.properties.loading,
+        error: state.properties.error,
+    }
+};
+
+const mapDispatchToProps = {
+    fetchProperties,
+};
+
+export default compose(
+    withShopService(),
+    connect(mapStateToProps, mapDispatchToProps)
+)(AddProperty);
