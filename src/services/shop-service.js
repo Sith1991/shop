@@ -19,8 +19,8 @@ export default class ShopService {
                     property_2_Value_1: 2017,
                 },
                 property_3: {
-                    property_1_Name: 'Тип топлива',
-                    property_2_Value_1: 'Бензин',
+                    property_3_Name: 'Тип топлива',
+                    property_3_Value_1: 'Бензин',
                 }
             },
         },
@@ -42,8 +42,8 @@ export default class ShopService {
                     property_2_Value_1: 2017,
                 },
                 property_3: {
-                    property_1_Name: 'Тип топлива',
-                    property_2_Value_1: 'Бензин',
+                    property_3_Name: 'Тип топлива',
+                    property_3_Value_1: 'Бензин',
                 }
             },
         },

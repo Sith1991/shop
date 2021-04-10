@@ -75,13 +75,6 @@ const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, err
         }
     } = data;
 
-    const renderCard = (selectedProduct) => {
-            const {itemName, file, description, price} = selectedProduct;
-            console.log(itemName, file, description, price);
-    }
-
-    renderCard(selectedProduct);
-
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
