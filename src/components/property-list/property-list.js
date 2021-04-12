@@ -1,105 +1,83 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import PropertyListTable from "../property-list-table";
+import {connect} from "react-redux";
+import Spinner from "../spinner";
+import ErrorIndicator from "../error-indicator";
+import {fetchProperties} from "../../store/actions/properties-actions";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 import './property-list.scss';
 
-export default class PropertyList extends Component {
+const PropertyList = ({fetchProperties, properties, loading, error}) => {
 
-    state = {
-        properties: [
-            {
-                id: 0,
-                propName: 'Цвет авто',
-                propType: 'Dropdown',
-            },
-            {
-                id: 1,
-                propName: 'Год выпуска',
-                propType: 'Number',
-            },
-            {
-                id: 2,
-                propName: 'Тип топлива',
-                propType: 'String',
-            },
-            {
-                id: 3,
-                propName: 'Цвет авто',
-                propType: 'Dropdown',
-            },
-            {
-                id: 4,
-                propName: 'Год выпуска',
-                propType: 'Number',
-            },
-            {
-                id: 5,
-                propName: 'Тип топлива',
-                propType: 'String',
-            },
-            {
-                id: 6,
-                propName: 'Цвет авто',
-                propType: 'Dropdown',
-            },
-            {
-                id: 7,
-                propName: 'Год выпуска',
-                propType: 'Number',
-            },
-            {
-                id: 8,
-                propName: 'Тип топлива',
-                propType: 'String',
-            },
-        ]
+    useEffect(() => {
+        fetchProperties();
+    }, [])
+
+    if (loading) {
+        return <Spinner/>
     }
 
-    deleteItem = (id) => {
-        this.setState(({properties}) => {
-            const idx = properties.findIndex((el) => el.id === id);
-            const newData = [
-                ...properties.slice(0, idx),
-                ...properties.slice(idx + 1)
-            ]
-            return {
-                properties: newData
+    if (error) {
+        return <ErrorIndicator/>
+    }
+
+    const deleteItem = async (key) => {
+        const db = firebase.database();
+        const ref = db.ref('properties');
+        const dbDataRef = ref.child(key);
+        await dbDataRef.set(null, function (error) {        // отправляем null для того чтобы удалть полностью свойство по ключу key
+            if (error) {
+                alert("Data could not be deleted." + error);
+            } else {
+                alert("Data was deleted.");
             }
-        })
+        });
     }
 
-    render () {
-        const {properties}=this.state;
-
-        return (
-            <div className={'property-list-wrap'}>
-                <div className={'header'}>
-                    <div className={'wrap'}>
-                        <div className={'background'}></div>
-                        <Link to={'/'} className={'header-links'}>
-                            Листинг товаров
-                        </Link>
-                    </div>
-                    <div className={'wrap colored'}>
-                        <div className={'background'}></div>
-                        <Link to={'/property-list'} className={'header-links'}>
-                            Листинг проперти
-                        </Link>
-                    </div>
+    return (
+        <div className={'property-list-wrap'}>
+            <div className={'header'}>
+                <div className={'wrap'}>
+                    <div className={'background'}></div>
+                    <Link to={'/'} className={'header-links'}>
+                        Листинг товаров
+                    </Link>
                 </div>
-                <div className={'property-list'}>
-                    <div className={'button-wrap'}>
-                        <Link to={'/add-property'} className={'add-property-link'}>
-                            <Button className={'add-prop-button'} variant={"warning"}>
-                                Добавить проперти
-                            </Button>
-                        </Link>
-                    </div>
-                    <PropertyListTable properties={properties} onDeleted={this.deleteItem} />
+                <div className={'wrap colored'}>
+                    <div className={'background'}></div>
+                    <Link to={'/property-list'} className={'header-links'}>
+                        Листинг проперти
+                    </Link>
                 </div>
             </div>
-        )
-    }
+            <div className={'property-list'}>
+                <div className={'button-wrap'}>
+                    <Link to={'/add-property'} className={'add-property-link'}>
+                        <Button className={'add-prop-button'} variant={"warning"}>
+                            Добавить проперти
+                        </Button>
+                    </Link>
+                </div>
+                <PropertyListTable properties={properties} onDeleted={deleteItem} />
+            </div>
+        </div>
+    )
 }
+
+const mapStateToProps = (state) => {
+    return {
+        properties: state.properties.properties,
+        loading: state.properties.loading,
+        error: state.properties.error,
+    }
+};
+
+const mapDispatchToProps = {
+    fetchProperties,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PropertyList);

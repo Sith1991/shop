@@ -22,8 +22,6 @@ class ProductList extends Component {
         this.props.fetchProducts();
     }
 
-
-
     deleteItem = (id) => {
         this.setState(({products}) => {
             const idx = products.findIndex((el) => el.id === id);

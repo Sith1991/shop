@@ -7,14 +7,19 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 const propertiesLoaded = (newItems) => {
-    console.log(newItems)
+    const objectsToArray = Object.values(newItems);
+    const getKeysToArray = Object.keys(newItems);
+    for (let i = 0; i < getKeysToArray.length; i++) {       // добавляю свойство key для того что бы через него редактировать или удалять необходимые объекты
+        objectsToArray[i].key = getKeysToArray[i]
+    }
     return {
         type: FETCH_PROPERTIES_SUCCESS,
-        payload: newItems
+        payload: objectsToArray
     }
 }
 
 const propertiesRequested = () => {
+    console.log('Request')
     return {
         type: FETCH_PROPERTIES_REQUEST,
     }

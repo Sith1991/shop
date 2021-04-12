@@ -33,9 +33,8 @@ const AddProperty = ({history, properties}) => {
         if (properties.length === 0) {
             return 0
         }
-        const objToArray = Object.values(properties);
-        const idxLastProperty = objToArray.length - 1;
-        const lastId = objToArray[idxLastProperty].id;
+        const idxLastProperty = properties.length - 1;
+        const lastId = properties[idxLastProperty].id;
         return lastId + 1
     }
 
