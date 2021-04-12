@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {ThemeProvider} from "@material-ui/core/styles";
 import theme from "../../styles/customizing-material-ui-components/theme";
 import {useFormik} from "formik";
@@ -14,14 +14,12 @@ import usePropertyLabelStyles from "../../styles/customizing-material-ui-compone
 import StyledRadio from "../styled-radio-icon";
 import firebase from 'firebase/app';
 import 'firebase/database';
+import {withRouter} from 'react-router-dom';
 
 import './add-property.scss';
-import compose from "../../utils";
-import withShopService from "../../hoc";
-import {connect} from "react-redux";
-import {fetchProperties} from "../../store/actions/properties-actions";
 
-const AddProperty = ({fetchProperties, history, properties, loading, error}) => {
+
+const AddProperty = ({history, properties}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -31,11 +29,15 @@ const AddProperty = ({fetchProperties, history, properties, loading, error}) => 
 
     const classesRadioButtons = usePropertyLabelStyles();
 
-    console.log('properties:', properties);
-
-    useEffect(() => {
-        fetchProperties();
-    }, [])
+    const idForNewProperty = (properties) => {
+        if (properties.length === 0) {
+            return 0
+        }
+        const objToArray = Object.values(properties);
+        const idxLastProperty = objToArray.length - 1;
+        const lastId = objToArray[idxLastProperty].id;
+        return lastId + 1
+    }
 
     const validationSchema = yup.object().shape({
         id: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом').required(),
@@ -45,7 +47,7 @@ const AddProperty = ({fetchProperties, history, properties, loading, error}) => 
 
     const formik = useFormik({
         initialValues: {
-            id: 0,
+            id: idForNewProperty(properties),
             propertyName: '',
             propertyType: 'Dropdown',
         },
@@ -61,8 +63,8 @@ const AddProperty = ({fetchProperties, history, properties, loading, error}) => 
 
             const db = firebase.database();
             const ref = db.ref('properties');
-            const dbDataRef = ref.child('1')
-            await dbDataRef.set(newValues, function(error) {
+            const dbDataRef = ref.push();
+            await dbDataRef.set(newValues, function (error) {
                 if (error) {
                     alert("Data could not be saved." + error);
                 } else {
@@ -167,19 +169,4 @@ const AddProperty = ({fetchProperties, history, properties, loading, error}) => 
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        properties: state.properties.properties,
-        loading: state.properties.loading,
-        error: state.properties.error,
-    }
-};
-
-const mapDispatchToProps = {
-    fetchProperties,
-};
-
-export default compose(
-    withShopService(),
-    connect(mapStateToProps, mapDispatchToProps)
-)(AddProperty);
+export default withRouter(AddProperty);

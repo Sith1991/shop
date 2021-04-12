@@ -7,7 +7,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 const propertiesLoaded = (newItems) => {
-    console.log('AC:', newItems)
+    console.log(newItems)
     return {
         type: FETCH_PROPERTIES_SUCCESS,
         payload: newItems
@@ -15,7 +15,6 @@ const propertiesLoaded = (newItems) => {
 }
 
 const propertiesRequested = () => {
-    console.log('Request')
     return {
         type: FETCH_PROPERTIES_REQUEST,
     }

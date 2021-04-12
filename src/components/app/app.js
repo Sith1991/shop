@@ -4,9 +4,9 @@ import ProductCard from "../product-card";
 import AddItem from "../add-item";
 import Login from "../login";
 import Registration from "../registration";
-import AddProperty from "../add-property";
 import ProductList from "../product-list";
 import PropertyList from "../property-list";
+import AddPropertyContainer from "../add-property/add-property-Container";
 
 import './app.scss';
 
@@ -22,7 +22,7 @@ const App = () => {
                     <Route path={'/property-list'}
                            component={PropertyList}/>
                     <Route path={'/add-property'}
-                           component={AddProperty}/>
+                           component={AddPropertyContainer}/>
                     <Route path={'/item-card/:id'}
                            component={ProductCard}/>
                     <Route path={'/add-item'}

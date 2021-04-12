@@ -9,7 +9,6 @@ import {ShopServiceProvider} from './services/shop-service-context';
 import ShopService from './services/shop-service';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from 'firebase/app';
-import FirebaseShopService from "./services/firebase-shop-service";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBqzyhjRSQnQiJdwh2_P2W-wS6XMhowBuI",
@@ -24,8 +23,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 /*const shopService = new ShopService();*/
-
-/*const shopService = new FirebaseShopService();*/
 
 ReactDOM.render(
     <Provider store={store}> {/*Предоставляет доступ к Redux Store*/}

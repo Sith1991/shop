@@ -43,9 +43,9 @@ const AddItem = ({history}) => {
                 else return value.toString().charAt(0) !== '0';     // и первая цифра числа НЕ должна быть 0
             }).required('Обязательное поле'),
         file: yup.array().of(yup.object().shape({
-            file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 100кб', (value) => {
+            file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
                 if (!value) return false
-                return value.size < 102400
+                return value.size < 153600
             }).required(),
             type: yup.string().oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png').required(),
             name: yup.string().required()
