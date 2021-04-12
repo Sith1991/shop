@@ -1,0 +1,41 @@
+@import "../../styles/mixins";
+
+.error-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 85vh;
+  max-width: 1110px;
+
+  .error-indicator-wrap {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .error-indicator-big-text {
+    @include font-params(bold, 34px, 40px, #828282);
+  }
+
+  .error-indicator-low-text {
+    @include font-params(bold, 24px, 28px, #828282);
+  }
+
+  .back-to-home {
+
+    a {
+      display: block;
+      height: 100%;
+      text-decoration: none;
+      @include font-params(500, 16px, 32px, #FFFFFF);
+      background: #ffb800;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    height: 32px;
+    width: 220px;
+  }
+}
