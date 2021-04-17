@@ -39,8 +39,7 @@ const AddItem = ({history}) => {
         itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
         price: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом')
             .test('firstSymbol', 'Стоимость не должна ровняться нулю', (value) => {
-                if (!value && value !== 0) return true              // должно быть значение, и это значения не должно быть 0
-                else return value.toString().charAt(0) !== '0';     // и первая цифра числа НЕ должна быть 0
+                return value?.toString().charAt(0) !== '0';     // число НЕ должно быть 0
             }).required('Обязательное поле'),
         file: yup.array().of(yup.object().shape({
             file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {

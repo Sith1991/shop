@@ -38,9 +38,20 @@ const AddProperty = ({history, properties}) => {
         return lastId + 1
     }
 
+    const validateNames = (arr, value) => {
+        const result = arr.find( (el) => el?.propertyName.toLowerCase() === value?.toLowerCase())
+        console.log(!result);
+        return !result;
+    }
+
     const validationSchema = yup.object().shape({
         id: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом').required(),
-        propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+        propertyName: yup.string().typeError('Должно быть строкой')
+                        .test('sameName', 'Свойство с таким именем уже существует',(value) => {
+                            if (!value) return true                     // если поле пустое, перейдет к следующей проверке required
+                            return validateNames(properties, value)     // возвращает false, если свойство с таким именем уже существует
+                        })
+            .required('Обязательное поле'),
         propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
     });
 

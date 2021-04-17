@@ -19,7 +19,6 @@ const propertiesLoaded = (newItems) => {
 }
 
 const propertiesRequested = () => {
-    console.log('Request')
     return {
         type: FETCH_PROPERTIES_REQUEST,
     }
