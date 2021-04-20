@@ -23,7 +23,7 @@ import { withRouter } from 'react-router-dom';
 
 import "./add-item.scss";
 
-const AddItem = ({history}) => {
+const AddItem = ({history, products, properties}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -34,6 +34,25 @@ const AddItem = ({history}) => {
     const classesUploadBtn = useUploadButtonStyles();
 
     const classesTextarea = useAddItemTextareaStyles();
+
+    const priceFormat = (value) => {
+        return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
+    }
+
+    const idForNewProduct = (products) => {
+        if (products.length === 0) {
+            return 0
+        }
+        const idxLastProperty = products.length - 1;
+        const lastId = products[idxLastProperty].id;
+        return lastId + 1
+    }
+
+    const getDateOfChange = () => {
+        return firebase.firestore.FieldValue.serverTimestamp()
+    }
+
+    console.log(getDateOfChange());
 
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
@@ -80,7 +99,7 @@ const AddItem = ({history}) => {
 
     const formik = useFormik({
         initialValues: {
-            id: 2,
+            id: idForNewProduct(products),
             itemName: '',
             price: '',
             file: undefined,
@@ -104,17 +123,18 @@ const AddItem = ({history}) => {
                 price: numberedPrice,
                 propertyValue: trimmedPropertyValue,
             };
-/*          const db = firebase.database();
-            const ref = db.ref('data');
-            const dbDataRef = ref.child('2')
-            await dbDataRef.set(newValues, function(error) {
+
+            const db = firebase.database();
+            const ref = db.ref('products');
+            const dbDataRef = ref.push();
+            await dbDataRef.set(newValues, function (error) {
                 if (error) {
                     alert("Data could not be saved." + error);
                 } else {
                     history.push('/');
                     alert("Data saved successfully.");
                 }
-            });;*/
+            });
 
             console.log(newValues)
         },
@@ -126,9 +146,7 @@ const AddItem = ({history}) => {
         handleBlur, isValid, handleSubmit, dirty, setFieldTouched
     } = formik;
 
-    const priceFormat = (value) => {
-        return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
-    }
+
 
     return (
         <FormikProvider value={formik}> {/*для того чтобы работал arrayHelper в инпуте file*/}

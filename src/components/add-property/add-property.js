@@ -40,7 +40,6 @@ const AddProperty = ({history, properties}) => {
 
     const validateNames = (arr, value) => {
         const result = arr.find( (el) => el?.propertyName.toLowerCase() === value?.toLowerCase())
-        console.log(!result);
         return !result;
     }
 

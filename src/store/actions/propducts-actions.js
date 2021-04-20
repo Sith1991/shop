@@ -1,11 +1,20 @@
-import {FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS} from "../../action-types";
+import {
+    FETCH_PRODUCTS_FAILURE,
+    FETCH_PRODUCTS_REQUEST,
+    FETCH_PRODUCTS_SUCCESS,
+} from "../../action-types";
 import firebase from 'firebase/app';
 import 'firebase/database'
 
 const productsLoaded = (newItems) => {
+    const objectsToArray = Object.values(newItems);
+    const getKeysToArray = Object.keys(newItems);
+    for (let i = 0; i < getKeysToArray.length; i++) {       // добавляю свойство key для того что бы через него редактировать или удалять необходимые объекты
+        objectsToArray[i].key = getKeysToArray[i]
+    }
     return {
         type: FETCH_PRODUCTS_SUCCESS,
-        payload: newItems
+        payload: objectsToArray
     }
 }
 
@@ -25,7 +34,7 @@ const productsError = (error) => {
 const fetchProducts = () => (dispatch) => {
     dispatch(productsRequested());
     const db = firebase.database();
-    const dbDataRef = db.ref().child('data');
+    const dbDataRef = db.ref().child('products');
     dbDataRef.on('value', snap => {
         const data = snap.val();
         if (data === null) {
@@ -36,12 +45,12 @@ const fetchProducts = () => (dispatch) => {
     })
 }
 
-const fetchProducts1 = (shopService, dispatch) => () => {
+/*const fetchProducts1 = (shopService, dispatch) => () => {
     dispatch(productsRequested());   // для отображения спинера при переходе на данную страницу с других страниц
     shopService.getItems()
         .then((data) => dispatch(productsLoaded(data)))
         .catch((error) => dispatch(productsError(error)))
-}
+}*/
 
 export {
     fetchProducts

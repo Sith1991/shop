@@ -1,12 +1,12 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import ProductCard from "../product-card";
-import AddItem from "../add-item";
 import Login from "../login";
 import Registration from "../registration";
 import ProductList from "../product-list";
 import PropertyList from "../property-list";
 import AddPropertyContainer from "../add-property/add-property-Container";
+import AddItemContainer from "../add-item/add-item-Container";
 
 import './app.scss';
 
@@ -26,7 +26,7 @@ const App = () => {
                     <Route path={'/item-card/:id'}
                            component={ProductCard}/>
                     <Route path={'/add-item'}
-                           component={AddItem}/>
+                           component={AddItemContainer}/>
                     <Route path={'/login'}
                            component={Login}/>
                     <Route path={'/registration'}
