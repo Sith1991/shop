@@ -98,13 +98,13 @@ const ProductListTable = ({products, onDeleted, loading}) => {
                                 {stableSort(products, getComparator(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((product) => {
-                                        const {id, itemName, price, dateOfChange} = product;
+                                        const {key, itemName, price, dateOfChange} = product;
                                         const formattedPrice = price.toLocaleString('ru-RU');
                                         const formattedDateOfChange = timestampToDate(dateOfChange);
                                         return (
-                                            <TableRow key={id}>
+                                            <TableRow key={key}>
                                                 <TableCell align={'center'} className={'link table-body'}>
-                                                    <Link to={`/item-card/${id}`}>
+                                                    <Link to={`/item-card/${key}`}>
                                                         <div className={'table-value'}>{itemName}</div>
                                                     </Link>
                                                 </TableCell>
@@ -117,7 +117,7 @@ const ProductListTable = ({products, onDeleted, loading}) => {
                                                 <TableCell>
                                                     <div className="links">
                                                         <Link to={'#'} className={'link'}>Ред.</Link>
-                                                        <Link to={'#'} onClick={() => onDeleted(id)}
+                                                        <Link to={'#'} onClick={() => onDeleted(key)}
                                                               className={'link'}>Удалить</Link>
                                                     </div>
                                                 </TableCell>

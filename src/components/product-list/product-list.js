@@ -10,6 +10,7 @@ import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
 
 import './product-list.scss';
+import firebase from "firebase";
 
 class ProductList extends Component {
 
@@ -22,24 +23,23 @@ class ProductList extends Component {
         this.props.fetchProducts();
     }
 
-    deleteItem = (id) => {
-        this.setState(({products}) => {
-            const idx = products.findIndex((el) => el.id === id);
-            const newData = [
-                ...products.slice(0, idx),
-                ...products.slice(idx + 1)
-            ]
-            return {
-                products: newData
+    deleteItem = async (key) => {
+        const db = firebase.database();
+        const ref = db.ref('products');
+        const dbDataRef = ref.child(key);
+        await dbDataRef.set(null, function (error) {        // отправляем null для того чтобы удалть полностью свойство по ключу key
+            if (error) {
+                alert("Data could not be deleted." + error);
+            } else {
+                alert("Data was deleted.");
             }
-        })
+        });
     }
 
     columnChange = (columnName) => {
         this.setState({
             columnName
         })
-
     }
 
     termSetup = (term) => {
@@ -113,7 +113,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
         fetchProducts
 };
-
 
 export default compose(
     withShopService(),
