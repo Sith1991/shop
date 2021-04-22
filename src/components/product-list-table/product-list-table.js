@@ -77,6 +77,12 @@ const ProductListTable = ({products, onDeleted, loading}) => {
         setOrderBy(property);
     };
 
+    const timestampToDate = (timestamp) => {
+        const d = new Date();
+        d.setTime(timestamp);
+        return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '.' + d.getFullYear().toString().substr(-2);
+    }
+
     return (
         <div className={'product-list-table'}>
             <ThemeProvider theme={theme}>
@@ -93,7 +99,8 @@ const ProductListTable = ({products, onDeleted, loading}) => {
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((product) => {
                                         const {id, itemName, price, dateOfChange} = product;
-                                        const formatedPrice = price.toLocaleString('ru-RU');
+                                        const formattedPrice = price.toLocaleString('ru-RU');
+                                        const formattedDateOfChange = timestampToDate(dateOfChange);
                                         return (
                                             <TableRow key={id}>
                                                 <TableCell align={'center'} className={'link table-body'}>
@@ -102,10 +109,10 @@ const ProductListTable = ({products, onDeleted, loading}) => {
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell className={'table-body'}>
-                                                    <div className={'table-value'}>{formatedPrice} $</div>
+                                                    <div className={'table-value'}>{formattedPrice} $</div>
                                                 </TableCell>
                                                 <TableCell className={'table-body'}>
-                                                    <div className={'table-value'}>{dateOfChange}</div>
+                                                    <div className={'table-value'}>{formattedDateOfChange}</div>
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="links">

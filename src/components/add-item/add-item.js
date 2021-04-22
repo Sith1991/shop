@@ -49,10 +49,8 @@ const AddItem = ({history, products, properties}) => {
     }
 
     const getDateOfChange = () => {
-        return firebase.firestore.FieldValue.serverTimestamp()
+        return firebase.database.ServerValue.TIMESTAMP;  // получение таймстампа с сервера Firebase
     }
-
-    console.log(getDateOfChange());
 
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
@@ -103,7 +101,7 @@ const AddItem = ({history, products, properties}) => {
             itemName: '',
             price: '',
             file: undefined,
-            dateOfChange: '31.10.18',
+            dateOfChange: '',
             description: '',
             propertyName: '',
             propertyValue: '',
@@ -127,7 +125,8 @@ const AddItem = ({history, products, properties}) => {
             const db = firebase.database();
             const ref = db.ref('products');
             const dbDataRef = ref.push();
-            await dbDataRef.set(newValues, function (error) {
+            await dbDataRef.set({...newValues, dateOfChange: getDateOfChange() },
+                function (error) {
                 if (error) {
                     alert("Data could not be saved." + error);
                 } else {
@@ -145,8 +144,6 @@ const AddItem = ({history, products, properties}) => {
         values, errors, touched, handleChange,
         handleBlur, isValid, handleSubmit, dirty, setFieldTouched
     } = formik;
-
-
 
     return (
         <FormikProvider value={formik}> {/*для того чтобы работал arrayHelper в инпуте file*/}
