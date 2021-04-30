@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
+import firebase from 'firebase/app';
+import 'firebase/database';
+import {storage} from "../../services/firebase-service";
 import AddPropertyToProduct from "../add-property-to-product";
 import {Link} from "react-router-dom";
 import * as yup from "yup";
@@ -17,9 +20,7 @@ import useAddItemTextareaStyles from "../../styles/customizing-material-ui-compo
 import NumberFormat from 'react-number-format';
 import Thumb from "../thumb";
 import PriceFormatInput from "../price-format-input";
-import firebase from 'firebase/app';
-import 'firebase/database';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 import "./add-item.scss";
 
@@ -66,6 +67,7 @@ const AddItem = ({history, products, properties}) => {
             type: yup.string().oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png').required(),
             name: yup.string().required()
         }).typeError('Добавьте файл')).required(),
+        fileUrl: yup.string().typeError('Должно быть строкой'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertyName: yup.string().typeError('Должно быть строкой'),
         propertyValue: yup.string().typeError('Должно быть строкой'),
@@ -76,6 +78,14 @@ const AddItem = ({history, products, properties}) => {
         type: file.type,
         name: file.name
     })
+
+    const [image, setImage] = useState(null);
+
+    const fileHandleChange = (e) => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    }
 
     const getArrErrorsMessages = (errors) => {
         const result = []
@@ -89,11 +99,11 @@ const AddItem = ({history, products, properties}) => {
             }
         })
         return result
-    }
+    };
 
     const getError = (touched, error) => {
         return touched && error && <FormHelperText>{error}</FormHelperText>
-    }
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -101,6 +111,7 @@ const AddItem = ({history, products, properties}) => {
             itemName: '',
             price: '',
             file: undefined,
+            fileUrl: '',
             dateOfChange: '',
             description: '',
             propertyName: '',
@@ -108,34 +119,54 @@ const AddItem = ({history, products, properties}) => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            await new Promise((r) => setTimeout(r, 500));
-            const {itemName, description, price, propertyValue} = values;
-            const trimmedItemName = itemName.trim();
-            const trimmedDescription = description.trim();
-            const trimmedPropertyValue = propertyValue.trim();
-            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
-            const newValues = {
-                ...values,
-                itemName: trimmedItemName,
-                description: trimmedDescription,
-                price: numberedPrice,
-                propertyValue: trimmedPropertyValue,
-            };
+            // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
+            // не перезаписывали друг друга
+            const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
+            const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
+            await uploadTask.on(
+                "state_changed",
+                snapshot => {
+                },
+                error => {
+                    console.log('error: ', error);
+                },
+                () => {
+                    storage
+                        .ref('images')
+                        .child(fileNameWithRndNumber)
+                        .getDownloadURL()
+                        .then(url => {
+                            const {itemName, description, price, propertyValue} = values;
+                            const trimmedItemName = itemName.trim();
+                            const trimmedDescription = description.trim();
+                            const trimmedPropertyValue = propertyValue.trim();
+                            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+                            const newValues = {
+                                ...values,
+                                itemName: trimmedItemName,
+                                description: trimmedDescription,
+                                price: numberedPrice,
+                                propertyValue: trimmedPropertyValue,
+                                file: [],                               // чистим массив с фото, т.к. он не нужен в
+                                                                        // realtime firebase, файл загружается в storage
+                                fileUrl: url,
+                            };
 
-            const db = firebase.database();
-            const ref = db.ref('products');
-            const dbDataRef = ref.push();
-            await dbDataRef.set({...newValues, dateOfChange: getDateOfChange() },
-                function (error) {
-                if (error) {
-                    alert("Data could not be saved." + error);
-                } else {
-                    history.push('/');
-                    alert("Data saved successfully.");
+                            const db = firebase.database();
+                            const ref = db.ref('products');
+                            const dbDataRef = ref.push();
+                            dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                                function (error) {
+                                    if (error) {
+                                        alert("Data could not be saved." + error);
+                                    } else {
+                                        history.push('/');
+                                        alert("Data saved successfully.");
+                                    }
+                                });
+                        });
                 }
-            });
-
-            console.log(newValues)
+            );
         },
         validateOnBlur: true,
     });
@@ -223,6 +254,7 @@ const AddItem = ({history, products, properties}) => {
                                                         const {files} = event.target;
                                                         const file = getFileSchema(files.item(0));
                                                         setFieldTouched('file', true, false);
+                                                        fileHandleChange(event);
                                                         if (!file) {
                                                             arrayHelper.remove(0)
                                                             setFieldTouched('file', true, false);
@@ -257,7 +289,8 @@ const AddItem = ({history, products, properties}) => {
                                     </FieldArray>
                                     {getArrErrorsMessages(errors.file).map((error) => getError(true, error))}
                                 </FormControl>
-                                    <Thumb file={(values.file === undefined || values.file[0] === null) ? null : values.file[0].file} />
+                                <Thumb
+                                    file={(values.file === undefined || values.file[0] === null) ? null : values.file[0].file}/>
                                 <FormControl error={touched.description && errors.description}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Описание</FormLabel>
