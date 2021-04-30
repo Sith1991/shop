@@ -9,8 +9,8 @@ import 'firebase/database'
 const productsLoaded = (newItems) => {
     const objectsToArray = Object.values(newItems);
     const getKeysToArray = Object.keys(newItems);
-    for (let i = 0; i < getKeysToArray.length; i++) {       // добавляю свойство key для того что бы через него редактировать или удалять необходимые объекты
-        objectsToArray[i].key = getKeysToArray[i]
+    for (let i = 0; i < getKeysToArray.length; i++) {       // добавляю свойство id для того что бы через него редактировать или удалять необходимые объекты
+        objectsToArray[i].id = getKeysToArray[i]
     }
     return {
         type: FETCH_PRODUCTS_SUCCESS,

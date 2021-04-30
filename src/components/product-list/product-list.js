@@ -4,7 +4,7 @@ import {Button} from "react-bootstrap";
 import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
 import {connect} from "react-redux";
-import {fetchProducts} from "../../store/actions/propducts-actions";
+import {fetchProducts, productsError} from "../../store/actions/propducts-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
@@ -29,6 +29,7 @@ class ProductList extends Component {
         const dbDataRef = ref.child(key);
         await dbDataRef.set(null, function (error) {        // отправляем null для того чтобы удалть полностью свойство по ключу key
             if (error) {
+                productsError(error);
                 alert("Data could not be deleted." + error);
             } else {
                 alert("Data was deleted.");
@@ -111,7 +112,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-        fetchProducts
+    fetchProducts,
+    productsError
 };
 
 export default compose(

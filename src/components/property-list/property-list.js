@@ -5,7 +5,7 @@ import PropertyListTable from "../property-list-table";
 import {connect} from "react-redux";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
-import {fetchProperties} from "../../store/actions/properties-actions";
+import {fetchProperties, propertiesError} from "../../store/actions/properties-actions";
 import firebase from 'firebase/app';
 import 'firebase/database';
 
@@ -31,6 +31,7 @@ const PropertyList = ({fetchProperties, properties, loading, error}) => {
         const dbDataRef = ref.child(key);
         await dbDataRef.set(null, function (error) {        // отправляем null для того чтобы удалть полностью свойство по ключу key
             if (error) {
+                propertiesError(error);
                 alert("Data could not be deleted." + error);
             } else {
                 alert("Data was deleted.");
@@ -78,6 +79,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     fetchProperties,
+    propertiesError
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyList);

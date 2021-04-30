@@ -95,9 +95,9 @@ const PropertyListTable = ({properties, onDeleted}) => {
                             {stableSort(properties, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((properties) => {
-                                    const {key, propertyName, propertyType} = properties;
+                                    const {id, propertyName, propertyType} = properties;
                                     return (
-                                        <TableRow key={key}>
+                                        <TableRow key={id}>
                                             <TableCell>
                                                 <div className={'property-name table-body'}>{propertyName}</div>
                                             </TableCell>
@@ -105,7 +105,7 @@ const PropertyListTable = ({properties, onDeleted}) => {
                                                 <div className={'property-type table-body'}>{propertyType}</div>
                                             </TableCell>
                                             <TableCell align={"right"}>
-                                                <Link to={'#'} onClick={() => onDeleted(key)}
+                                                <Link to={'#'} onClick={() => onDeleted(id)}
                                                       className={'link'}>Удалить</Link>
                                             </TableCell>
                                         </TableRow>
