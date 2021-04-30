@@ -24,7 +24,7 @@ import {withRouter} from 'react-router-dom';
 
 import "./add-item.scss";
 
-const AddItem = ({history, products, properties}) => {
+const AddItem = ({history, properties, productsError}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -38,15 +38,6 @@ const AddItem = ({history, products, properties}) => {
 
     const priceFormat = (value) => {
         return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
-    }
-
-    const idForNewProduct = (products) => {
-        if (products.length === 0) {
-            return 0
-        }
-        const idxLastProperty = products.length - 1;
-        const lastId = products[idxLastProperty].id;
-        return lastId + 1
     }
 
     const getDateOfChange = () => {
@@ -107,7 +98,6 @@ const AddItem = ({history, products, properties}) => {
 
     const formik = useFormik({
         initialValues: {
-            id: idForNewProduct(products),
             itemName: '',
             price: '',
             file: undefined,
@@ -128,6 +118,7 @@ const AddItem = ({history, products, properties}) => {
                 snapshot => {
                 },
                 error => {
+                    productsError(error);
                     console.log('error: ', error);
                 },
                 () => {
@@ -158,6 +149,7 @@ const AddItem = ({history, products, properties}) => {
                             dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
                                 function (error) {
                                     if (error) {
+                                        productsError(error);
                                         alert("Data could not be saved." + error);
                                     } else {
                                         history.push('/');

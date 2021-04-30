@@ -46,5 +46,6 @@ const fetchProperties = () => (dispatch) => {
 }
 
 export {
-    fetchProperties
+    fetchProperties,
+    propertiesError
 }

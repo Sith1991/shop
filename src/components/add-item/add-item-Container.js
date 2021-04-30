@@ -3,13 +3,13 @@ import compose from "../../utils";
 import withShopService from "../../hoc";
 import {connect} from "react-redux";
 import {fetchProperties} from "../../store/actions/properties-actions";
-import {fetchProducts} from "../../store/actions/propducts-actions";
+import {fetchProducts, productsError} from "../../store/actions/propducts-actions";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
 
 const AddItemContainer = ({
-                              fetchProperties, fetchProducts, properties,
+                              fetchProperties, fetchProducts, productsError, properties,
                               loadingProps, errorProps, products,
                               loadingProducts, errorProducts
                           }) => {
@@ -28,7 +28,7 @@ const AddItemContainer = ({
     }
 
     return (
-        <AddItem properties={properties} products={products}/>
+        <AddItem properties={properties} products={products} productsError={productsError}/>
     )
 }
 
@@ -45,7 +45,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     fetchProperties,
-    fetchProducts
+    fetchProducts,
+    productsError
 };
 
 export default compose(

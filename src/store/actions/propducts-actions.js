@@ -45,13 +45,7 @@ const fetchProducts = () => (dispatch) => {
     })
 }
 
-/*const fetchProducts1 = (shopService, dispatch) => () => {
-    dispatch(productsRequested());   // для отображения спинера при переходе на данную страницу с других страниц
-    shopService.getItems()
-        .then((data) => dispatch(productsLoaded(data)))
-        .catch((error) => dispatch(productsError(error)))
-}*/
-
 export {
-    fetchProducts
+    fetchProducts,
+    productsError
 }

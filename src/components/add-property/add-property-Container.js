@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {fetchProperties} from "../../store/actions/properties-actions";
+import {fetchProperties, propertiesError} from "../../store/actions/properties-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import {connect} from "react-redux";
@@ -7,7 +7,7 @@ import AddProperty from "../add-property";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 
-const AddPropertyContainer = ({fetchProperties, properties, loading, error}) => {
+const AddPropertyContainer = ({fetchProperties, propertiesError, properties, loading, error}) => {
 
     useEffect(() => {
         fetchProperties();
@@ -22,7 +22,7 @@ const AddPropertyContainer = ({fetchProperties, properties, loading, error}) => 
     }
 
     return (
-        <AddProperty properties={properties}/>
+        <AddProperty properties={properties} propertiesError={propertiesError}/>
     )
 }
 
@@ -36,6 +36,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     fetchProperties,
+    propertiesError
 };
 
 export default compose(

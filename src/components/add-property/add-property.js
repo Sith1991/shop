@@ -19,7 +19,7 @@ import {withRouter} from 'react-router-dom';
 import './add-property.scss';
 
 
-const AddProperty = ({history, properties}) => {
+const AddProperty = ({history, properties, propertiesError}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -28,15 +28,6 @@ const AddProperty = ({history, properties}) => {
     const classesSaveBtn = useSaveButtonStyles();
 
     const classesRadioButtons = usePropertyLabelStyles();
-
-    const idForNewProperty = (properties) => {
-        if (properties.length === 0) {
-            return 0
-        }
-        const idxLastProperty = properties.length - 1;
-        const lastId = properties[idxLastProperty].id;
-        return lastId + 1
-    }
 
     const validateNames = (arr, value) => {
         const result = arr.find( (el) => el?.propertyName.toLowerCase() === value?.toLowerCase())
@@ -56,7 +47,6 @@ const AddProperty = ({history, properties}) => {
 
     const formik = useFormik({
         initialValues: {
-            id: idForNewProperty(properties),
             propertyName: '',
             propertyType: 'Dropdown',
         },
@@ -75,6 +65,7 @@ const AddProperty = ({history, properties}) => {
             const dbDataRef = ref.push();
             await dbDataRef.set(newValues, function (error) {
                 if (error) {
+                    propertiesError(error)
                     alert("Data could not be saved." + error);
                 } else {
                     history.push('/property-list');
