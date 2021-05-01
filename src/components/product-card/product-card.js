@@ -13,25 +13,11 @@ import useProductCardItemSelectStyles
     from "../../styles/customizing-material-ui-components/product-card-item-select-style";
 
 import './product-card.scss';
-import compose from "../../utils";
-import withShopService from "../../hoc";
-import {connect} from "react-redux";
-import {useEffect} from "react";
-import Spinner from "../spinner";
-import {fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
 
-
-const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, error}) => {
-    const itemId = match.params.id;
+const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
 
     const classes = useLoginButtonStyles();
     const classesSelect = useProductCardItemSelectStyles();
-
-    useEffect(() => {
-        fetchSelectedProduct(itemId);
-    }, [itemId])
-
-    console.log('selectedProduct', selectedProduct);
 
     const data = {
         id: 0,
@@ -57,7 +43,6 @@ const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, err
     }
 
     const {
-        itemName, file, description, price,
         properties: {
             property_1: {
                 property_1_Name,
@@ -75,10 +60,12 @@ const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, err
         }
     } = data;
 
+    const {itemName, fileUrl, description, price} = selectedProduct;
+
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-        file: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+        fileUrl: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         price: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом').required('Обязательное поле'),
         properties: yup.object(),
     });
@@ -87,7 +74,7 @@ const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, err
         initialValues: {
             itemName: itemName,
             description: description,
-            file: file,
+            fileUrl: fileUrl,
             price: price,
             properties: {
                 properties: {
@@ -116,23 +103,19 @@ const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, err
 
     const {values, handleChange, handleBlur, isValid, handleSubmit, dirty} = formik;
 
-    if (loading) {
-        return <Spinner/>
-    }
-
     return (
         <div className={'product-card'}>
             <div className={'product-card-bordered-wrap'}>
                 <div className={"product-card-wrap"}>
                     <div className={'link'}>
-                        <Link to={'/'}>
+                        <Link to={'/'} onClick={clearSelectedProduct}>
                             Вернуться
                         </Link>
                     </div>
                     <form onSubmit={handleSubmit} className={'product-card-wrapper'}>
                         <div className={'header-items-row'}>
                             <div className={'item-image'}>
-                                <img src={file} alt="product"/>
+                                <img src={fileUrl} alt="product"/>
                             </div>
                             <div className={'item-information'}>
                                 <h3>{itemName}</h3>
@@ -187,19 +170,4 @@ const ProductCard = ({fetchSelectedProduct, match, selectedProduct, loading, err
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        loading: state.selectedProduct.loading,
-        error: state.selectedProduct.error,
-        selectedProduct: state.selectedProduct.selectedProduct,
-    }
-};
-
-const mapDispatchToProps = {
-    fetchSelectedProduct,
-};
-
-export default compose(
-    withShopService(),
-    connect(mapStateToProps, mapDispatchToProps)
-)(ProductCard);
+export default ProductCard;
