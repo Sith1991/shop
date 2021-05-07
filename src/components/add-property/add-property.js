@@ -35,7 +35,6 @@ const AddProperty = ({history, properties, propertiesError}) => {
     }
 
     const validationSchema = yup.object().shape({
-        id: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом').required(),
         propertyName: yup.string().typeError('Должно быть строкой')
                         .test('sameName', 'Свойство с таким именем уже существует',(value) => {
                             if (!value) return true                     // если поле пустое, перейдет к следующей проверке required
