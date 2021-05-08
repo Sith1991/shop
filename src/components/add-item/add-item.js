@@ -108,14 +108,14 @@ const AddItem = ({history, properties, productsError}) => {
             dateOfChange: '',
             description: '',
             propertiesOfProduct: [
-/*                {
-                    propertyName: '',
-                    propertyValue: '',
-                }*/
+                /*                {
+                                    propertyName: '',
+                                    propertyValue: '',
+                                }*/
             ],
         },
         validationSchema: validationSchema,
-        onSubmit: async (values) => {
+/*        onSubmit: async (values) => {
             // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
             // не перезаписывали друг друга
             const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
@@ -137,14 +137,14 @@ const AddItem = ({history, properties, productsError}) => {
                             const {itemName, description, price, properties} = values;
                             const trimmedItemName = itemName.trim();
                             const trimmedDescription = description.trim();
-/*                            const trimmedPropertyValue = propertyValue.trim();*/
+                            /!*                            const trimmedPropertyValue = propertyValue.trim();*!/
                             const numberedPrice = parseInt(String(price).replace(/ /g, ''));
                             const newValues = {
                                 ...values,
                                 itemName: trimmedItemName,
                                 description: trimmedDescription,
                                 price: numberedPrice,
-/*                                propertyValue: trimmedPropertyValue,*/
+                                /!*                                propertyValue: trimmedPropertyValue,*!/
                                 file: [],                               // чистим массив с фото, т.к. он не нужен в
                                                                         // realtime firebase, файл загружается в storage
                                 fileUrl: url,
@@ -166,6 +166,27 @@ const AddItem = ({history, properties, productsError}) => {
                         });
                 }
             );
+        },*/
+        onSubmit: async (values) => {
+
+            const {itemName, description, price, properties} = values;
+            const trimmedItemName = itemName.trim();
+            const trimmedDescription = description.trim();
+            /*                            const trimmedPropertyValue = propertyValue.trim();*/
+            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+            const newValues = {
+                ...values,
+                itemName: trimmedItemName,
+                description: trimmedDescription,
+                price: numberedPrice,
+                /*                                propertyValue: trimmedPropertyValue,*/
+                file: [],                               // чистим массив с фото, т.к. он не нужен в
+                                                        // realtime firebase, файл загружается в storage
+                fileUrl: '',
+            };
+
+            await console.log(newValues);
+
         },
         validateOnBlur: true,
     });
@@ -317,6 +338,7 @@ const AddItem = ({history, properties, productsError}) => {
                                                   errors={errors}
                                                   handleBlur={handleBlur}
                                                   values={values}
+                                                  properties={properties}
                                                   getError={getError}/>
                         </form>
                     </div>

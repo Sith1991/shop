@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import IconButton from "@material-ui/core/IconButton";
@@ -13,13 +13,30 @@ import useAddPropInputStyles from "../../styles/customizing-material-ui-componen
 import './add-property-to-product.scss';
 import {FieldArray} from "formik";
 
-const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values, getError}) => {
+const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values, properties, getError}) => {
 
     const classesSelect = useAddItemSelectStyles();
     const classesButton = useAddPropertyButtonStyles();
     const classesInput = useAddPropInputStyles();
 
+    const [propertyType, setPropertyType] = useState(null);
+
+    console.log('state1:', propertyType);
+
     const {propertiesOfProduct} = values;
+
+    const renderMenuItems = (item) => {
+        const {propertyName} = item;
+        return (
+            <MenuItem value={propertyName}>{propertyName}</MenuItem>
+        )
+    }
+
+    const handleChangePropType = (event) => {
+        const selectedProperty = properties.find(({propertyName}) => propertyName === event.target.value)
+        const selectedPropType = selectedProperty.propertyType;
+        setPropertyType(selectedPropType)
+    }
 
     return (
         <FieldArray name={'propertiesOfProduct'}>
@@ -34,7 +51,7 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                     </div>
                     <div className={'add-property-body'}>
                         {
-                            propertiesOfProduct.map( (property, index) => (
+                            propertiesOfProduct.map((propertyOfProduct, index) => (
                                 <div className="add-property-body-element" key={index}>
                                     <div className={'add-prop-left-column'}>
                                         <div className={'add-prop-row'}>
@@ -46,19 +63,20 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                             </div>
                                             <p className={'property-name'}>Свойство {index + 1}</p>
                                         </div>
-                                        <FormControl variant="outlined" className={classesSelect.formControl} classes={{label:classesSelect.label}} >
+                                        <FormControl variant="outlined" className={classesSelect.formControl}
+                                                     classes={{label:classesSelect.label}} >
                                             <Select
                                                 classes={{root:classesSelect.root,
                                                     icon:classesSelect.icon}}
-                                                name={'propertyName'}
-                                                value={values.propertyName}
-                                                onChange={handleChange}
+                                                name={`propertiesOfProduct.${index}.propertyName`}
+                                                onChange={handleChangePropType}
                                                 onBlur={handleBlur}
                                                 notched={false}
                                             >
-                                                <MenuItem value={'Цвет авто'}>Цвет авто</MenuItem>
+                                                {properties.map(renderMenuItems)}
+                                                {/*<MenuItem value={'Цвет авто'}>Цвет авто</MenuItem>
                                                 <MenuItem value={'Год выпуска'}>Год выпуска</MenuItem>
-                                                <MenuItem value={'Тип топлива'}>Тип топлива</MenuItem>
+                                                <MenuItem value={'Тип топлива'}>Тип топлива</MenuItem>*/}
                                             </Select>
                                         </FormControl>
                                     </div>
