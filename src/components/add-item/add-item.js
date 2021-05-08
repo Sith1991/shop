@@ -60,8 +60,11 @@ const AddItem = ({history, properties, productsError}) => {
         }).typeError('Добавьте файл')).required(),
         fileUrl: yup.string().typeError('Должно быть строкой'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-        propertyName: yup.string().typeError('Должно быть строкой'),
-        propertyValue: yup.string().typeError('Должно быть строкой'),
+        propertiesOfProduct: yup.array().of(yup.object().shape({
+                propertyName: yup.string().typeError('Должно быть строкой'),
+                propertyValue: yup.string().typeError('Должно быть строкой'),
+            })
+        ),
     });
 
     const getFileSchema = (file) => (file && {
@@ -104,8 +107,12 @@ const AddItem = ({history, properties, productsError}) => {
             fileUrl: '',
             dateOfChange: '',
             description: '',
-            propertyName: '',
-            propertyValue: '',
+            propertiesOfProduct: [
+/*                {
+                    propertyName: '',
+                    propertyValue: '',
+                }*/
+            ],
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -127,17 +134,17 @@ const AddItem = ({history, properties, productsError}) => {
                         .child(fileNameWithRndNumber)
                         .getDownloadURL()
                         .then(url => {
-                            const {itemName, description, price, propertyValue} = values;
+                            const {itemName, description, price, properties} = values;
                             const trimmedItemName = itemName.trim();
                             const trimmedDescription = description.trim();
-                            const trimmedPropertyValue = propertyValue.trim();
+/*                            const trimmedPropertyValue = propertyValue.trim();*/
                             const numberedPrice = parseInt(String(price).replace(/ /g, ''));
                             const newValues = {
                                 ...values,
                                 itemName: trimmedItemName,
                                 description: trimmedDescription,
                                 price: numberedPrice,
-                                propertyValue: trimmedPropertyValue,
+/*                                propertyValue: trimmedPropertyValue,*/
                                 file: [],                               // чистим массив с фото, т.к. он не нужен в
                                                                         // realtime firebase, файл загружается в storage
                                 fileUrl: url,
