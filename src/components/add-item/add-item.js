@@ -62,7 +62,8 @@ const AddItem = ({history, properties, productsError}) => {
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertiesOfProduct: yup.array().of(yup.object().shape({
                 propertyName: yup.string().typeError('Должно быть строкой'),
-                propertyValue: yup.string().typeError('Должно быть строкой'),
+/*                propertyValue: yup.string().typeError('Должно быть строкой'),*/
+
             })
         ),
     });
@@ -108,9 +109,9 @@ const AddItem = ({history, properties, productsError}) => {
             dateOfChange: '',
             description: '',
             propertiesOfProduct: [
-                /*                {
+/*                                {
                                     propertyName: '',
-                                    propertyValue: '',
+                                    propertyValue: [],
                                 }*/
             ],
         },
@@ -320,7 +321,7 @@ const AddItem = ({history, properties, productsError}) => {
                                                    inputProps={{maxLength: 1000}}
                                                    variant="outlined"
                                                    notched={false}
-                                                   placeholder='Описание товара'
+                                                   placeholder='Описание товара не должно превышать 1000 символов'
                                                    className={'add-item-textarea'}
                                                    classes={{
                                                        root: classesTextarea.root,

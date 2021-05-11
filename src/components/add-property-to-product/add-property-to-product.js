@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import IconButton from "@material-ui/core/IconButton";
@@ -19,10 +19,6 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
     const classesButton = useAddPropertyButtonStyles();
     const classesInput = useAddPropInputStyles();
 
-    const [propertyType, setPropertyType] = useState(null);
-
-    console.log('state1:', propertyType);
-
     const {propertiesOfProduct} = values;
 
     const renderMenuItems = (item) => {
@@ -32,56 +28,20 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
         )
     }
 
-    const handleChangePropType = (event) => {
-        const selectedProperty = properties.find(({propertyName}) => propertyName === event.target.value)
+    const renderValueInputs = (selectedProp, index) => {
+        const selectedProperty = properties.find(({propertyName}) => propertyName === selectedProp.propertyName);
         const selectedPropType = selectedProperty.propertyType;
-        setPropertyType(selectedPropType)
-    }
-
-    return (
-        <FieldArray name={'propertiesOfProduct'}>
-            { ({remove, push }) => (
-                <div className={'add-property-to-product'}>
-                    <div className={'add-property-head'}>
-                        <h5>Добавление товару свойств</h5>
-                        <IconButton classes={{root: classesButton.root}}
-                                    onClick={() => push({propertyName: '', propertyValue: ''})}>
-                            <AddCircleOutlineIcon/>
-                        </IconButton>
-                    </div>
-                    <div className={'add-property-body'}>
-                        {
-                            propertiesOfProduct.map((propertyOfProduct, index) => (
-                                <div className="add-property-body-element" key={index}>
-                                    <div className={'add-prop-left-column'}>
-                                        <div className={'add-prop-row'}>
-                                            <div className={'add-prop-left-button-wrap'}>
-                                                <IconButton classes={{root: classesButton.root}}
-                                                            onClick={() => remove(index)}>
-                                                    <RemoveCircleOutlineIcon />
-                                                </IconButton>
-                                            </div>
-                                            <p className={'property-name'}>Свойство {index + 1}</p>
-                                        </div>
-                                        <FormControl variant="outlined" className={classesSelect.formControl}
-                                                     classes={{label:classesSelect.label}} >
-                                            <Select
-                                                classes={{root:classesSelect.root,
-                                                    icon:classesSelect.icon}}
-                                                name={`propertiesOfProduct.${index}.propertyName`}
-                                                onChange={handleChangePropType}
-                                                onBlur={handleBlur}
-                                                notched={false}
-                                            >
-                                                {properties.map(renderMenuItems)}
-                                                {/*<MenuItem value={'Цвет авто'}>Цвет авто</MenuItem>
-                                                <MenuItem value={'Год выпуска'}>Год выпуска</MenuItem>
-                                                <MenuItem value={'Тип топлива'}>Тип топлива</MenuItem>*/}
-                                            </Select>
-                                        </FormControl>
-                                    </div>
-                                    <div className={'add-property-right-column'}>
-                                        <p className={'property-name'}>Значение</p>
+        selectedProp.propertyType = selectedPropType;
+        const nameOfFieldArray = `propertiesOfProduct.${index}.propertyValue`;
+        switch (selectedPropType) {
+            case 'Dropdown':
+                return (
+                    <FieldArray name={`${nameOfFieldArray}`}>
+                        { ({remove, push}) => (
+                            <div className={'add-property-right-column'}>
+                                <p className={'property-name'}>Значение</p>
+                                {selectedProp.propertyValue.length > 0 && selectedProp.propertyValue.map( (selectedPropValue, idx) => (
+                                    <div className={'input-with-remove-button'} key={idx}>
                                         <FormControl error={touched.propertyValue && errors.propertyValue}>
                                             <OutlinedInput type="text"
                                                            variant="outlined"
@@ -91,229 +51,128 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                                                root: classesInput.root,
                                                                input: classesInput.input,
                                                            }}
-                                                           name={'propertyValue'}
+                                                           name={`${nameOfFieldArray}.${idx}`}
                                                            onChange={handleChange}
                                                            onBlur={handleBlur}
                                                            value={values.propertyValue}>
                                             </OutlinedInput>
                                             {getError(touched.propertyValue, errors.propertyValue)}
                                         </FormControl>
-                                        <div className={'input-with-remove-button'}>
-                                            <FormControl error={touched.propertyValue && errors.propertyValue}>
-                                                <OutlinedInput type="text"
-                                                               variant="outlined"
-                                                               notched={false}
-                                                               multiline
-                                                               classes={{
-                                                                   root: classesInput.root,
-                                                                   input: classesInput.input,
-                                                               }}
-                                                               name={'propertyValue'}
-                                                               onChange={handleChange}
-                                                               onBlur={handleBlur}
-                                                               value={values.propertyValue}>
-                                                </OutlinedInput>
-                                                {getError(touched.propertyValue, errors.propertyValue)}
-                                            </FormControl>
-                                            <IconButton classes={{root: classesButton.root}}>
-                                                <RemoveCircleOutlineIcon />
-                                            </IconButton>
-                                        </div>
-                                        <div className={'right-column-add-button'}>
-                                            <IconButton classes={{root: classesButton.root}}>
-                                                <AddCircleOutlineIcon />
-                                            </IconButton>
-                                        </div>
+                                        <IconButton classes={{root: classesButton.root}}
+                                        onClick={() => remove(idx)}>
+                                            <RemoveCircleOutlineIcon/>
+                                        </IconButton>
                                     </div>
+                                ))}
+                                <div className={'right-column-add-button'}>
+                                    <IconButton classes={{root: classesButton.root}}
+                                    onClick={() => push({propertyValue: ''})} >
+                                        <AddCircleOutlineIcon/>
+                                    </IconButton>
                                 </div>
-                                )
-                            )
-                        }
+                            </div>
+                        )}
+                    </FieldArray>
+                );
+            case 'Number':
+                return (
+                    <div className={'add-property-right-column'}>
+                        <p className={'property-name'}>Значение</p>
+                        <FormControl error={touched.propertiesOfProduct[index].propertyValue && errors.propertiesOfProduct[index].propertyValue}>
+                            <OutlinedInput type="number"
+                                           variant="outlined"
+                                           notched={false}
+                                           classes={{
+                                               root: classesInput.root,
+                                               input: classesInput.input,
+                                           }}
+                                           name={`${nameOfFieldArray}`}
+                                           onChange={handleChange}
+                                           onBlur={handleBlur}
+                                           value={propertiesOfProduct[index].propertyValue}>
+                            </OutlinedInput>
+                            {getError(touched.propertiesOfProduct[index].propertyValue, errors.propertiesOfProduct[index].propertyValue)}
+                        </FormControl>
+                    </div>
+                );
+            case 'String':
+                return (
+                    <div className={'add-property-right-column'}>
+                        <p className={'property-name'}>Значение</p>
+                        <FormControl error={touched.propertyValue && errors.propertyValue}>
+                            <OutlinedInput type="text"
+                                           variant="outlined"
+                                           notched={false}
+                                           multiline
+                                           classes={{
+                                               root: classesInput.root,
+                                               input: classesInput.input,
+                                           }}
+                                           name={`${nameOfFieldArray}`}
+                                           onChange={handleChange}
+                                           onBlur={handleBlur}
+                                           value={values.propertyValue}>
+                            </OutlinedInput>
+                            {getError(touched.propertyValue, errors.propertyValue)}
+                        </FormControl>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    }
+
+    return (
+        <FieldArray name={'propertiesOfProduct'}>
+            {({remove, push}) => (
+                <div className={'add-property-to-product'}>
+                    <div className={'add-property-head'}>
+                        <h5>Добавление товару свойств</h5>
+                        {/*отключаем кнопку добавления свойств, когда кол-во свойств в товаре равно количеству достпуных
+                        свойств*/}
+                        {properties.length > propertiesOfProduct.length &&
+                        <IconButton classes={{root: classesButton.root}}
+                                    onClick={() => push({propertyName: '', propertyValue: '', propertyType: '', })}>
+                            <AddCircleOutlineIcon/>
+                        </IconButton>}
+                    </div>
+                    <div className={'add-property-body'}>
+                        {propertiesOfProduct.map((propertyOfProduct, index) => (
+                            <div className="add-property-body-element" key={index}>
+                                <div className={'add-prop-left-column'}>
+                                    <div className={'add-prop-row'}>
+                                        <div className={'add-prop-left-button-wrap'}>
+                                            <IconButton classes={{root: classesButton.root}}
+                                                        onClick={() => remove(index)}>
+                                                <RemoveCircleOutlineIcon/>
+                                            </IconButton>
+                                        </div>
+                                        <p className={'property-name'}>Свойство {index + 1}</p>
+                                    </div>
+                                    <FormControl variant="outlined" className={classesSelect.formControl}
+                                                 classes={{label: classesSelect.label}}>
+                                        <Select
+                                            classes={{
+                                                root: classesSelect.root,
+                                                icon: classesSelect.icon
+                                            }}
+                                            name={`propertiesOfProduct.${index}.propertyName`}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            notched={false}>
+                                            {properties.map(renderMenuItems)}
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                                {propertiesOfProduct[index].propertyName &&
+                                renderValueInputs(propertiesOfProduct[index], index)}
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
-
         </FieldArray>
-
-
-        /*
-                    <div className={'add-property-to-product'}>
-                <div className={'add-property-head'}>
-                    <h5>Добавление товару свойств</h5>
-                    <IconButton classes={{root: classesButton.root}}>
-                        <AddCircleOutlineIcon />
-                    </IconButton>
-                </div>
-                <div className={'add-property-body'}>
-                    <div className="add-property-body-element">
-                        <div className={'add-prop-left-column'}>
-                            <div className={'add-prop-row'}>
-                                <div className={'add-prop-left-button-wrap'}>
-                                    <IconButton classes={{root: classesButton.root}}>
-                                        <RemoveCircleOutlineIcon />
-                                    </IconButton>
-                                </div>
-                                <p className={'property-name'}>Свойство 1</p>
-                            </div>
-                            <FormControl variant="outlined" className={classesSelect.formControl} classes={{label:classesSelect.label}} >
-                                <Select
-                                    classes={{root:classesSelect.root,
-                                        icon:classesSelect.icon}}
-                                    name={'propertyName'}
-                                    value={values.propertyName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    notched={false}
-                                >
-                                    <MenuItem value={'Цвет авто'}>Цвет авто</MenuItem>
-                                    <MenuItem value={'Год выпуска'}>Год выпуска</MenuItem>
-                                    <MenuItem value={'Тип топлива'}>Тип топлива</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <div className={'add-property-right-column'}>
-                            <p className={'property-name'}>Значение</p>
-                            <FormControl error={touched.propertyValue && errors.propertyValue}>
-                                <OutlinedInput type="text"
-                                               variant="outlined"
-                                               notched={false}
-                                               multiline
-                                               classes={{
-                                                   root: classesInput.root,
-                                                   input: classesInput.input,
-                                               }}
-                                               name={'propertyValue'}
-                                               onChange={handleChange}
-                                               onBlur={handleBlur}
-                                               value={values.propertyValue}>
-                                </OutlinedInput>
-                                {getError(touched.propertyValue, errors.propertyValue)}
-                            </FormControl>
-                            <div className={'input-with-remove-button'}>
-                                <FormControl error={touched.propertyValue && errors.propertyValue}>
-                                    <OutlinedInput type="text"
-                                                   variant="outlined"
-                                                   notched={false}
-                                                   multiline
-                                                   classes={{
-                                                       root: classesInput.root,
-                                                       input: classesInput.input,
-                                                   }}
-                                                   name={'propertyValue'}
-                                                   onChange={handleChange}
-                                                   onBlur={handleBlur}
-                                                   value={values.propertyValue}>
-                                    </OutlinedInput>
-                                    {getError(touched.propertyValue, errors.propertyValue)}
-                                </FormControl>
-                                <IconButton classes={{root: classesButton.root}}>
-                                    <RemoveCircleOutlineIcon />
-                                </IconButton>
-                            </div>
-                            <div className={'right-column-add-button'}>
-                                <IconButton classes={{root: classesButton.root}}>
-                                    <AddCircleOutlineIcon />
-                                </IconButton>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="add-property-body-element">
-                        <div className={'add-prop-left-column'}>
-                            <div className={'add-prop-row'}>
-                                <div className={'add-prop-left-button-wrap'}>
-                                    <IconButton classes={{root: classesButton.root}}>
-                                        <RemoveCircleOutlineIcon />
-                                    </IconButton>
-                                </div>
-                                <p className={'property-name'}>Свойство 2</p>
-                            </div>
-                            <FormControl variant="outlined" className={classesSelect.formControl} classes={{label:classesSelect.label}} >
-                                <Select
-                                    classes={{root:classesSelect.root,
-                                        icon:classesSelect.icon}}
-                                    name={'propertyName'}
-                                    value={values.propertyName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    notched={false}
-                                >
-                                    <MenuItem value={'Цвет авто'}>Цвет авто</MenuItem>
-                                    <MenuItem value={'Год выпуска'}>Год выпуска</MenuItem>
-                                    <MenuItem value={'Тип топлива'}>Тип топлива</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <div className={'add-property-right-column'}>
-                            <p className={'property-name'}>Значение</p>
-                            <FormControl error={touched.propertyValue && errors.propertyValue}>
-                                <OutlinedInput type="number"
-                                               variant="outlined"
-                                               notched={false}
-                                               multiline
-                                               classes={{
-                                                   root: classesInput.root,
-                                                   input: classesInput.input,
-                                               }}
-                                               name={'propertyValue'}
-                                               onChange={handleChange}
-                                               onBlur={handleBlur}
-                                               value={values.propertyValue}>
-                                </OutlinedInput>
-                                {getError(touched.propertyValue, errors.propertyValue)}
-                            </FormControl>
-                        </div>
-                    </div>
-                    <div className="add-property-body-element">
-                        <div className={'add-prop-left-column'}>
-                            <div className={'add-prop-row'}>
-                                <div className={'add-prop-left-button-wrap'}>
-                                    <IconButton classes={{root: classesButton.root}}>
-                                        <RemoveCircleOutlineIcon />
-                                    </IconButton>
-                                </div>
-                                <p className={'property-name'}>Свойство 3</p>
-                            </div>
-                            <FormControl variant="outlined" className={classesSelect.formControl} classes={{label:classesSelect.label}} >
-                                <Select
-                                    classes={{root:classesSelect.root,
-                                        icon:classesSelect.icon}}
-                                    name={'propertyName'}
-                                    value={values.propertyName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    notched={false}
-                                >
-                                    <MenuItem value={'Цвет авто'}>Цвет авто</MenuItem>
-                                    <MenuItem value={'Год выпуска'}>Год выпуска</MenuItem>
-                                    <MenuItem value={'Тип топлива'}>Тип топлива</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <div className={'add-property-right-column'}>
-                            <p className={'property-name'}>Значение</p>
-                            <FormControl error={touched.propertyValue && errors.propertyValue}>
-                                <OutlinedInput type="text"
-                                               variant="outlined"
-                                               notched={false}
-                                               multiline
-                                               classes={{
-                                                   root: classesInput.root,
-                                                   input: classesInput.input,
-                                               }}
-                                               name={'propertyValue'}
-                                               onChange={handleChange}
-                                               onBlur={handleBlur}
-                                               value={values.propertyValue}>
-                                </OutlinedInput>
-                                {getError(touched.propertyValue, errors.propertyValue)}
-                            </FormControl>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        */
     )
 }
-
 
 export default AddPropertyToProduct;

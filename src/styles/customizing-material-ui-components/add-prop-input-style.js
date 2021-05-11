@@ -11,6 +11,7 @@ const useAddPropInputStyles = makeStyles({
     },
     input: {
         padding: '0',
+        height: '1em',
     }
 });
 

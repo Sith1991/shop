@@ -1,6 +1,14 @@
 @import "../../styles/mixins";
 
 .add-property-to-product {
+  input[type="number"] {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    -moz-appearance: textfield;
+  }
   .add-property-head {
     margin-top: 12px;
     h5 {
