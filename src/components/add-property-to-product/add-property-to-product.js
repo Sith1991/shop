@@ -78,7 +78,7 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                 return (
                     <div className={'add-property-right-column'}>
                         <p className={'property-name'}>Значение</p>
-                        <FormControl error={touched.propertiesOfProduct[index].propertyValue && errors.propertiesOfProduct[index].propertyValue}>
+                        <FormControl error={touched.propertyValue && errors.propertyValue}>
                             <OutlinedInput type="number"
                                            variant="outlined"
                                            notched={false}
@@ -91,7 +91,7 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                            onBlur={handleBlur}
                                            value={propertiesOfProduct[index].propertyValue}>
                             </OutlinedInput>
-                            {getError(touched.propertiesOfProduct[index].propertyValue, errors.propertiesOfProduct[index].propertyValue)}
+                            {getError(touched.propertyValue, errors.propertyValue)}
                         </FormControl>
                     </div>
                 );
@@ -157,6 +157,7 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                                 icon: classesSelect.icon
                                             }}
                                             name={`propertiesOfProduct.${index}.propertyName`}
+                                            value={propertiesOfProduct[index].propertyName}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             notched={false}>

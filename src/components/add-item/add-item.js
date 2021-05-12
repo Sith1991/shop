@@ -62,8 +62,17 @@ const AddItem = ({history, properties, productsError}) => {
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertiesOfProduct: yup.array().of(yup.object().shape({
                 propertyName: yup.string().typeError('Должно быть строкой'),
-/*                propertyValue: yup.string().typeError('Должно быть строкой'),*/
-
+                propertyType: yup.string().typeError('Должно быть строкой'),
+                propertyValue: yup.lazy(value => {
+                    switch (typeof value) {
+                        case 'number':
+                            return yup.number().typeError('Должно быть числом').required('Обязательное поле');
+                        case 'string':
+                            return yup.string().typeError('Должно быть строкой').required('Обязательное поле');
+                        default:
+                            return yup.array().of(yup.string().typeError('Должно быть строкой').required('Обязательное поле'));
+                    }
+                })
             })
         ),
     });
@@ -109,65 +118,65 @@ const AddItem = ({history, properties, productsError}) => {
             dateOfChange: '',
             description: '',
             propertiesOfProduct: [
-/*                                {
-                                    propertyName: '',
-                                    propertyValue: [],
-                                }*/
+                /*                                {
+                                                    propertyName: '',
+                                                    propertyValue: [],
+                                                }*/
             ],
         },
         validationSchema: validationSchema,
-/*        onSubmit: async (values) => {
-            // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
-            // не перезаписывали друг друга
-            const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
-            const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
-            await uploadTask.on(
-                "state_changed",
-                snapshot => {
-                },
-                error => {
-                    productsError(error);
-                    console.log('error: ', error);
-                },
-                () => {
-                    storage
-                        .ref('images')
-                        .child(fileNameWithRndNumber)
-                        .getDownloadURL()
-                        .then(url => {
-                            const {itemName, description, price, properties} = values;
-                            const trimmedItemName = itemName.trim();
-                            const trimmedDescription = description.trim();
-                            /!*                            const trimmedPropertyValue = propertyValue.trim();*!/
-                            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
-                            const newValues = {
-                                ...values,
-                                itemName: trimmedItemName,
-                                description: trimmedDescription,
-                                price: numberedPrice,
-                                /!*                                propertyValue: trimmedPropertyValue,*!/
-                                file: [],                               // чистим массив с фото, т.к. он не нужен в
-                                                                        // realtime firebase, файл загружается в storage
-                                fileUrl: url,
-                            };
+        /*        onSubmit: async (values) => {
+                    // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
+                    // не перезаписывали друг друга
+                    const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
+                    const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
+                    await uploadTask.on(
+                        "state_changed",
+                        snapshot => {
+                        },
+                        error => {
+                            productsError(error);
+                            console.log('error: ', error);
+                        },
+                        () => {
+                            storage
+                                .ref('images')
+                                .child(fileNameWithRndNumber)
+                                .getDownloadURL()
+                                .then(url => {
+                                    const {itemName, description, price, properties} = values;
+                                    const trimmedItemName = itemName.trim();
+                                    const trimmedDescription = description.trim();
+                                    /!*                            const trimmedPropertyValue = propertyValue.trim();*!/
+                                    const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+                                    const newValues = {
+                                        ...values,
+                                        itemName: trimmedItemName,
+                                        description: trimmedDescription,
+                                        price: numberedPrice,
+                                        /!*                                propertyValue: trimmedPropertyValue,*!/
+                                        file: [],                               // чистим массив с фото, т.к. он не нужен в
+                                                                                // realtime firebase, файл загружается в storage
+                                        fileUrl: url,
+                                    };
 
-                            const db = firebase.database();
-                            const ref = db.ref('products');
-                            const dbDataRef = ref.push();
-                            dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                                function (error) {
-                                    if (error) {
-                                        productsError(error);
-                                        alert("Data could not be saved." + error);
-                                    } else {
-                                        history.push('/');
-                                        alert("Data saved successfully.");
-                                    }
+                                    const db = firebase.database();
+                                    const ref = db.ref('products');
+                                    const dbDataRef = ref.push();
+                                    dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                                        function (error) {
+                                            if (error) {
+                                                productsError(error);
+                                                alert("Data could not be saved." + error);
+                                            } else {
+                                                history.push('/');
+                                                alert("Data saved successfully.");
+                                            }
+                                        });
                                 });
-                        });
-                }
-            );
-        },*/
+                        }
+                    );
+                },*/
         onSubmit: async (values) => {
 
             const {itemName, description, price, properties} = values;
