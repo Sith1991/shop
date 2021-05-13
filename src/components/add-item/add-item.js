@@ -61,19 +61,19 @@ const AddItem = ({history, properties, productsError}) => {
         fileUrl: yup.string().typeError('Должно быть строкой'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertiesOfProduct: yup.array().of(yup.object().shape({
-                propertyName: yup.string().typeError('Должно быть строкой'),
-                propertyType: yup.string().typeError('Должно быть строкой'),
+                propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+                propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
                 propertyValue: yup.lazy(value => {
-                    switch (typeof value) {
-                        case 'number':
-                            return yup.number().typeError('Должно быть числом').required('Обязательное поле');
-                        case 'string':
-                            return yup.string().typeError('Должно быть строкой').required('Обязательное поле');
-                        default:
-                            return yup.array().of(yup.string().typeError('Должно быть строкой').required('Обязательное поле'));
-                    }
+                        switch (typeof value) {
+                            case 'number':
+                                return yup.number().typeError('Должно быть числом').required('Обязательное поле');
+                            case 'string':
+                                return yup.string().typeError('Должно быть строкой').required('Обязательное поле');
+                            default:
+                            return yup.array().of(yup.object().shape({propertyValue: yup.string().typeError('Должно быть строкой').required('Обязательное поле')})).required('Обязательное поле');
+                        }
                 })
-            })
+            }).required('Обязательное поле'),
         ),
     });
 
@@ -118,10 +118,11 @@ const AddItem = ({history, properties, productsError}) => {
             dateOfChange: '',
             description: '',
             propertiesOfProduct: [
-                /*                                {
-                                                    propertyName: '',
-                                                    propertyValue: [],
-                                                }*/
+/*                {
+                    propertyName: '',
+                    propertyValue: '',
+                    propertyType: '',
+                }*/
             ],
         },
         validationSchema: validationSchema,

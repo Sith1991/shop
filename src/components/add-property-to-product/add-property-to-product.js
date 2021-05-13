@@ -37,12 +37,20 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
             case 'Dropdown':
                 return (
                     <FieldArray name={`${nameOfFieldArray}`}>
-                        { ({remove, push}) => (
+                        {({remove, push}) => (
                             <div className={'add-property-right-column'}>
                                 <p className={'property-name'}>Значение</p>
-                                {selectedProp.propertyValue.length > 0 && selectedProp.propertyValue.map( (selectedPropValue, idx) => (
+                                {selectedProp.propertyValue.length > 0 && selectedProp.propertyValue.map((selectedPropValue, idx) => (
                                     <div className={'input-with-remove-button'} key={idx}>
-                                        <FormControl error={touched.propertyValue && errors.propertyValue}>
+                                        <FormControl error={
+                                            touched.propertiesOfProduct && touched.propertiesOfProduct[index]
+                                            && errors.propertiesOfProduct && errors.propertiesOfProduct[index] &&
+                                            touched.propertiesOfProduct[index].propertyValue &&
+                                            errors.propertiesOfProduct[index].propertyValue &&
+                                            touched.propertiesOfProduct[index].propertyValue[idx] &&
+                                            errors.propertiesOfProduct[index].propertyValue[idx]
+                                                ? touched.propertiesOfProduct[index].propertyValue[idx].propertyValue
+                                                && errors.propertiesOfProduct[index].propertyValue[idx].propertyValue : null}>
                                             <OutlinedInput type="text"
                                                            variant="outlined"
                                                            notched={false}
@@ -51,22 +59,31 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                                                root: classesInput.root,
                                                                input: classesInput.input,
                                                            }}
-                                                           name={`${nameOfFieldArray}.${idx}`}
+                                                           name={`${nameOfFieldArray}.${idx}.propertyValue`}
                                                            onChange={handleChange}
                                                            onBlur={handleBlur}
-                                                           value={values.propertyValue}>
+                                                           value={propertiesOfProduct[index].propertyValue[idx].propertyValue}>
                                             </OutlinedInput>
-                                            {getError(touched.propertyValue, errors.propertyValue)}
+                                            {
+                                                touched.propertiesOfProduct && touched.propertiesOfProduct[index]
+                                                && errors.propertiesOfProduct && errors.propertiesOfProduct[index] &&
+                                                touched.propertiesOfProduct[index].propertyValue &&
+                                                errors.propertiesOfProduct[index].propertyValue &&
+                                                touched.propertiesOfProduct[index].propertyValue[idx] &&
+                                                errors.propertiesOfProduct[index].propertyValue[idx]
+                                                    ? getError(touched.propertiesOfProduct[index].propertyValue[idx].propertyValue,
+                                                    errors.propertiesOfProduct[index].propertyValue[idx].propertyValue) : null
+                                            }
                                         </FormControl>
                                         <IconButton classes={{root: classesButton.root}}
-                                        onClick={() => remove(idx)}>
+                                                    onClick={() => remove(idx)}>
                                             <RemoveCircleOutlineIcon/>
                                         </IconButton>
                                     </div>
                                 ))}
                                 <div className={'right-column-add-button'}>
                                     <IconButton classes={{root: classesButton.root}}
-                                    onClick={() => push({propertyValue: ''})} >
+                                                onClick={() => push({propertyValue: ''})}>
                                         <AddCircleOutlineIcon/>
                                     </IconButton>
                                 </div>
@@ -78,7 +95,10 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                 return (
                     <div className={'add-property-right-column'}>
                         <p className={'property-name'}>Значение</p>
-                        <FormControl error={touched.propertyValue && errors.propertyValue}>
+                        <FormControl
+                            error={touched.propertiesOfProduct && touched.propertiesOfProduct[index]
+                            && errors.propertiesOfProduct && errors.propertiesOfProduct[index]
+                                ? touched.propertiesOfProduct[index].propertyValue && errors.propertiesOfProduct[index].propertyValue : null}>
                             <OutlinedInput type="number"
                                            variant="outlined"
                                            notched={false}
@@ -91,7 +111,9 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                            onBlur={handleBlur}
                                            value={propertiesOfProduct[index].propertyValue}>
                             </OutlinedInput>
-                            {getError(touched.propertyValue, errors.propertyValue)}
+                            {touched.propertiesOfProduct && touched.propertiesOfProduct[index]
+                            && errors.propertiesOfProduct && errors.propertiesOfProduct[index]
+                                ? getError(touched.propertiesOfProduct[index].propertyValue, errors.propertiesOfProduct[index].propertyValue) : null}
                         </FormControl>
                     </div>
                 );
@@ -99,7 +121,10 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                 return (
                     <div className={'add-property-right-column'}>
                         <p className={'property-name'}>Значение</p>
-                        <FormControl error={touched.propertyValue && errors.propertyValue}>
+                        <FormControl
+                            error={touched.propertiesOfProduct && touched.propertiesOfProduct[index]
+                            && errors.propertiesOfProduct && errors.propertiesOfProduct[index]
+                                ? touched.propertiesOfProduct[index].propertyValue && errors.propertiesOfProduct[index].propertyValue : null}>
                             <OutlinedInput type="text"
                                            variant="outlined"
                                            notched={false}
@@ -111,9 +136,11 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                            name={`${nameOfFieldArray}`}
                                            onChange={handleChange}
                                            onBlur={handleBlur}
-                                           value={values.propertyValue}>
+                                           value={propertiesOfProduct[index].propertyValue}>
                             </OutlinedInput>
-                            {getError(touched.propertyValue, errors.propertyValue)}
+                            {touched.propertiesOfProduct && touched.propertiesOfProduct[index]
+                            && errors.propertiesOfProduct && errors.propertiesOfProduct[index]
+                                ? getError(touched.propertiesOfProduct[index].propertyValue, errors.propertiesOfProduct[index].propertyValue) : null}
                         </FormControl>
                     </div>
                 );
@@ -132,7 +159,7 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                         свойств*/}
                         {properties.length > propertiesOfProduct.length &&
                         <IconButton classes={{root: classesButton.root}}
-                                    onClick={() => push({propertyName: '', propertyValue: '', propertyType: '', })}>
+                                    onClick={() => push({propertyName: '', propertyValue: '', propertyType: '',})}>
                             <AddCircleOutlineIcon/>
                         </IconButton>}
                     </div>
