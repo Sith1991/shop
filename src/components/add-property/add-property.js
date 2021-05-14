@@ -71,8 +71,6 @@ const AddProperty = ({history, properties, propertiesError}) => {
                     alert("Data saved successfully.");
                 }
             });
-
-            console.log(newValues)
         },
         validateOnBlur: true,
     });

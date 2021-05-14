@@ -27,13 +27,9 @@ import "./add-item.scss";
 const AddItem = ({history, properties, productsError}) => {
 
     const classesLabel = useAddItemLabelStyles();
-
     const classesInput = useAddItemInputStyles();
-
     const classesSaveBtn = useSaveButtonStyles();
-
     const classesUploadBtn = useUploadButtonStyles();
-
     const classesTextarea = useAddItemTextareaStyles();
 
     const priceFormat = (value) => {
@@ -64,14 +60,17 @@ const AddItem = ({history, properties, productsError}) => {
                 propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
                 propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
                 propertyValue: yup.lazy(value => {
-                        switch (typeof value) {
-                            case 'number':
-                                return yup.number().typeError('Должно быть числом').required('Обязательное поле');
-                            case 'string':
-                                return yup.string().typeError('Должно быть строкой').required('Обязательное поле');
-                            default:
-                            return yup.array().of(yup.object().shape({propertyValue: yup.string().typeError('Должно быть строкой').required('Обязательное поле')})).required('Обязательное поле');
-                        }
+                    switch (typeof value) {
+                        case 'number':
+                            return yup.number().typeError('Должно быть числом').required('Обязательное поле');
+                        case 'string':
+                            return yup.string().typeError('Должно быть строкой').required('Обязательное поле');
+                        default:
+                            return yup.array().of(yup.object().shape({
+                                propertyValue: yup.string()
+                                    .typeError('Должно быть строкой').required('Обязательное поле')
+                            })).required('Обязательное поле');
+                    }
                 })
             }).required('Обязательное поле'),
         ),
@@ -117,13 +116,7 @@ const AddItem = ({history, properties, productsError}) => {
             fileUrl: '',
             dateOfChange: '',
             description: '',
-            propertiesOfProduct: [
-/*                {
-                    propertyName: '',
-                    propertyValue: '',
-                    propertyType: '',
-                }*/
-            ],
+            propertiesOfProduct: [],
         },
         validationSchema: validationSchema,
         /*        onSubmit: async (values) => {
@@ -179,21 +172,28 @@ const AddItem = ({history, properties, productsError}) => {
                     );
                 },*/
         onSubmit: async (values) => {
-
-            const {itemName, description, price, properties} = values;
+            const {itemName, description, price, propertiesOfProduct} = values;
             const trimmedItemName = itemName.trim();
             const trimmedDescription = description.trim();
-            /*                            const trimmedPropertyValue = propertyValue.trim();*/
             const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+            const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
+                if (typeof props.propertyValue === 'string') {
+                    return {...props, propertyValue: props.propertyValue.trim()};
+                } else if (Array.isArray(props.propertyValue)) {
+                    return {...props, propertyValue: props.propertyValue.map((propValue) => {
+                            return {...propValue, propertyValue: propValue.propertyValue.trim()}
+                    })};
+                } else return props;
+            })
             const newValues = {
                 ...values,
                 itemName: trimmedItemName,
                 description: trimmedDescription,
                 price: numberedPrice,
-                /*                                propertyValue: trimmedPropertyValue,*/
                 file: [],                               // чистим массив с фото, т.к. он не нужен в
                                                         // realtime firebase, файл загружается в storage
                 fileUrl: '',
+                propertiesOfProduct: trimmedPropsOfProduct,
             };
 
             await console.log(newValues);
