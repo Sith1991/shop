@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import IconButton from "@material-ui/core/IconButton";
@@ -19,19 +19,47 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
     const classesButton = useAddPropertyButtonStyles();
     const classesInput = useAddPropInputStyles();
 
+/*    const abc = () => {
+        const A = [{id:1, name: 'Bill', }, {id:4}, {id:3}, {id:2}]
+        const B = [{id:0}, {id:2}, {id:1, name: 'Bill', }, {id:2}]
+        console.log('result:', A.filter(a => !B.map(b=>b.id).includes(a.id)))
+    }
+    abc();*/
+
     const {propertiesOfProduct} = values;
+
+    const [lastProperties, setLastProperties] = useState(properties);
+    const [selectedProperties, setSelectedProperties] = useState([]);
+
+    const updSelectedProperties = (prop, index) => {
+        let upd = selectedProperties;
+        upd[index] = prop;
+        setSelectedProperties(upd);
+        updLastProperties();
+    }
+
+    const updLastProperties = () => {
+        let upd = lastProperties.filter(lstProp => !selectedProperties.map(sltProp => sltProp.id).includes(lstProp.id));
+        return setLastProperties(upd);
+    }
+
+    console.log('selectedProperties:', selectedProperties);
+    console.log('lastProperties:', lastProperties);
 
     const renderMenuItems = (item) => {
         const {propertyName} = item;
         return (
             <MenuItem value={propertyName}>{propertyName}</MenuItem>
         )
-    }
+    };
 
     const renderValueInputs = (selectedProp, index) => {
         const selectedProperty = properties.find(({propertyName}) => propertyName === selectedProp.propertyName);
         const selectedPropType = selectedProperty.propertyType;
-        selectedProp.propertyType = selectedPropType;
+        selectedProp.propertyType = selectedPropType;              // записываю тип свойства в propertiesOfProduct[index].propertyType товара
+        selectedProp.id = selectedProperty.id;                    //записываю id свойства в propertiesOfProduct[index].id товара
+
+        updSelectedProperties(selectedProperty, index);
         const nameOfFieldArray = `propertiesOfProduct.${index}.propertyValue`;
         switch (selectedPropType) {
             case 'Dropdown':
@@ -43,8 +71,8 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                 {selectedProp.propertyValue.length > 0 && selectedProp.propertyValue.map((selectedPropValue, idx) => (
                                     <div className={'input-with-remove-button'} key={idx}>
                                         <FormControl error={
-                                            touched.propertiesOfProduct && touched.propertiesOfProduct[index]
-                                            && errors.propertiesOfProduct && errors.propertiesOfProduct[index] &&
+                                            touched.propertiesOfProduct && touched.propertiesOfProduct[index] &&
+                                            errors.propertiesOfProduct && errors.propertiesOfProduct[index] &&
                                             touched.propertiesOfProduct[index].propertyValue &&
                                             errors.propertiesOfProduct[index].propertyValue &&
                                             touched.propertiesOfProduct[index].propertyValue[idx] &&
@@ -65,8 +93,8 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                                            value={propertiesOfProduct[index].propertyValue[idx].propertyValue}>
                                             </OutlinedInput>
                                             {
-                                                touched.propertiesOfProduct && touched.propertiesOfProduct[index]
-                                                && errors.propertiesOfProduct && errors.propertiesOfProduct[index] &&
+                                                touched.propertiesOfProduct && touched.propertiesOfProduct[index] &&
+                                                errors.propertiesOfProduct && errors.propertiesOfProduct[index] &&
                                                 touched.propertiesOfProduct[index].propertyValue &&
                                                 errors.propertiesOfProduct[index].propertyValue &&
                                                 touched.propertiesOfProduct[index].propertyValue[idx] &&
@@ -159,7 +187,7 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                         свойств*/}
                         {properties.length > propertiesOfProduct.length &&
                         <IconButton classes={{root: classesButton.root}}
-                                    onClick={() => push({propertyName: '', propertyValue: '', propertyType: '',})}>
+                                    onClick={() => push({id: '', propertyName: '', propertyValue: '', propertyType: '',})}>
                             <AddCircleOutlineIcon/>
                         </IconButton>}
                     </div>

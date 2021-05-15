@@ -57,6 +57,7 @@ const AddItem = ({history, properties, productsError}) => {
         fileUrl: yup.string().typeError('Должно быть строкой'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertiesOfProduct: yup.array().of(yup.object().shape({
+                id: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
                 propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
                 propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
                 propertyValue: yup.lazy(value => {
