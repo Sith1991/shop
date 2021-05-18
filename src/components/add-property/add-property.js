@@ -51,7 +51,6 @@ const AddProperty = ({history, properties, propertiesError}) => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            await new Promise((r) => setTimeout(r, 500));
             const {propertyName} = values;
             const trimmedPropertyName = propertyName.trim();
             const newValues = {
