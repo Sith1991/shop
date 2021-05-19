@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ThemeProvider} from "@material-ui/core/styles";
 import theme from "../../styles/customizing-material-ui-components/theme";
 import {useFormik} from "formik";
@@ -14,12 +14,14 @@ import usePropertyLabelStyles from "../../styles/customizing-material-ui-compone
 import StyledRadio from "../styled-radio-icon";
 import firebase from 'firebase/app';
 import 'firebase/database';
-import {withRouter} from 'react-router-dom';
+import Notifications from "../notifications";
 
 import './add-property.scss';
 
+const AddProperty = ({properties, propertiesError}) => {
 
-const AddProperty = ({history, properties, propertiesError}) => {
+    const [showNotification, setShowNotification] = useState(false);
+    const [errorNotification, setErrorNotification] = useState(null);
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -30,16 +32,16 @@ const AddProperty = ({history, properties, propertiesError}) => {
     const classesRadioButtons = usePropertyLabelStyles();
 
     const validateNames = (arr, value) => {
-        const result = arr.find( (el) => el?.propertyName.toLowerCase() === value?.toLowerCase())
+        const result = arr.find((el) => el?.propertyName.toLowerCase() === value?.toLowerCase())
         return !result;
     }
 
     const validationSchema = yup.object().shape({
         propertyName: yup.string().typeError('Должно быть строкой')
-                        .test('sameName', 'Свойство с таким именем уже существует',(value) => {
-                            if (!value) return true                     // если поле пустое, перейдет к следующей проверке required
-                            return validateNames(properties, value)     // возвращает false, если свойство с таким именем уже существует
-                        })
+            .test('sameName', 'Свойство с таким именем уже существует', (value) => {
+                if (!value) return true                     // если поле пустое, перейдет к следующей проверке required
+                return validateNames(properties, value)     // возвращает false, если свойство с таким именем уже существует
+            })
             .required('Обязательное поле'),
         propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
     });
@@ -63,11 +65,10 @@ const AddProperty = ({history, properties, propertiesError}) => {
             const dbDataRef = ref.push();
             await dbDataRef.set(newValues, function (error) {
                 if (error) {
-                    propertiesError(error)
-                    alert("Data could not be saved." + error);
+                    propertiesError(error);
+                    setErrorNotification(error);
                 } else {
-                    history.push('/property-list');
-                    alert("Data saved successfully.");
+                    setShowNotification(true);
                 }
             });
         },
@@ -88,6 +89,7 @@ const AddProperty = ({history, properties, propertiesError}) => {
             <div className={'add-property'}>
                 <div className={'add-property-bordered-wrap'}>
                     <form onSubmit={handleSubmit} className={'add-property-wrap'}>
+                        {(showNotification || errorNotification) && <Notifications path={'/property-list'} error={errorNotification}/>}
                         <div className={'buttons-wrap'}>
                             <Link to={'/property-list'} className={'button-back'}>
                                 Вернуться
@@ -165,4 +167,4 @@ const AddProperty = ({history, properties, propertiesError}) => {
     )
 }
 
-export default withRouter(AddProperty);
+export default AddProperty;
