@@ -8,15 +8,17 @@ import {fetchProducts, productsError} from "../../store/actions/propducts-action
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
+import firebase from "firebase";
+import Notifications from "../notifications";
 
 import './product-list.scss';
-import firebase from "firebase";
 
 class ProductList extends Component {
 
     state = {
         term: '',
         columnName: 'itemName',
+        showNotification: false,
     }
 
     componentDidMount() {
@@ -24,15 +26,19 @@ class ProductList extends Component {
     }
 
     deleteItem = async (key) => {
+        this.setState({
+            showNotification: false
+        });
         const db = firebase.database();
         const ref = db.ref('products');
         const dbDataRef = ref.child(key);
-        await dbDataRef.set(null, function (error) {        // отправляем null для того чтобы удалть полностью свойство по ключу key
+        await dbDataRef.set(null, (error) => {        // отправляем null для того чтобы удалть полностью свойство по ключу key
             if (error) {
                 productsError(error);
-                alert("Data could not be deleted." + error);
             } else {
-                alert("Data was deleted.");
+                this.setState({
+                    showNotification: true
+                })
             }
         });
     }
@@ -61,7 +67,7 @@ class ProductList extends Component {
     render() {
         const {products, loading, error} = this.props;
 
-        const {term} = this.state;
+        const {term, showNotification} = this.state;
 
         const visibleItems = this.searchItems(products, term);
 
@@ -91,6 +97,7 @@ class ProductList extends Component {
                     </div>
                     {error ? <ErrorIndicator/> :
                         <div>
+                            {showNotification && <Notifications path={'/'} deleted={'товар'}/>}
                             <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
                             <ProductListTable products={visibleItems}
                                               onDeleted={this.deleteItem}

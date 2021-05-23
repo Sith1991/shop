@@ -26,7 +26,7 @@ const App = () => {
                            component={AddPropertyContainer}/>
                     <Route path={'/item-card/:id'}
                            component={ProductCardContainer}/>
-                    <Route path={'/add-item'}
+                    <Route path={'/add-item/:id?'}
                            component={AddItemContainer}/>
                     <Route path={'/login'}
                            component={Login}/>

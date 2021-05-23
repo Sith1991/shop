@@ -9,10 +9,21 @@ import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
 
 const AddItemContainer = ({
-                              fetchProperties, fetchProducts, productsError, properties,
-                              loadingProps, errorProps, products,
-                              loadingProducts, errorProducts
+                              fetchProperties,
+                              fetchProducts,
+                              productsError,
+                              properties,
+                              loadingProps,
+                              errorProps,
+                              products,
+                              loadingProducts,
+                              errorProducts,
+                              match
                           }) => {
+
+    const itemId = match.params.id;
+
+    console.log(itemId);
 
     useEffect(() => {
         fetchProducts();
