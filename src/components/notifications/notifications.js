@@ -8,11 +8,11 @@ const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const Notifications = ({history, path, error}) => {
+const Notifications = ({history, path, deleted}) => {
 
     const [open, setOpen] = useState(true);
 
-    const backToAddProperties = (path) => {
+    const backToListItems = (path) => {
         return history.push(`${path}`)
     }
 
@@ -23,29 +23,27 @@ const Notifications = ({history, path, error}) => {
 
         setOpen(false);
 
-        backToAddProperties(path);
+        backToListItems(path);
+
     };
 
     return (
         <div>
-            {path === '/property-list' ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            {!deleted && path === '/property-list' ?
+                <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success">
+                        Свойство успешно добавлено! Вы будете автоматически перенаправлены в список добавленных свойств.
+                    </Alert>
+                </Snackbar> : null}
+            {!deleted && path === '/' ? <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">
-                    Свойство успешно добавлено! Вы будете автоматически перенаправлены в список добавленных свойств.
+                    Товар успешно добавлен! Вы будете автоматически перенаправлены в список товаров.
                 </Alert>
             </Snackbar> : null}
-            {error && path === '/property-list' ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    Действие не было выполнено по причине следующей ошибки: ${error}. Вы будете автоматически перенаправлены в список добавленных свойств.
-                </Alert>
-            </Snackbar> : null}
-            {path === '/' ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            {deleted ? <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success">
-                    Свойство успешно добавлено! Вы будете автоматически перенаправлены в список товаров.
-                </Alert>
-            </Snackbar> : null}
-            {error && path === '/' ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    Действие не было выполнено по причине следующей ошибки: ${error}. Вы будете автоматически перенаправлены в список товаров.
+                    {deleted === 'товар' ? 'Товар успешно удален' : null}
+                    {deleted === 'свойство' ? 'Свойство успешно удалено' : null}
                 </Alert>
             </Snackbar> : null}
         </div>

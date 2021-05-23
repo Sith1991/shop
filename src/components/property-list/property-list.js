@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import PropertyListTable from "../property-list-table";
@@ -10,6 +10,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 import './property-list.scss';
+import Notifications from "../notifications";
 
 const PropertyList = ({fetchProperties, properties, loading, error}) => {
 
@@ -17,26 +18,28 @@ const PropertyList = ({fetchProperties, properties, loading, error}) => {
         fetchProperties();
     }, [])
 
-    if (loading) {
-        return <Spinner/>
-    }
-
-    if (error) {
-        return <ErrorIndicator/>
-    }
+    const [showNotification, setShowNotification] = useState(false);
 
     const deleteItem = async (key) => {
+        setShowNotification(false);
         const db = firebase.database();
         const ref = db.ref('properties');
         const dbDataRef = ref.child(key);
         await dbDataRef.set(null, function (error) {        // отправляем null для того чтобы удалть полностью свойство по ключу key
             if (error) {
                 propertiesError(error);
-                alert("Data could not be deleted." + error);
             } else {
-                alert("Data was deleted.");
+                setShowNotification(true);
             }
         });
+    }
+
+    if (loading) {
+        return <Spinner/>
+    }
+
+    if (error) {
+        return <ErrorIndicator/>
     }
 
     return (
@@ -63,6 +66,7 @@ const PropertyList = ({fetchProperties, properties, loading, error}) => {
                         </Button>
                     </Link>
                 </div>
+                {showNotification && <Notifications path={'/property-list'} deleted={'свойство'}/>}
                 <PropertyListTable properties={properties} onDeleted={deleteItem} />
             </div>
         </div>

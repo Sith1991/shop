@@ -7,6 +7,7 @@ import PropertyList from "../property-list";
 import AddPropertyContainer from "../add-property/add-property-Container";
 import AddItemContainer from "../add-item/add-item-Container";
 import ProductCardContainer from "../product-card/product-card-Container";
+import ErrorIndicator from "../error-indicator";
 
 import './app.scss';
 
@@ -31,6 +32,8 @@ const App = () => {
                            component={Login}/>
                     <Route path={'/registration'}
                            component={Registration}/>
+                    <Route render={ () => <ErrorIndicator /> } />       {/* Switch перекинет на страницу с ошибкой, если
+                                                                            ввести несуществующий адрес*/}
                 </Switch>
             </div>
         </div>

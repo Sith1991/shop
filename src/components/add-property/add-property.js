@@ -21,7 +21,6 @@ import './add-property.scss';
 const AddProperty = ({properties, propertiesError}) => {
 
     const [showNotification, setShowNotification] = useState(false);
-    const [errorNotification, setErrorNotification] = useState(null);
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -66,7 +65,6 @@ const AddProperty = ({properties, propertiesError}) => {
             await dbDataRef.set(newValues, function (error) {
                 if (error) {
                     propertiesError(error);
-                    setErrorNotification(error);
                 } else {
                     setShowNotification(true);
                 }
@@ -89,7 +87,7 @@ const AddProperty = ({properties, propertiesError}) => {
             <div className={'add-property'}>
                 <div className={'add-property-bordered-wrap'}>
                     <form onSubmit={handleSubmit} className={'add-property-wrap'}>
-                        {(showNotification || errorNotification) && <Notifications path={'/property-list'} error={errorNotification}/>}
+                        {showNotification && <Notifications path={'/property-list'}/>}
                         <div className={'buttons-wrap'}>
                             <Link to={'/property-list'} className={'button-back'}>
                                 Вернуться
