@@ -25,7 +25,7 @@ import {withRouter} from 'react-router-dom';
 import "./add-item.scss";
 import Notifications from "../notifications";
 
-const AddItem = ({history, properties, productsError}) => {
+const AddItem = ({properties, productsError}) => {
 
     const [showNotification, setShowNotification] = useState(false);
 
@@ -123,86 +123,95 @@ const AddItem = ({history, properties, productsError}) => {
             propertiesOfProduct: [],
         },
         validationSchema: validationSchema,
-          onSubmit: async (values) => {
-                            // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
-                            // не перезаписывали друг друга
-                            const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
-                            const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
-                            await uploadTask.on(
-                                "state_changed",
-                                snapshot => {
-                                },
-                                error => {
-                                    productsError(error);
-                                    console.log('error: ', error);
-                                },
-                                () => {
-                                    storage
-                                        .ref('images')
-                                        .child(fileNameWithRndNumber)
-                                        .getDownloadURL()
-                                        .then(url => {
-                                            const {itemName, description, price, properties} = values;
-                                            const trimmedItemName = itemName.trim();
-                                            const trimmedDescription = description.trim();
-                                            /*                            const trimmedPropertyValue = propertyValue.trim();*/
-                                            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
-                                            const newValues = {
-                                                ...values,
-                                                itemName: trimmedItemName,
-                                                description: trimmedDescription,
-                                                price: numberedPrice,
-                                                /*                                propertyValue: trimmedPropertyValue,*/
-                                                file: [],                               // чистим массив с фото, т.к. он не нужен в
-                                                                                        // realtime firebase, файл загружается в storage
-                                                fileUrl: url,
-                                            };
+        onSubmit: async (values) => {
+            // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
+            // не перезаписывали друг друга
+            const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
+            const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
+            await uploadTask.on(
+                "state_changed",
+                snapshot => {
+                },
+                error => {
+                    productsError(error);
+                },
+                () => {
+                    storage
+                        .ref('images')
+                        .child(fileNameWithRndNumber)
+                        .getDownloadURL()
+                        .then(url => {
+                            const {itemName, description, price, propertiesOfProduct} = values;
+                            const trimmedItemName = itemName.trim();
+                            const trimmedDescription = description.trim();
+                            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+                            const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
+                                if (typeof props.propertyValue === 'string') {
+                                    return {...props, propertyValue: props.propertyValue.trim()};
+                                } else if (Array.isArray(props.propertyValue)) {
+                                    return {
+                                        ...props, propertyValue: props.propertyValue.map((propValue) => {
+                                            return {...propValue, propertyValue: propValue.propertyValue.trim()}
+                                        })
+                                    };
+                                } else return props;
+                            })
+                            const newValues = {
+                                ...values,
+                                itemName: trimmedItemName,
+                                description: trimmedDescription,
+                                price: numberedPrice,
+                                propertiesOfProduct: trimmedPropsOfProduct,
+                                file: [],                               // чистим массив с фото, т.к. он не нужен в
+                                                                        // realtime firebase, файл загружается в storage
+                                fileUrl: url,
+                            };
 
-                                            const db = firebase.database();
-                                            const ref = db.ref('products');
-                                            const dbDataRef = ref.push();
-                                            dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                                                function (error) {
-                                                    if (error) {
-                                                        productsError(error);
-                                                    } else {
-                                                        setShowNotification(true);
-                                                    }
-                                                });
-                                        });
-                                }
-                            );
-                        },
-/*        onSubmit: async (values) => {
-            const {itemName, description, price, propertiesOfProduct} = values;
-            const trimmedItemName = itemName.trim();
-            const trimmedDescription = description.trim();
-            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
-            const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
-                if (typeof props.propertyValue === 'string') {
-                    return {...props, propertyValue: props.propertyValue.trim()};
-                } else if (Array.isArray(props.propertyValue)) {
-                    return {
-                        ...props, propertyValue: props.propertyValue.map((propValue) => {
-                            return {...propValue, propertyValue: propValue.propertyValue.trim()}
-                        })
+                            const db = firebase.database();
+                            const ref = db.ref('products');
+                            const dbDataRef = ref.push();
+                            dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                                function (error) {
+                                    if (error) {
+                                        productsError(error);
+                                    } else {
+                                        setShowNotification(true);
+                                    }
+                                });
+                        });
+                }
+            );
+        },
+        /*        onSubmit: async (values) => {
+                    const {itemName, description, price, propertiesOfProduct} = values;
+                    const trimmedItemName = itemName.trim();
+                    const trimmedDescription = description.trim();
+                    const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+                    const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
+                        if (typeof props.propertyValue === 'string') {
+                            return {...props, propertyValue: props.propertyValue.trim()};
+                        } else if (Array.isArray(props.propertyValue)) {
+                            return {
+                                ...props, propertyValue: props.propertyValue.map((propValue) => {
+                                    return {...propValue, propertyValue: propValue.propertyValue.trim()}
+                                })
+                            };
+                        } else return props;
+                    })
+                    const newValues = {
+                        ...values,
+                        itemName: trimmedItemName,
+                        description: trimmedDescription,
+                        price: numberedPrice,
+                        file: [],                               // чистим массив с фото, т.к. он не нужен в
+                                                                // realtime firebase, файл загружается в storage
+                        fileUrl: '',
+                        propertiesOfProduct: trimmedPropsOfProduct,
                     };
-                } else return props;
-            })
-            const newValues = {
-                ...values,
-                itemName: trimmedItemName,
-                description: trimmedDescription,
-                price: numberedPrice,
-                file: [],                               // чистим массив с фото, т.к. он не нужен в
-                                                        // realtime firebase, файл загружается в storage
-                fileUrl: '',
-                propertiesOfProduct: trimmedPropsOfProduct,
-            };
 
-            await console.log(newValues);
+                    await console.log(newValues);
 
-        },*/
+                },*/
         validateOnBlur: true,
     });
 

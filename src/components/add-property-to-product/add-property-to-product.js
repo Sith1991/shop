@@ -19,32 +19,30 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
     const classesButton = useAddPropertyButtonStyles();
     const classesInput = useAddPropInputStyles();
 
-/*    const abc = () => {
-        const A = [{id:1, name: 'Bill', }, {id:4}, {id:3}, {id:2}]
-        const B = [{id:0}, {id:2}, {id:1, name: 'Bill', }, {id:2}]
-        console.log('result:', A.filter(a => !B.map(b=>b.id).includes(a.id)))
-    }
-    abc();*/
-
     const {propertiesOfProduct} = values;
-
     const [lastProperties, setLastProperties] = useState(properties);
-    const [selectedProperties, setSelectedProperties] = useState([]);
 
-    const updSelectedProperties = (prop, index) => {
-        let upd = selectedProperties;
-        upd[index] = prop;
-        setSelectedProperties(upd);
-        updLastProperties();
+    const removeSelectedProperties = (event) => {
+        handleChange(event);
+        const {value} = event.target;
+        const lastProps = lastProperties.filter(item => item.propertyName !== value);
+        setLastProperties(lastProps);
     }
 
-    const updLastProperties = () => {
-        let upd = lastProperties.filter(lstProp => !selectedProperties.map(sltProp => sltProp.id).includes(lstProp.id));
-        return setLastProperties(upd);
+    const pushSelectedProperties = (property) => {
+        if (property) {
+            const selectedProperty = properties.find(({propertyName}) => propertyName === property);
+            lastProperties.push(selectedProperty);
+        }
+        return null;
     }
 
-    console.log('selectedProperties:', selectedProperties);
-    console.log('lastProperties:', lastProperties);
+    const selectedWithLastProperties = (propName) => {
+        const selectedProperty = properties.find(({propertyName}) => propertyName === propName);
+        const arr = lastProperties.slice();
+        arr.push(selectedProperty);
+        return arr.map(renderMenuItems);
+    }
 
     const renderMenuItems = (item) => {
         const {propertyName} = item;
@@ -55,13 +53,11 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
 
     const renderValueInputs = (selectedProp, index) => {
         const selectedProperty = properties.find(({propertyName}) => propertyName === selectedProp.propertyName);
-        const selectedPropType = selectedProperty.propertyType;
-        selectedProp.propertyType = selectedPropType;              // записываю тип свойства в propertiesOfProduct[index].propertyType товара
-        selectedProp.id = selectedProperty.id;                    //записываю id свойства в propertiesOfProduct[index].id товара
+        selectedProp.propertyType = selectedProperty.propertyType;              // записываю тип свойства в propertiesOfProduct[index].propertyType товара
+        selectedProp.id = selectedProperty.id;                                  //записываю id свойства в propertiesOfProduct[index].id товара
 
-        updSelectedProperties(selectedProperty, index);
         const nameOfFieldArray = `propertiesOfProduct.${index}.propertyValue`;
-        switch (selectedPropType) {
+        switch (selectedProperty.propertyType) {
             case 'Dropdown':
                 return (
                     <FieldArray name={`${nameOfFieldArray}`}>
@@ -187,7 +183,12 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                         свойств*/}
                         {properties.length > propertiesOfProduct.length &&
                         <IconButton classes={{root: classesButton.root}}
-                                    onClick={() => push({id: '', propertyName: '', propertyValue: '', propertyType: '',})}>
+                                    onClick={() => push({
+                                        id: '',
+                                        propertyName: '',
+                                        propertyValue: '',
+                                        propertyType: '',
+                                    })}>
                             <AddCircleOutlineIcon/>
                         </IconButton>}
                     </div>
@@ -198,7 +199,10 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                     <div className={'add-prop-row'}>
                                         <div className={'add-prop-left-button-wrap'}>
                                             <IconButton classes={{root: classesButton.root}}
-                                                        onClick={() => remove(index)}>
+                                                        onClick={() => {
+                                                            pushSelectedProperties(propertiesOfProduct[index].propertyName);
+                                                            remove(index)
+                                                        }}>
                                                 <RemoveCircleOutlineIcon/>
                                             </IconButton>
                                         </div>
@@ -213,10 +217,14 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                             }}
                                             name={`propertiesOfProduct.${index}.propertyName`}
                                             value={propertiesOfProduct[index].propertyName}
-                                            onChange={handleChange}
+                                            onChange={(event) => {
+                                                removeSelectedProperties(event);
+                                            }}
                                             onBlur={handleBlur}
                                             notched={false}>
-                                            {properties.map(renderMenuItems)}
+                                            {propertiesOfProduct[index].propertyName ?
+                                                selectedWithLastProperties(propertiesOfProduct[index].propertyName) :
+                                                lastProperties.map(renderMenuItems)}
                                         </Select>
                                     </FormControl>
                                 </div>

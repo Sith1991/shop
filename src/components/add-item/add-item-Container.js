@@ -23,8 +23,6 @@ const AddItemContainer = ({
 
     const itemId = match.params.id;
 
-    console.log(itemId);
-
     useEffect(() => {
         fetchProducts();
         fetchProperties();
