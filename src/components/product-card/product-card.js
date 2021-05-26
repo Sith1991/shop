@@ -19,6 +19,8 @@ const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
     const classes = useLoginButtonStyles();
     const classesSelect = useProductCardItemSelectStyles();
 
+    console.log(selectedProduct);
+
     const data = {
         id: 0,
         itemName: 'Mercedes S550 4matic',

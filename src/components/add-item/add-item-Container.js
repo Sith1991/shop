@@ -7,6 +7,7 @@ import {fetchProducts, productsError} from "../../store/actions/propducts-action
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
+import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
 
 const AddItemContainer = ({
                               fetchProperties,
@@ -18,6 +19,11 @@ const AddItemContainer = ({
                               products,
                               loadingProducts,
                               errorProducts,
+                              loadingEditingProduct,
+                              errorEditingProduct,
+                              EditingProduct,
+                              fetchSelectedProduct,
+                              clearSelectedProduct,
                               match
                           }) => {
 
@@ -26,13 +32,16 @@ const AddItemContainer = ({
     useEffect(() => {
         fetchProducts();
         fetchProperties();
-    }, [])
+        if (itemId) {
+            fetchSelectedProduct(itemId);
+        }
+    }, [itemId])
 
-    if (loadingProps || loadingProducts) {
+    if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {
         return <Spinner/>
     }
 
-    if (errorProps || errorProducts) {
+    if (errorProps || errorProducts || (errorEditingProduct && itemId)) {
         return <ErrorIndicator/>
     }
 
@@ -49,13 +58,18 @@ const mapStateToProps = (state) => {
         products: state.products.products,
         loadingProducts: state.products.loading,
         errorProducts: state.products.error,
+        loadingEditingProduct: state.selectedProduct.loading,
+        errorEditingProduct: state.selectedProduct.error,
+        EditingProduct: state.selectedProduct.selectedProduct,
     }
 };
 
 const mapDispatchToProps = {
     fetchProperties,
     fetchProducts,
-    productsError
+    productsError,
+    fetchSelectedProduct,
+    clearSelectedProduct
 };
 
 export default compose(

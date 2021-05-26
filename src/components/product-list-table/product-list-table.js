@@ -116,7 +116,7 @@ const ProductListTable = ({products, onDeleted, loading}) => {
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="links">
-                                                        <Link to={'#'} className={'link'}>Ред.</Link>
+                                                        <Link to={`/add-item/${id}`} className={'link'}>Ред.</Link>
                                                         <Link to={'#'} onClick={() => onDeleted(id)}
                                                               className={'link'}>Удалить</Link>
                                                     </div>

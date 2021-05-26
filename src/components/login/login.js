@@ -20,8 +20,13 @@ const Login = () => {
     const classes = useLoginButtonStyles();
 
     const validationSchema = yup.object().shape({
-        name: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-        password: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+        name: yup.string().typeError('Должно быть строкой')
+            .min(4, "Логин должен быть не менее 4 символов")
+            .max(20, "Логин должен быть не болле 20 символов")
+            .required('Обязательное поле'),
+        password: yup.string().typeError('Должно быть строкой')
+            .min(8, "Пароль должен быть не менее 8 символов")
+            .required('Обязательное поле'),
     });
 
     const formik = useFormik({
