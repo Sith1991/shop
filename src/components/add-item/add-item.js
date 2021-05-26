@@ -35,8 +35,6 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
     const classesUploadBtn = useUploadButtonStyles();
     const classesTextarea = useAddItemTextareaStyles();
 
-    console.log('editingProduct:', editingProduct)
-
     const priceFormat = (value) => {
         return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
     }
@@ -51,14 +49,24 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
             .test('firstSymbol', 'Стоимость не должна ровняться нулю', (value) => {
                 return value?.toString().charAt(0) !== '0';     // число НЕ должно быть 0
             }).required('Обязательное поле'),
-        file: yup.array().of(yup.object().shape({
-            file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-                if (!value) return false
-                return value.size < 153600
-            }).required(),
-            type: yup.string().oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png').required(),
-            name: yup.string().required()
-        }).typeError('Добавьте файл')).required(),
+        file: itemId ?                          // если есть ID продукта, то повторная загрузка картинки не требуется
+            yup.array().of(yup.object().shape({
+                file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+                    if (!value) return false
+                    return value.size < 153600
+                }),
+                type: yup.string().oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png'),
+                name: yup.string()
+            }).nullable().typeError('Добавьте файл'))
+            :
+            yup.array().of(yup.object().shape({
+                file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+                    if (!value) return false
+                    return value.size < 153600
+                }).required(),
+                type: yup.string().oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png').required(),
+                name: yup.string().required()
+            }).typeError('Добавьте файл')).required(),
         fileUrl: yup.string().typeError('Должно быть строкой'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertiesOfProduct: yup.array().of(yup.object().shape({
@@ -122,7 +130,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
             fileUrl: editingProduct.fileUrl,
             dateOfChange: '',
             description: editingProduct.description,
-            propertiesOfProduct: [],
+            propertiesOfProduct: itemId && editingProduct.propertiesOfProduct ? editingProduct.propertiesOfProduct : [],
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -169,17 +177,31 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                                 fileUrl: url,
                             };
 
-                            const db = firebase.database();
-                            const ref = db.ref('products');
-                            const dbDataRef = ref.push();
-                            dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                                function (error) {
-                                    if (error) {
-                                        productsError(error);
-                                    } else {
-                                        setShowNotification(true);
-                                    }
-                                });
+                            if (itemId) {
+                                const db = firebase.database();
+                                const ref = db.ref('products');
+                                const dbDataRef = ref.child(itemId);
+                                dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                                    function (error) {
+                                        if (error) {
+                                            productsError(error);
+                                        } else {
+                                            setShowNotification(true);
+                                        }
+                                    });
+                            } else {
+                                const db = firebase.database();
+                                const ref = db.ref('products');
+                                const dbDataRef = ref.push();
+                                dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                                    function (error) {
+                                        if (error) {
+                                            productsError(error);
+                                        } else {
+                                            setShowNotification(true);
+                                        }
+                                    });
+                            }
                         });
                 }
             );
@@ -247,7 +269,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                                 </Button>
                             </div>
                             <div className={'add-item-head'}>
-                                <h5>Добавление товара</h5>
+                                <h5>{itemId ? 'Редактирование товара' : 'Добавление товара'}</h5>
                             </div>
                             <div className={'add-item-body'}>
                                 <FormControl error={touched.itemName && errors.itemName}>
