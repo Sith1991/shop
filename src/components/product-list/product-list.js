@@ -32,7 +32,7 @@ class ProductList extends Component {
         const db = firebase.database();
         const ref = db.ref('products');
         const dbDataRef = ref.child(key);
-        await dbDataRef.set(null, (error) => {        // отправляем null для того чтобы удалть полностью свойство по ключу key
+        await dbDataRef.set(null, (error) => {        // отправляем null для того чтобы удалить свойство полностью по ключу key
             if (error) {
                 productsError(error);
             } else {

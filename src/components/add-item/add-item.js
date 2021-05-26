@@ -25,7 +25,7 @@ import {withRouter} from 'react-router-dom';
 import "./add-item.scss";
 import Notifications from "../notifications";
 
-const AddItem = ({properties, productsError}) => {
+const AddItem = ({properties, productsError, itemId, editingProduct, clearSelectedProduct}) => {
 
     const [showNotification, setShowNotification] = useState(false);
 
@@ -34,6 +34,8 @@ const AddItem = ({properties, productsError}) => {
     const classesSaveBtn = useSaveButtonStyles();
     const classesUploadBtn = useUploadButtonStyles();
     const classesTextarea = useAddItemTextareaStyles();
+
+    console.log('editingProduct:', editingProduct)
 
     const priceFormat = (value) => {
         return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
@@ -114,12 +116,12 @@ const AddItem = ({properties, productsError}) => {
 
     const formik = useFormik({
         initialValues: {
-            itemName: '',
-            price: '',
+            itemName: editingProduct.itemName,
+            price: editingProduct.price,
             file: undefined,
-            fileUrl: '',
+            fileUrl: editingProduct.fileUrl,
             dateOfChange: '',
-            description: '',
+            description: editingProduct.description,
             propertiesOfProduct: [],
         },
         validationSchema: validationSchema,
@@ -226,9 +228,9 @@ const AddItem = ({properties, productsError}) => {
                 <div className={'add-item'}>
                     <div className={'add-item-bordered-wrap'}>
                         <form onSubmit={handleSubmit} className={'add-item-wrap'}>
-                            {showNotification && <Notifications path={'/'} isEdited={false}/>}
+                            {showNotification && <Notifications path={'/'} isEdited={itemId}/>}
                             <div className={'buttons-wrap'}>
-                                <Link to={'/'} className={'button-back'}>
+                                <Link to={'/'} className={'button-back'} onClick={clearSelectedProduct}>
                                     Вернуться
                                 </Link>
                                 <Button
@@ -300,6 +302,7 @@ const AddItem = ({properties, productsError}) => {
                                                         const file = getFileSchema(files.item(0));
                                                         setFieldTouched('file', true, false);
                                                         fileHandleChange(event);
+                                                        values.fileUrl = undefined;
                                                         if (!file) {
                                                             arrayHelper.remove(0)
                                                             setFieldTouched('file', true, false);
@@ -334,8 +337,15 @@ const AddItem = ({properties, productsError}) => {
                                     </FieldArray>
                                     {getArrErrorsMessages(errors.file).map((error) => getError(true, error))}
                                 </FormControl>
-                                <Thumb
-                                    file={(values.file === undefined || values.file[0] === null) ? null : values.file[0].file}/>
+                                {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
+                                используем мимниатюру Thumb*/}
+                                {values.fileUrl ?
+                                    <img src={values.fileUrl}
+                                         alt={'изображение товара'}
+                                         className={"thumb img-thumbnail mt-2"}/> :
+                                    <Thumb
+                                        file={(values.file === undefined || values.file[0] === null) ?
+                                            null : values.file[0].file}/>}
                                 <FormControl error={touched.description && errors.description}>
                                     <FormLabel classes={{root: classesLabel.root}}
                                                className={'labels'}>Описание</FormLabel>

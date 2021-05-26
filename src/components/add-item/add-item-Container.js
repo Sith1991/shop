@@ -21,7 +21,7 @@ const AddItemContainer = ({
                               errorProducts,
                               loadingEditingProduct,
                               errorEditingProduct,
-                              EditingProduct,
+                              editingProduct,
                               fetchSelectedProduct,
                               clearSelectedProduct,
                               match
@@ -46,7 +46,12 @@ const AddItemContainer = ({
     }
 
     return (
-        <AddItem properties={properties} products={products} productsError={productsError}/>
+        <AddItem properties={properties}
+                 products={products}
+                 productsError={productsError}
+                 itemId={itemId}
+                 editingProduct={editingProduct}
+                 clearSelectedProduct={clearSelectedProduct}/>
     )
 }
 
@@ -60,7 +65,7 @@ const mapStateToProps = (state) => {
         errorProducts: state.products.error,
         loadingEditingProduct: state.selectedProduct.loading,
         errorEditingProduct: state.selectedProduct.error,
-        EditingProduct: state.selectedProduct.selectedProduct,
+        editingProduct: state.selectedProduct.selectedProduct,
     }
 };
 

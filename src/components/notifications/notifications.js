@@ -24,7 +24,6 @@ const Notifications = ({history, path, deleted, isEdited}) => {
         setOpen(false);
 
         backToListItems(path);
-
     };
 
     return (
