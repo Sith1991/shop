@@ -67,7 +67,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                 type: yup.string().oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png').required(),
                 name: yup.string().required()
             }).typeError('Добавьте файл')).required(),
-        fileUrl: yup.string().typeError('Должно быть строкой'),
+        fileUrl: yup.string().nullable().typeError('Должно быть строкой'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         propertiesOfProduct: yup.array().of(yup.object().shape({
                 id: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
@@ -101,7 +101,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
     const fileHandleChange = (e) => {
         if (e.target.files[0]) {
             setImage(e.target.files[0]);
-        }
+        } else setImage(null);
     }
 
     const getArrErrorsMessages = (errors) => {
@@ -134,108 +134,99 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
-            // не перезаписывали друг друга
-            const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
-            const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
-            await uploadTask.on(
-                "state_changed",
-                snapshot => {
-                },
-                error => {
-                    productsError(error);
-                },
-                () => {
-                    storage
-                        .ref('images')
-                        .child(fileNameWithRndNumber)
-                        .getDownloadURL()
-                        .then(url => {
-                            const {itemName, description, price, propertiesOfProduct} = values;
-                            const trimmedItemName = itemName.trim();
-                            const trimmedDescription = description.trim();
-                            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
-                            const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
-                                if (typeof props.propertyValue === 'string') {
-                                    return {...props, propertyValue: props.propertyValue.trim()};
-                                } else if (Array.isArray(props.propertyValue)) {
-                                    return {
-                                        ...props, propertyValue: props.propertyValue.map((propValue) => {
-                                            return {...propValue, propertyValue: propValue.propertyValue.trim()}
-                                        })
-                                    };
-                                } else return props;
-                            })
-                            const newValues = {
-                                ...values,
-                                itemName: trimmedItemName,
-                                description: trimmedDescription,
-                                price: numberedPrice,
-                                propertiesOfProduct: trimmedPropsOfProduct,
-                                file: [],                               // чистим массив с фото, т.к. он не нужен в
-                                                                        // realtime firebase, файл загружается в storage
-                                fileUrl: url,
-                            };
-
-                            if (itemId) {
-                                const db = firebase.database();
-                                const ref = db.ref('products');
-                                const dbDataRef = ref.child(itemId);
-                                dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                                    function (error) {
-                                        if (error) {
-                                            productsError(error);
-                                        } else {
-                                            setShowNotification(true);
-                                        }
-                                    });
-                            } else {
-                                const db = firebase.database();
-                                const ref = db.ref('products');
-                                const dbDataRef = ref.push();
-                                dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                                    function (error) {
-                                        if (error) {
-                                            productsError(error);
-                                        } else {
-                                            setShowNotification(true);
-                                        }
-                                    });
-                            }
-                        });
-                }
-            );
-        },
-        /*        onSubmit: async (values) => {
-                    const {itemName, description, price, propertiesOfProduct} = values;
-                    const trimmedItemName = itemName.trim();
-                    const trimmedDescription = description.trim();
-                    const numberedPrice = parseInt(String(price).replace(/ /g, ''));
-                    const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
-                        if (typeof props.propertyValue === 'string') {
-                            return {...props, propertyValue: props.propertyValue.trim()};
-                        } else if (Array.isArray(props.propertyValue)) {
-                            return {
-                                ...props, propertyValue: props.propertyValue.map((propValue) => {
-                                    return {...propValue, propertyValue: propValue.propertyValue.trim()}
-                                })
-                            };
-                        } else return props;
-                    })
-                    const newValues = {
-                        ...values,
-                        itemName: trimmedItemName,
-                        description: trimmedDescription,
-                        price: numberedPrice,
-                        file: [],                               // чистим массив с фото, т.к. он не нужен в
-                                                                // realtime firebase, файл загружается в storage
-                        fileUrl: '',
-                        propertiesOfProduct: trimmedPropsOfProduct,
+            const {itemName, description, price, propertiesOfProduct} = values;
+            const trimmedItemName = itemName.trim();
+            const trimmedDescription = description.trim();
+            const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+            const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
+                if (typeof props.propertyValue === 'string') {
+                    return {...props, propertyValue: props.propertyValue.trim()};
+                } else if (Array.isArray(props.propertyValue)) {
+                    return {
+                        ...props, propertyValue: props.propertyValue.map((propValue) => {
+                            return {...propValue, propertyValue: propValue.propertyValue.trim()}
+                        })
                     };
+                } else return props;
+            })
 
-                    await console.log(newValues);
+            const db = firebase.database();
+            const ref = db.ref('products');
 
-                },*/
+            if (image) {
+                // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
+                // не перезаписывали друг друга
+                const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
+                const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
+                await uploadTask.on(
+                    "state_changed",
+                    snapshot => {
+                    },
+                    error => {
+                        productsError(error);
+                    },
+                    () => {
+                        storage
+                            .ref('images')
+                            .child(fileNameWithRndNumber)
+                            .getDownloadURL()
+                            .then(url => {
+                                const newValues = {
+                                    ...values,
+                                    itemName: trimmedItemName,
+                                    description: trimmedDescription,
+                                    price: numberedPrice,
+                                    propertiesOfProduct: trimmedPropsOfProduct,
+                                    file: [],                               // чистим массив с фото, т.к. он не нужен в
+                                                                            // realtime firebase, файл загружается в storage
+                                    fileUrl: url,
+                                };
+
+                                if (itemId) {
+                                    const dbDataRef = ref.child(itemId);
+                                    dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                                        function (error) {
+                                            if (error) {
+                                                productsError(error);
+                                            } else {
+                                                setShowNotification(true);
+                                            }
+                                        });
+                                } else {
+                                    const dbDataRef = ref.push();
+                                    dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                                        function (error) {
+                                            if (error) {
+                                                productsError(error);
+                                            } else {
+                                                setShowNotification(true);
+                                            }
+                                        });
+                                }
+                            });
+                    }
+                );
+            } else {
+                const newValues = {
+                    ...values,
+                    itemName: trimmedItemName,
+                    description: trimmedDescription,
+                    price: numberedPrice,
+                    propertiesOfProduct: trimmedPropsOfProduct,
+                    file: [],                               // чистим массив с фото, т.к. он не нужен в
+                                                            // realtime firebase, файл загружается в storage
+                };
+                const dbDataRef = ref.child(itemId);
+                await dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
+                    function (error) {
+                        if (error) {
+                            productsError(error);
+                        } else {
+                            setShowNotification(true);
+                        }
+                    })
+            }
+        },
         validateOnBlur: true,
     });
 
@@ -324,10 +315,12 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                                                         const file = getFileSchema(files.item(0));
                                                         setFieldTouched('file', true, false);
                                                         fileHandleChange(event);
-                                                        values.fileUrl = undefined;
+                                                        values.fileUrl = null;                                              // при выборе картинки обнуляю ссылку на неё
                                                         if (!file) {
                                                             arrayHelper.remove(0)
                                                             setFieldTouched('file', true, false);
+                                                            values.fileUrl = editingProduct.fileUrl;                        // если отменил выбор картинки (нажал кнопку "отмена"),
+                                                                                                                            // ссылу на изображение беру из редактируемого товара
                                                         }
                                                         if (Array.isArray(values.file)) {
                                                             arrayHelper.replace(0, file)
