@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import IconButton from "@material-ui/core/IconButton";
@@ -20,8 +20,21 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
     const classesInput = useAddPropInputStyles();
 
     const {propertiesOfProduct} = values;
+    // Хваним массив оставшихся свойств.
     const [lastProperties, setLastProperties] = useState(properties);
 
+    // если товар редактируется, из свего массива свойств вычитаю массив свойств, которые уже есть у товара,
+    // и переопределяю массив оставшихся свойств. В случае, если товар только добавляется, то результатом вычитания останется
+    // изначальный массив свойств (полученный с сервера).
+    // Вычитание произвожу по имени свойств (propertyName).
+    const propertiesWithEditing = (properties, propertiesOfProduct) => {
+        const result = properties.filter(x => !propertiesOfProduct.some(y => x.propertyName === y.propertyName));
+        setLastProperties(result);
+    }
+
+    useEffect(() => propertiesWithEditing(properties, propertiesOfProduct), [properties, propertiesOfProduct])
+
+    // удаляю выбранное свойство из массива оставшихся свойств
     const removeSelectedProperties = (event) => {
         handleChange(event);
         const {value} = event.target;
@@ -29,6 +42,8 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
         setLastProperties(lastProps);
     }
 
+    // если происходит удаление свойства у товара, то происходит поиск по имении удаляемого свойства в массиве всех свойств
+    // и добавляется данное свойство (объект с этим свойством) в массив оставшихся свойств
     const pushSelectedProperties = (property) => {
         if (property) {
             const selectedProperty = properties.find(({propertyName}) => propertyName === property);
@@ -37,10 +52,15 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
         return null;
     }
 
+    // в случае, когда в селекте выбрано свойство, делаю копию оставшихся свойств и добавляю его для дальнейшего
+    // рендеринга итемов для селекта, иначе любое выбранное свойство удаляется из массива оставшихся свойств
     const selectedWithLastProperties = (propName) => {
         const selectedProperty = properties.find(({propertyName}) => propertyName === propName);
+        // делаю копию массива оставшихся свойств
         const arr = lastProperties.slice();
+        // пушу к этому массиву выбранное в селекте свойство
         arr.push(selectedProperty);
+        // рендерю итемы для селекта свойств
         return arr.map(renderMenuItems);
     }
 
@@ -52,7 +72,9 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
     };
 
     const renderValueInputs = (selectedProp, index) => {
+        // нахожу по имени выбранное свойство из массива всех возможных свойств
         const selectedProperty = properties.find(({propertyName}) => propertyName === selectedProp.propertyName);
+        // присваиваю тип и id выбранного свойства в массив добавленных свойств данному товару
         selectedProp.propertyType = selectedProperty.propertyType;              // записываю тип свойства в propertiesOfProduct[index].propertyType товара
         selectedProp.id = selectedProperty.id;                                  //записываю id свойства в propertiesOfProduct[index].id товара
 
@@ -64,7 +86,9 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                         {({remove, push}) => (
                             <div className={'add-property-right-column'}>
                                 <p className={'property-name'}>Значение</p>
-                                {selectedProp.propertyValue.length > 0 && selectedProp.propertyValue.map((selectedPropValue, idx) => (
+                                {/*В случае если массив значений свойства DROPDOWN будет пустым, не выполнять мапинг*/}
+                                {selectedProp.propertyValue && selectedProp.propertyValue.length > 0 &&
+                                selectedProp.propertyValue.map((selectedPropValue, idx) => (
                                     <div className={'input-with-remove-button'} key={idx}>
                                         <FormControl error={
                                             touched.propertiesOfProduct && touched.propertiesOfProduct[index] &&
@@ -222,6 +246,8 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                             }}
                                             onBlur={handleBlur}
                                             notched={false}>
+                                            {/*если в селекте выбрано свойство, добавить его к оставшимся свойствам, но только для рендеринга итемов для селекта,
+                                            иначе просто отрендерить оставшием свойства*/}
                                             {propertiesOfProduct[index].propertyName ?
                                                 selectedWithLastProperties(propertiesOfProduct[index].propertyName) :
                                                 lastProperties.map(renderMenuItems)}

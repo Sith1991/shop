@@ -28,6 +28,7 @@ import Notifications from "../notifications";
 const AddItem = ({properties, productsError, itemId, editingProduct, clearSelectedProduct}) => {
 
     const [showNotification, setShowNotification] = useState(false);
+    const [image, setImage] = useState(null);
 
     const classesLabel = useAddItemLabelStyles();
     const classesInput = useAddItemInputStyles();
@@ -35,12 +36,14 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
     const classesUploadBtn = useUploadButtonStyles();
     const classesTextarea = useAddItemTextareaStyles();
 
+    // отображенире цены происходит с пробелами чсерез каждых три символа
     const priceFormat = (value) => {
         return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
     }
 
+    // получение таймстампа с сервера Firebase
     const getDateOfChange = () => {
-        return firebase.database.ServerValue.TIMESTAMP;  // получение таймстампа с сервера Firebase
+        return firebase.database.ServerValue.TIMESTAMP;
     }
 
     const validationSchema = yup.object().shape({
@@ -96,8 +99,6 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
         name: file.name
     })
 
-    const [image, setImage] = useState(null);
-
     const fileHandleChange = (e) => {
         if (e.target.files[0]) {
             setImage(e.target.files[0]);
@@ -130,6 +131,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
             fileUrl: editingProduct.fileUrl,
             dateOfChange: '',
             description: editingProduct.description,
+            // Если это редактируемый товар, и у него есть свойства, то сюда передается их массив, иначе создается пустой массив
             propertiesOfProduct: itemId && editingProduct.propertiesOfProduct ? editingProduct.propertiesOfProduct : [],
         },
         validationSchema: validationSchema,
@@ -178,7 +180,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                                     price: numberedPrice,
                                     propertiesOfProduct: trimmedPropsOfProduct,
                                     file: [],                               // чистим массив с фото, т.к. он не нужен в
-                                                                            // realtime firebase, файл загружается в storage
+                                                                            // realtime firebase, файл загружается в firebase storage
                                     fileUrl: url,
                                 };
 
@@ -214,7 +216,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                     price: numberedPrice,
                     propertiesOfProduct: trimmedPropsOfProduct,
                     file: [],                               // чистим массив с фото, т.к. он не нужен в
-                                                            // realtime firebase, файл загружается в storage
+                                                            // realtime firebase, файл загружается в firebase storage
                 };
                 const dbDataRef = ref.child(itemId);
                 await dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
@@ -236,7 +238,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
     } = formik;
 
     return (
-        <FormikProvider value={formik}> {/*для того чтобы работал arrayHelper в инпуте file*/}
+        <FormikProvider value={formik}> {/*для того чтобы работал arrayHelper в инпуте type file*/}
             <ThemeProvider theme={theme}>
                 <div className={'add-item'}>
                     <div className={'add-item-bordered-wrap'}>

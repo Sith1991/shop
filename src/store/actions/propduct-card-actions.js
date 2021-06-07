@@ -25,7 +25,8 @@ const selectedProductLoaded = (products, itemId) => {
 }
 
 const clearSelectedProduct = () => {        // зачищаем выбранный товар, т.к. если этого не делать, то при переключении
-    return {                                // на другой товар, до его загрузки отображается предыдущий выбранный.
+                                            // на другой товар, до его загрузки отображается предыдущий выбранный.
+    return {
         type: CLEAR_SELECTED_PRODUCT,
     }
 }
