@@ -52,7 +52,8 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
             .test('firstSymbol', 'Стоимость не должна ровняться нулю', (value) => {
                 return value?.toString().charAt(0) !== '0';     // число НЕ должно быть 0
             }).required('Обязательное поле'),
-        file: itemId ?                          // если есть ID продукта, то повторная загрузка картинки не требуется
+        file: itemId ?
+            // если есть ID продукта, то повторная загрузка картинки не обязательна
             yup.array().of(yup.object().shape({
                 file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
                     if (!value) return false

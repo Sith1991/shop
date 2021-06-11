@@ -67,6 +67,7 @@
       display: flex;
       flex-wrap: wrap;
       margin: 24px 0 16px;
+      min-height: 267px;
 
       h4 {
         @include font-params(normal, 16px, 19px, #000000);
@@ -83,6 +84,7 @@
         flex: 0 0 350px;
         display: flex;
         flex-direction: column;
+        justify-content: flex-end;
 
         .price {
           @include font-params(300, 22px, 26px, #000000);

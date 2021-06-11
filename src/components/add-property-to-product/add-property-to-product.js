@@ -20,7 +20,7 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
     const classesInput = useAddPropInputStyles();
 
     const {propertiesOfProduct} = values;
-    // Хваним массив оставшихся свойств.
+    // Храним массив оставшихся свойств.
     const [lastProperties, setLastProperties] = useState(properties);
 
     // если товар редактируется, из свего массива свойств вычитаю массив свойств, которые уже есть у товара,
@@ -245,7 +245,8 @@ const AddPropertyToProduct = ({handleChange, touched, errors, handleBlur, values
                                                 removeSelectedProperties(event);
                                             }}
                                             onBlur={handleBlur}
-                                            notched={false}>
+                                            notched={false} /*Если true, на контуре сделана выемка для размещения метки.*/
+                                        >
                                             {/*если в селекте выбрано свойство, добавить его к оставшимся свойствам, но только для рендеринга итемов для селекта,
                                             иначе просто отрендерить оставшием свойства*/}
                                             {propertiesOfProduct[index].propertyName ?

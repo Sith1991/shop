@@ -13,63 +13,78 @@ import useProductCardItemSelectStyles
     from "../../styles/customizing-material-ui-components/product-card-item-select-style";
 
 import './product-card.scss';
+import {mixed} from "yup";
 
 const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
 
     const classes = useLoginButtonStyles();
     const classesSelect = useProductCardItemSelectStyles();
 
-    console.log(selectedProduct);
+    const {itemName, fileUrl, description, price, propertiesOfProduct} = selectedProduct;
 
-    const data = {
-        id: 0,
-        itemName: 'Mercedes S550 4matic',
-        file: 'https://i.ibb.co/bs9QvD9/image.png',
-        description: 'Не следует, однако забывать, что начало повседневной работы по формированию позиции требуют определения и уточнения существенных финансовых и административных условий. Разнообразный и богатый опыт консультация с широким активом способствует подготовки и реализации существенных финансовых и административных условий. ',
-        price: 118000,
-        properties: {
-            property_1: {
-                property_1_Name: 'Цвет авто',
-                property_1_Value_1: 'Синий',
-                property_1_Value_2: 'Черный',
-            },
-            property_2: {
-                property_2_Name: 'Год выпуска',
-                property_2_Value_1: 2017,
-            },
-            property_3: {
-                property_3_Name: 'Тип топлива',
-                property_3_Value_1: 'Бензин',
-            }
-        },
-    }
+    const renderMenuItems = (item) => {
+        const {propertyValue} = item;
+        return (
+            <MenuItem value={propertyValue}>{propertyValue}</MenuItem>
+        )
+    };
 
-    const {
-        properties: {
-            property_1: {
-                property_1_Name,
-                property_1_Value_1,
-                property_1_Value_2
-            },
-            property_2: {
-                property_2_Name,
-                property_2_Value_1,
-            },
-            property_3: {
-                property_3_Name,
-                property_3_Value_1,
-            },
+    const renderPropertiesOfProduct = (property, index) => {
+        const {propertyName, propertyType, propertyValue} = property;
+        switch (propertyType) {
+            case 'Dropdown':
+                return (
+                    <div>
+                        <h4>{propertyName}</h4>
+                        <FormControl variant="outlined" className={classesSelect.formControl}>
+                            <Select
+                                classes={{
+                                    root: classesSelect.root,
+                                    icon: classesSelect.icon
+                                }}
+                                name={`propertiesOfProduct.${index}.propertyValue`}
+                                value={values.propertiesOfProduct[index].propertyValue}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                notched={false} /*Если true, на контуре сделана выемка для размещения имени селекта.*/
+                            >
+                                {console.log(values.propertiesOfProduct[index].propertyValue)}
+                                {propertyValue.map(renderMenuItems)}
+                            </Select>
+                        </FormControl>
+                    </div>
+                );
+            case 'Number':
+                return (
+                    <div>
+                        <h4>{propertyName}</h4>
+                        <p>{propertyValue}</p>
+                    </div>
+                );
+            case 'String':
+                return (
+                    <div>
+                        <h4>{propertyName}</h4>
+                        <p>{propertyValue}</p>
+                    </div>
+                );
+            default:
+                return null;
         }
-    } = data;
-
-    const {itemName, fileUrl, description, price} = selectedProduct;
+    };
 
     const validationSchema = yup.object().shape({
         itemName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         fileUrl: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
         price: yup.number().typeError('Должно быть числом').integer('Должно быть целым числом').required('Обязательное поле'),
-        properties: yup.object(),
+        propertiesOfProduct: yup.array().of(yup.object().shape({
+                id: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+                propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+                propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+                propertyValue: yup.
+            }).required('Обязательное поле'),
+        ),
     });
 
     const formik = useFormik({
@@ -78,22 +93,7 @@ const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
             description: description,
             fileUrl: fileUrl,
             price: price,
-            properties: {
-                properties: {
-                    property_1: {
-                        property_1_Name,
-                        property_1_Value: '',
-                    },
-                    property_2: {
-                        property_2_Name,
-                        property_2_Value_1,
-                    },
-                    property_3: {
-                        property_3_Name,
-                        property_3_Value_1,
-                    },
-                }
-            },
+            propertiesOfProduct: propertiesOfProduct ? propertiesOfProduct : [],
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -126,27 +126,7 @@ const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
                         </div>
                         <div className={"bottom-items-row"}>
                             <div className={"item-properties"}>
-                                <h4>{property_1_Name}</h4>
-                                <FormControl variant="outlined" className={classesSelect.formControl}>
-                                    <Select
-                                        classes={{
-                                            root: classesSelect.root,
-                                            icon: classesSelect.icon
-                                        }}
-                                        name={'properties.properties.property_1.property_1_Value'}
-                                        value={values.properties.properties.property_1.property_1_Value}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        notched={false}
-                                    >
-                                        <MenuItem value={property_1_Value_1}>{property_1_Value_1}</MenuItem>
-                                        <MenuItem value={property_1_Value_2}>{property_1_Value_2}</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <h4>{property_2_Name}</h4>
-                                <p>{property_2_Value_1}</p>
-                                <h4>{property_3_Name}</h4>
-                                <p>{property_3_Value_1}</p>
+                                {propertiesOfProduct && propertiesOfProduct.map(renderPropertiesOfProduct)}
                                 <h4>Стоимость</h4>
                                 <span className={'price'}>{price.toLocaleString('ru-RU')}$</span>
                             </div>
@@ -158,7 +138,7 @@ const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
                                             label: classes.label,
                                         }}
                                         type={'submit'}
-                                        disabled={!isValid || !dirty}
+                                        disabled={!isValid}
                                         onClick={handleSubmit}>
                                         Беру!!!
                                     </Button>
