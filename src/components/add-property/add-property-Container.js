@@ -1,5 +1,10 @@
 import React, {useEffect} from 'react';
-import {fetchProperties, propertiesError} from "../../store/actions/properties-actions";
+import {
+    fetchProperties,
+    propertiesError,
+    propertiesSpinnerClose,
+    propertiesSpinnerOpen
+} from "../../store/actions/properties-actions";
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import {connect} from "react-redux";
@@ -8,7 +13,16 @@ import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import {createdProperty} from "../../store/actions/notifications-actions";
 
-const AddPropertyContainer = ({fetchProperties, propertiesError, properties, loading, error, createdProperty}) => {
+const AddPropertyContainer = ({
+                                  fetchProperties,
+                                  propertiesError,
+                                  properties,
+                                  loading,
+                                  error,
+                                  createdProperty,
+                                  propertiesSpinnerOpen,
+                                  propertiesSpinnerClose
+                              }) => {
 
     useEffect(() => {
         fetchProperties();
@@ -23,7 +37,12 @@ const AddPropertyContainer = ({fetchProperties, propertiesError, properties, loa
     }
 
     return (
-        <AddProperty properties={properties} propertiesError={propertiesError} createdProperty={createdProperty}/>
+        <AddProperty properties={properties}
+                     propertiesError={propertiesError}
+                     createdProperty={createdProperty}
+                     propertiesSpinnerOpen={propertiesSpinnerOpen}
+                     propertiesSpinnerClose={propertiesSpinnerClose}
+        />
     )
 }
 
@@ -39,6 +58,8 @@ const mapDispatchToProps = {
     fetchProperties,
     propertiesError,
     createdProperty,
+    propertiesSpinnerOpen,
+    propertiesSpinnerClose
 };
 
 export default compose(

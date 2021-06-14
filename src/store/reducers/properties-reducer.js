@@ -1,4 +1,9 @@
-import {FETCH_PROPERTIES_FAILURE, FETCH_PROPERTIES_REQUEST, FETCH_PROPERTIES_SUCCESS} from "../../action-types";
+import {
+    FETCH_PROPERTIES_FAILURE,
+    FETCH_PROPERTIES_SPINNER_CLOSE,
+    FETCH_PROPERTIES_SPINNER_OPEN,
+    FETCH_PROPERTIES_SUCCESS
+} from "../../action-types";
 
 const propertiesReducer = (state, action) => {
 
@@ -18,10 +23,17 @@ const propertiesReducer = (state, action) => {
                 error: null,
             };
 
-        case FETCH_PROPERTIES_REQUEST:
+        case FETCH_PROPERTIES_SPINNER_OPEN:
             return {
                 ...state,
                 loading: true,
+                error: null,
+            }
+
+        case FETCH_PROPERTIES_SPINNER_CLOSE:
+            return {
+                ...state,
+                loading: false,
                 error: null,
             }
 

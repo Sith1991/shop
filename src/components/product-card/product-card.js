@@ -21,6 +21,8 @@ const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
 
     const {itemName, fileUrl, description, price, propertiesOfProduct} = selectedProduct;
 
+    console.log(propertiesOfProduct);
+
     // При первом реднере компоненты, прохожу по массиву свойств товара и в случае, когда свойство имеет тип Dropdown,
     // его первое значение из массива значений сразу устанавливаю в initialValues формика, т.к. если пользователь не выберет
     // вручную какое либо свойство из селекта (т.е. не сработает onChange селекта), то в initialValues передастся весь

@@ -17,7 +17,6 @@ const notificationsReducer = (state, action) => {
 
     switch (action.type) {
         case NOTIFICATION_CREATED_PRODUCT:
-            console.log('NOTIFICATION_CREATED_PRODUCT')
             return {
                 showNotification: true,
                 path: action.payload,
@@ -25,7 +24,6 @@ const notificationsReducer = (state, action) => {
                 deletedItem: null,
             }
         case NOTIFICATION_EDITED_PRODUCT:
-            console.log('NOTIFICATION_EDITED_PRODUCT')
             return {
                 showNotification: true,
                 path: action.payload,

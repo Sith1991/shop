@@ -17,7 +17,7 @@ import 'firebase/database';
 
 import './add-property.scss';
 
-const AddProperty = ({properties, propertiesError, createdProperty}) => {
+const AddProperty = ({properties, propertiesError, createdProperty, propertiesSpinnerOpen, propertiesSpinnerClose}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -49,6 +49,7 @@ const AddProperty = ({properties, propertiesError, createdProperty}) => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            propertiesSpinnerOpen();
             const {propertyName} = values;
             const trimmedPropertyName = propertyName.trim();
             const newValues = {
@@ -63,6 +64,7 @@ const AddProperty = ({properties, propertiesError, createdProperty}) => {
                 if (error) {
                     propertiesError(error);
                 } else {
+                    propertiesSpinnerClose();
                     createdProperty();
                 }
             });

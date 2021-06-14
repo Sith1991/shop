@@ -1,6 +1,6 @@
 import {
     FETCH_PRODUCTS_FAILURE,
-    FETCH_PRODUCTS_REQUEST,
+    FETCH_PRODUCTS_SPINNER_OPEN,
     FETCH_PRODUCTS_SUCCESS,
 } from "../../action-types";
 import firebase from 'firebase/app';
@@ -18,9 +18,15 @@ const productsLoaded = (newItems) => {
     }
 }
 
-const productsRequested = () => {
+const productsSpinnerOpen = () => {
     return {
-        type: FETCH_PRODUCTS_REQUEST,
+        type: FETCH_PRODUCTS_SPINNER_OPEN,
+    }
+}
+
+const productsSpinnerClose = () => {
+    return {
+        type: FETCH_PRODUCTS_SPINNER_OPEN,
     }
 }
 
@@ -32,7 +38,7 @@ const productsError = (error) => {
 }
 
 const fetchProducts = () => (dispatch) => {
-    dispatch(productsRequested());
+    dispatch(productsSpinnerOpen());
     const db = firebase.database();
     const dbDataRef = db.ref().child('products');
     dbDataRef.on('value', snap => {
@@ -47,5 +53,7 @@ const fetchProducts = () => (dispatch) => {
 
 export {
     fetchProducts,
-    productsError
+    productsError,
+    productsSpinnerOpen,
+    productsSpinnerClose
 }

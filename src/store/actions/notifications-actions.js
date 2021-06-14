@@ -5,7 +5,6 @@ import {
 } from "../../action-types";
 
 const createdProduct = () => {
-    console.log('createdProduct')
     return {
         type: NOTIFICATION_CREATED_PRODUCT,
         payload: '/',
@@ -13,7 +12,6 @@ const createdProduct = () => {
 }
 
 const editedProduct = () => {
-    console.log('editedProduct')
     return {
         type: NOTIFICATION_EDITED_PRODUCT,
         payload: '/',

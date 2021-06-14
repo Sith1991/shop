@@ -1,6 +1,6 @@
 import {
-    FETCH_PROPERTIES_FAILURE,
-    FETCH_PROPERTIES_REQUEST,
+    FETCH_PROPERTIES_FAILURE, FETCH_PROPERTIES_SPINNER_CLOSE,
+    FETCH_PROPERTIES_SPINNER_OPEN,
     FETCH_PROPERTIES_SUCCESS
 } from "../../action-types";
 import firebase from 'firebase/app';
@@ -18,9 +18,15 @@ const propertiesLoaded = (newItems) => {
     }
 }
 
-const propertiesRequested = () => {
+const propertiesSpinnerOpen = () => {
     return {
-        type: FETCH_PROPERTIES_REQUEST,
+        type: FETCH_PROPERTIES_SPINNER_OPEN,
+    }
+}
+
+const propertiesSpinnerClose = () => {
+    return {
+        type: FETCH_PROPERTIES_SPINNER_CLOSE,
     }
 }
 
@@ -32,7 +38,7 @@ const propertiesError = (error) => {
 }
 
 const fetchProperties = () => (dispatch) => {
-    dispatch(propertiesRequested());
+    dispatch(propertiesSpinnerOpen());
     const db = firebase.database();
     const dbDataRef = db.ref().child('properties');
     dbDataRef.on('value', snap => {
@@ -47,5 +53,7 @@ const fetchProperties = () => (dispatch) => {
 
 export {
     fetchProperties,
-    propertiesError
+    propertiesError,
+    propertiesSpinnerOpen,
+    propertiesSpinnerClose
 }

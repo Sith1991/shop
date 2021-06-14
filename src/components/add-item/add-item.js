@@ -31,7 +31,9 @@ const AddItem = ({
                      editingProduct,
                      clearSelectedProduct,
                      createdProduct,
-                     editedProduct
+                     editedProduct,
+                     productsSpinnerOpen,
+                     productsSpinnerClose
                  }) => {
 
     const [image, setImage] = useState(null);
@@ -143,6 +145,7 @@ const AddItem = ({
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            productsSpinnerOpen();
             const {itemName, description, price, propertiesOfProduct} = values;
             const trimmedItemName = itemName.trim();
             const trimmedDescription = description.trim();
@@ -190,7 +193,7 @@ const AddItem = ({
                                                                             // realtime firebase, файл загружается в firebase storage
                                     fileUrl: url,
                                 };
-                                    // Сработает, если товар редактируется
+                                // Сработает, если товар редактируется
                                 if (itemId) {
                                     const dbDataRef = ref.child(itemId);
                                     dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
@@ -198,6 +201,7 @@ const AddItem = ({
                                             if (error) {
                                                 productsError(error);
                                             } else {
+                                                productsSpinnerClose();
                                                 editedProduct();
                                             }
                                         });
@@ -208,6 +212,7 @@ const AddItem = ({
                                             if (error) {
                                                 productsError(error);
                                             } else {
+                                                productsSpinnerClose();
                                                 createdProduct();
                                             }
                                         });
@@ -233,6 +238,7 @@ const AddItem = ({
                         if (error) {
                             productsError(error);
                         } else {
+                            productsSpinnerClose();
                             editedProduct();
                         }
                     })
@@ -295,7 +301,8 @@ const AddItem = ({
 
                                 <FormControl error={touched.price && errors.price}>
                                     <FormLabel classes={{root: classesLabel.root}}
-                                               className={'labels'}>Стоимость товара<span className={'red-star'}>*</span></FormLabel>
+                                               className={'labels'}>Стоимость товара<span
+                                        className={'red-star'}>*</span></FormLabel>
                                     <NumberFormat classesInput={classesInput}
                                                   onChange={handleChange}                   // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
                                                   onBlur={handleBlur}                       // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
@@ -308,7 +315,8 @@ const AddItem = ({
 
                                 <FormControl error={touched.file && errors.file}>
                                     <FormLabel classes={{root: classesLabel.root}}
-                                               className={'labels'}>Изображение<span className={'red-star'}>*</span></FormLabel>
+                                               className={'labels'}>Изображение<span
+                                        className={'red-star'}>*</span></FormLabel>
                                     <FieldArray name={'file'}>
                                         {(arrayHelper) => (
                                             <div>
@@ -373,7 +381,8 @@ const AddItem = ({
                                             null : values.file[0].file}/>}
                                 <FormControl error={touched.description && errors.description}>
                                     <FormLabel classes={{root: classesLabel.root}}
-                                               className={'labels'}>Описание<span className={'red-star'}>*</span></FormLabel>
+                                               className={'labels'}>Описание<span
+                                        className={'red-star'}>*</span></FormLabel>
                                     <OutlinedInput type="text"
                                                    multiline={true}
                                                    rows={5}

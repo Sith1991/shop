@@ -1,4 +1,9 @@
-import {FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS} from "../../action-types";
+import {
+    FETCH_PRODUCTS_FAILURE,
+    FETCH_PRODUCTS_SPINNER_CLOSE,
+    FETCH_PRODUCTS_SPINNER_OPEN,
+    FETCH_PRODUCTS_SUCCESS
+} from "../../action-types";
 
 const productsReducer = (state, action) => {
 
@@ -11,10 +16,16 @@ const productsReducer = (state, action) => {
     }
 
     switch (action.type) {
-        case FETCH_PRODUCTS_REQUEST:
+        case FETCH_PRODUCTS_SPINNER_OPEN:
             return {
                 ...state,
                 loading: true,
+                error: null,
+            }
+        case FETCH_PRODUCTS_SPINNER_CLOSE:
+            return {
+                ...state,
+                loading: false,
                 error: null,
             }
         case FETCH_PRODUCTS_SUCCESS:

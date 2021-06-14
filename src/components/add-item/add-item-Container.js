@@ -3,7 +3,12 @@ import compose from "../../utils";
 import withShopService from "../../hoc";
 import {connect} from "react-redux";
 import {fetchProperties} from "../../store/actions/properties-actions";
-import {fetchProducts, productsError} from "../../store/actions/propducts-actions";
+import {
+    fetchProducts,
+    productsError,
+    productsSpinnerClose,
+    productsSpinnerOpen
+} from "../../store/actions/propducts-actions";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
@@ -27,6 +32,8 @@ const AddItemContainer = ({
                               clearSelectedProduct,
                               createdProduct,
                               editedProduct,
+                              productsSpinnerOpen,
+                              productsSpinnerClose,
                               match
                           }) => {
 
@@ -61,6 +68,8 @@ const AddItemContainer = ({
                  clearSelectedProduct={clearSelectedProduct}
                  createdProduct={createdProduct}
                  editedProduct={editedProduct}
+                 productsSpinnerOpen={productsSpinnerClose}
+                 productsSpinnerClose={productsSpinnerClose}
         />
     )
 }
@@ -87,6 +96,8 @@ const mapDispatchToProps = {
     clearSelectedProduct,
     createdProduct,
     editedProduct,
+    productsSpinnerOpen,
+    productsSpinnerClose
 };
 
 export default compose(
