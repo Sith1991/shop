@@ -12,7 +12,7 @@ import {
 
 } from "@material-ui/core";
 import {Link} from "react-router-dom";
-import UniversalTablePagination from "../table-pagination";
+import UniversalTablePagination from "../universal-table-pagination";
 import PropertyListTableHeader from "./property-list-table-header";
 
 import './property-list-table.scss';
@@ -92,8 +92,12 @@ const PropertyListTable = ({properties, onDeleted}) => {
                             onRequestSort={handleRequestSort}
                         />
                         <TableBody>
-                            {stableSort(properties, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            {/*Если rowsPerPage = -1 (т.е. выбрано в пагинации "Показать Все", то мапим без слайса)*/}
+                            {(rowsPerPage > 0 ?
+                                    stableSort(properties, getComparator(order, orderBy))
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    : stableSort(properties, getComparator(order, orderBy))
+                            )
                                 .map((properties) => {
                                     const {id, propertyName, propertyType} = properties;
                                     return (
@@ -119,11 +123,11 @@ const PropertyListTable = ({properties, onDeleted}) => {
                         </TableBody>
                         <TableFooter>
                             <UniversalTablePagination
-                            array={properties}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            handleChangePage={handleChangePage}
-                            handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                array={properties}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                handleChangePage={handleChangePage}
+                                handleChangeRowsPerPage={handleChangeRowsPerPage}
                             />
                         </TableFooter>
                     </Table>

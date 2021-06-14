@@ -10,7 +10,7 @@ import {
 import {Link} from "react-router-dom";
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import {ruRU} from '@material-ui/core/locale';
-import UniversalTablePagination from "../table-pagination";
+import UniversalTablePagination from "../universal-table-pagination";
 import ProductListTableHeader from "./product-list-table-header";
 import Spinner from "../spinner";
 
@@ -95,8 +95,12 @@ const ProductListTable = ({products, onDeleted, loading}) => {
                         />
                         {loading ? <Spinner/> :
                             <TableBody>
-                                {stableSort(products, getComparator(order, orderBy))
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                {/*Если rowsPerPage = -1 (т.е. выбрано в пагинации "Показать Все", то мапим без слайса)*/}
+                                {(rowsPerPage > 0 ?
+                                        stableSort(products, getComparator(order, orderBy))
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        : stableSort(products, getComparator(order, orderBy))
+                                )
                                     .map((product) => {
                                         const {id, itemName, price, dateOfChange} = product;
                                         const formattedPrice = price.toLocaleString('ru-RU');
