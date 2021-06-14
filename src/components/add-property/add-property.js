@@ -14,13 +14,10 @@ import usePropertyLabelStyles from "../../styles/customizing-material-ui-compone
 import StyledRadio from "../styled-radio-icon";
 import firebase from 'firebase/app';
 import 'firebase/database';
-import Notifications from "../notifications";
 
 import './add-property.scss';
 
-const AddProperty = ({properties, propertiesError}) => {
-
-    const [showNotification, setShowNotification] = useState(false);
+const AddProperty = ({properties, propertiesError, createdProperty}) => {
 
     const classesLabel = useAddItemLabelStyles();
 
@@ -66,7 +63,7 @@ const AddProperty = ({properties, propertiesError}) => {
                 if (error) {
                     propertiesError(error);
                 } else {
-                    setShowNotification(true);
+                    createdProperty();
                 }
             });
         },
@@ -87,7 +84,6 @@ const AddProperty = ({properties, propertiesError}) => {
             <div className={'add-property'}>
                 <div className={'add-property-bordered-wrap'}>
                     <form onSubmit={handleSubmit} className={'add-property-wrap'}>
-                        {showNotification && <Notifications path={'/property-list'}/>}
                         <div className={'buttons-wrap'}>
                             <Link to={'/property-list'} className={'button-back'}>
                                 Вернуться

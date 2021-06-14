@@ -9,7 +9,7 @@ import compose from "../../utils";
 import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
 import firebase from "firebase";
-import Notifications from "../notifications";
+import {deletedProduct} from "../../store/actions/notifications-actions";
 
 import './product-list.scss';
 
@@ -18,7 +18,6 @@ class ProductList extends Component {
     state = {
         term: '',
         columnName: 'itemName',
-        showNotification: false,
     }
 
     componentDidMount() {
@@ -26,19 +25,14 @@ class ProductList extends Component {
     }
 
     deleteItem = async (key) => {
-        this.setState({
-            showNotification: false
-        });
         const db = firebase.database();
         const ref = db.ref('products');
         const dbDataRef = ref.child(key);
         await dbDataRef.set(null, (error) => {        // отправляем null для того чтобы удалить свойство полностью по ключу key
             if (error) {
-                productsError(error);
+                this.props.productsError(error);
             } else {
-                this.setState({
-                    showNotification: true
-                })
+                this.props.deletedProduct();
             }
         });
     }
@@ -67,7 +61,7 @@ class ProductList extends Component {
     render() {
         const {products, loading, error} = this.props;
 
-        const {term, showNotification} = this.state;
+        const {term} = this.state;
 
         const visibleItems = this.searchItems(products, term);
 
@@ -97,7 +91,6 @@ class ProductList extends Component {
                     </div>
                     {error ? <ErrorIndicator/> :
                         <div>
-                            {showNotification && <Notifications path={'/'} deleted={'товар'}/>}
                             <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
                             <ProductListTable products={visibleItems}
                                               onDeleted={this.deleteItem}
@@ -120,7 +113,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     fetchProducts,
-    productsError
+    productsError,
+    deletedProduct
 };
 
 export default compose(

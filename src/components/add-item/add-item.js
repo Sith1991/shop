@@ -23,11 +23,17 @@ import PriceFormatInput from "../price-format-input";
 import {withRouter} from 'react-router-dom';
 
 import "./add-item.scss";
-import Notifications from "../notifications";
 
-const AddItem = ({properties, productsError, itemId, editingProduct, clearSelectedProduct}) => {
+const AddItem = ({
+                     properties,
+                     productsError,
+                     itemId,
+                     editingProduct,
+                     clearSelectedProduct,
+                     createdProduct,
+                     editedProduct
+                 }) => {
 
-    const [showNotification, setShowNotification] = useState(false);
     const [image, setImage] = useState(null);
 
     const classesLabel = useAddItemLabelStyles();
@@ -184,7 +190,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                                                                             // realtime firebase, файл загружается в firebase storage
                                     fileUrl: url,
                                 };
-
+                                    // Сработает, если товар редактируется
                                 if (itemId) {
                                     const dbDataRef = ref.child(itemId);
                                     dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
@@ -192,7 +198,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                                             if (error) {
                                                 productsError(error);
                                             } else {
-                                                setShowNotification(true);
+                                                editedProduct();
                                             }
                                         });
                                 } else {
@@ -202,14 +208,16 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                                             if (error) {
                                                 productsError(error);
                                             } else {
-                                                setShowNotification(true);
+                                                createdProduct();
                                             }
                                         });
                                 }
                             });
                     }
                 );
-            } else {
+            }
+            // Сработает, если товар редактируется, но при этом изображение не было изменено (не было перевыбрано).
+            else {
                 const newValues = {
                     ...values,
                     itemName: trimmedItemName,
@@ -225,7 +233,7 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                         if (error) {
                             productsError(error);
                         } else {
-                            setShowNotification(true);
+                            editedProduct();
                         }
                     })
             }
@@ -244,7 +252,6 @@ const AddItem = ({properties, productsError, itemId, editingProduct, clearSelect
                 <div className={'add-item'}>
                     <div className={'add-item-bordered-wrap'}>
                         <form onSubmit={handleSubmit} className={'add-item-wrap'}>
-                            {showNotification && <Notifications path={'/'} isEdited={itemId}/>}
                             <div className={'buttons-wrap'}>
                                 <Link to={'/'} className={'button-back'} onClick={clearSelectedProduct}>
                                     Вернуться

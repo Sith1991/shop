@@ -6,16 +6,15 @@ import store from '../src/store/store';
 import ErrorBoundry from './components/error-boundry';
 import App from './components/app';
 import {ShopServiceProvider} from './services/shop-service-context';
-import ShopService from './services/shop-service';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-/*const shopService = new ShopService();*/
+import NotificationsContainer from "./components/notifications/notifications-Container";
 
 ReactDOM.render(
     <Provider store={store}> {/*Предоставляет доступ к Redux Store*/}
         <ErrorBoundry> {/*Обработка ошибок в компонентах ниже*/}
             <ShopServiceProvider> {/*Передает service через ContextAPI*/}
                 <Router>
+                    <NotificationsContainer />
                     <App/>
                 </Router>
             </ShopServiceProvider>

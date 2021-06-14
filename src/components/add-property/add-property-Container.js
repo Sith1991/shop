@@ -6,8 +6,9 @@ import {connect} from "react-redux";
 import AddProperty from "../add-property";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
+import {createdProperty} from "../../store/actions/notifications-actions";
 
-const AddPropertyContainer = ({fetchProperties, propertiesError, properties, loading, error}) => {
+const AddPropertyContainer = ({fetchProperties, propertiesError, properties, loading, error, createdProperty}) => {
 
     useEffect(() => {
         fetchProperties();
@@ -22,7 +23,7 @@ const AddPropertyContainer = ({fetchProperties, propertiesError, properties, loa
     }
 
     return (
-        <AddProperty properties={properties} propertiesError={propertiesError}/>
+        <AddProperty properties={properties} propertiesError={propertiesError} createdProperty={createdProperty}/>
     )
 }
 
@@ -36,7 +37,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     fetchProperties,
-    propertiesError
+    propertiesError,
+    createdProperty,
 };
 
 export default compose(

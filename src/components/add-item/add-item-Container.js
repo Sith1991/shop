@@ -8,6 +8,7 @@ import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
 import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
+import {createdProduct, editedProduct} from "../../store/actions/notifications-actions";
 
 const AddItemContainer = ({
                               fetchProperties,
@@ -24,6 +25,8 @@ const AddItemContainer = ({
                               editingProduct,
                               fetchSelectedProduct,
                               clearSelectedProduct,
+                              createdProduct,
+                              editedProduct,
                               match
                           }) => {
 
@@ -55,7 +58,10 @@ const AddItemContainer = ({
                  productsError={productsError}
                  itemId={itemId}
                  editingProduct={editingProduct}
-                 clearSelectedProduct={clearSelectedProduct}/>
+                 clearSelectedProduct={clearSelectedProduct}
+                 createdProduct={createdProduct}
+                 editedProduct={editedProduct}
+        />
     )
 }
 
@@ -78,7 +84,9 @@ const mapDispatchToProps = {
     fetchProducts,
     productsError,
     fetchSelectedProduct,
-    clearSelectedProduct
+    clearSelectedProduct,
+    createdProduct,
+    editedProduct,
 };
 
 export default compose(

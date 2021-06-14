@@ -8,20 +8,17 @@ import ErrorIndicator from "../error-indicator";
 import {fetchProperties, propertiesError} from "../../store/actions/properties-actions";
 import firebase from 'firebase/app';
 import 'firebase/database';
+import {deletedProperty} from "../../store/actions/notifications-actions";
 
 import './property-list.scss';
-import Notifications from "../notifications";
 
-const PropertyList = ({fetchProperties, properties, loading, error}) => {
+const PropertyList = ({fetchProperties, deletedProperty, properties, loading, error}) => {
 
     useEffect(() => {
         fetchProperties();
     }, [])
 
-    const [showNotification, setShowNotification] = useState(false);
-
     const deleteItem = async (key) => {
-        setShowNotification(false);
         const db = firebase.database();
         const ref = db.ref('properties');
         const dbDataRef = ref.child(key);
@@ -29,7 +26,7 @@ const PropertyList = ({fetchProperties, properties, loading, error}) => {
             if (error) {
                 propertiesError(error);
             } else {
-                setShowNotification(true);
+                deletedProperty();
             }
         });
     }
@@ -66,7 +63,6 @@ const PropertyList = ({fetchProperties, properties, loading, error}) => {
                         </Button>
                     </Link>
                 </div>
-                {showNotification && <Notifications path={'/property-list'} deleted={'свойство'}/>}
                 <PropertyListTable properties={properties} onDeleted={deleteItem} />
             </div>
         </div>
@@ -83,7 +79,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     fetchProperties,
-    propertiesError
+    propertiesError,
+    deletedProperty
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyList);
