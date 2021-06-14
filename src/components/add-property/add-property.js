@@ -107,7 +107,7 @@ const AddProperty = ({properties, propertiesError, createdProperty}) => {
                         <div className={'add-prop-body'}>
                             <FormControl error={touched.propertyName && errors.propertyName}>
                                 <FormLabel classes={{root: classesLabel.root}}
-                                           className={'labels'}>Название свойства</FormLabel>
+                                           className={'labels'}>Название свойства<span className={'red-star'}>*</span></FormLabel>
                                 <OutlinedInput type="text"
                                                variant="outlined"
                                                notched={false}
@@ -127,7 +127,7 @@ const AddProperty = ({properties, propertiesError, createdProperty}) => {
                             <FormControl error={touched.propertyType && errors.propertyType}>
                                 <FormLabel classes={{root: classesLabel.root}}
                                            focused={false}
-                                           className={'labels'}>Укажите тип свойства</FormLabel>
+                                           className={'labels'}>Укажите тип свойства<span className={'red-star'}>*</span></FormLabel>
                                 <RadioGroup name="propertyType"
                                             value={values.propertyType}
                                             onChange={handleChange}

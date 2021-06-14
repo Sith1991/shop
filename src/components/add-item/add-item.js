@@ -275,7 +275,7 @@ const AddItem = ({
                             <div className={'add-item-body'}>
                                 <FormControl error={touched.itemName && errors.itemName}>
                                     <FormLabel classes={{root: classesLabel.root}}
-                                               className={'labels'}>Название товара</FormLabel>
+                                               className={'labels'}>Название товара<span className={'red-star'}>*</span></FormLabel>
                                     <OutlinedInput type="text"
                                                    variant="outlined"
                                                    notched={false}
@@ -295,7 +295,7 @@ const AddItem = ({
 
                                 <FormControl error={touched.price && errors.price}>
                                     <FormLabel classes={{root: classesLabel.root}}
-                                               className={'labels'}>Стоимость товара</FormLabel>
+                                               className={'labels'}>Стоимость товара<span className={'red-star'}>*</span></FormLabel>
                                     <NumberFormat classesInput={classesInput}
                                                   onChange={handleChange}                   // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
                                                   onBlur={handleBlur}                       // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
@@ -308,7 +308,7 @@ const AddItem = ({
 
                                 <FormControl error={touched.file && errors.file}>
                                     <FormLabel classes={{root: classesLabel.root}}
-                                               className={'labels'}>Изображение</FormLabel>
+                                               className={'labels'}>Изображение<span className={'red-star'}>*</span></FormLabel>
                                     <FieldArray name={'file'}>
                                         {(arrayHelper) => (
                                             <div>
@@ -373,7 +373,7 @@ const AddItem = ({
                                             null : values.file[0].file}/>}
                                 <FormControl error={touched.description && errors.description}>
                                     <FormLabel classes={{root: classesLabel.root}}
-                                               className={'labels'}>Описание</FormLabel>
+                                               className={'labels'}>Описание<span className={'red-star'}>*</span></FormLabel>
                                     <OutlinedInput type="text"
                                                    multiline={true}
                                                    rows={5}
