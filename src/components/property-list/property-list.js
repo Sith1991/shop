@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import PropertyListTable from "../property-list-table";
@@ -9,10 +9,11 @@ import {fetchProperties, propertiesError} from "../../store/actions/properties-a
 import firebase from 'firebase/app';
 import 'firebase/database';
 import {deletedProperty} from "../../store/actions/notifications-actions";
+import {userLogOut} from "../../store/actions/isAuth-actions";
 
 import './property-list.scss';
 
-const PropertyList = ({fetchProperties, deletedProperty, properties, loading, error}) => {
+const PropertyList = ({fetchProperties, deletedProperty, userLogOut, properties, loading, error, email}) => {
 
     useEffect(() => {
         fetchProperties();
@@ -42,17 +43,29 @@ const PropertyList = ({fetchProperties, deletedProperty, properties, loading, er
     return (
         <div className={'property-list-wrap'}>
             <div className={'header'}>
-                <div className={'wrap'}>
-                    <div className={'background'}></div>
-                    <Link to={'/'} className={'header-links'}>
-                        Листинг товаров
-                    </Link>
+                <div className={'button-group'}>
+                    <div className={'wrap'}>
+                        <div className={'background'}></div>
+                        <Link to={'/'} className={'header-links'}>
+                            Листинг товаров
+                        </Link>
+                    </div>
+                    <div className={'wrap colored'}>
+                        <div className={'background'}></div>
+                        <Link to={'/property-list'} className={'header-links'}>
+                            Листинг проперти
+                        </Link>
+                    </div>
                 </div>
-                <div className={'wrap colored'}>
-                    <div className={'background'}></div>
-                    <Link to={'/property-list'} className={'header-links'}>
-                        Листинг проперти
-                    </Link>
+                <div className={'button-group'}>
+                    <div className={'user-name'}>
+                        Пользователь (E-mail): {email}
+                    </div>
+                    <div className={'button-log-out-wrap'}>
+                        <Button className={'button-log-out'} variant={"warning"} onClick={userLogOut}>
+                            Выйти
+                        </Button>
+                    </div>
                 </div>
             </div>
             <div className={'property-list'}>
@@ -74,13 +87,15 @@ const mapStateToProps = (state) => {
         properties: state.properties.properties,
         loading: state.properties.loading,
         error: state.properties.error,
+        email: state.isAuth.email,
     }
 };
 
 const mapDispatchToProps = {
     fetchProperties,
     propertiesError,
-    deletedProperty
+    deletedProperty,
+    userLogOut
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyList);

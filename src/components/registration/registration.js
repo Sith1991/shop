@@ -12,6 +12,8 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useRegistrationButtonStyles from "../../styles/customizing-material-ui-components/button-registration-style";
 import {Link} from "react-router-dom";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 import './registration.scss';
 
@@ -44,7 +46,11 @@ const Registration = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values)
+            console.log(values);
+            const {email, password} = values;
+            const auth = firebase.auth();
+            const promise = auth.createUserWithEmailAndPassword(email, password);
+            promise.catch(e => console.log(e.message));
         },
         validateOnBlur: true,
     });

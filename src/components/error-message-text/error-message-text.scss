@@ -1,0 +1,6 @@
+@import "../../styles/mixins";
+
+.text-error {
+  max-width: 300px;
+  @include font-params(normal, 12px, 14px, #f44336);
+}

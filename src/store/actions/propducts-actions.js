@@ -4,7 +4,7 @@ import {
     FETCH_PRODUCTS_SUCCESS,
 } from "../../action-types";
 import firebase from 'firebase/app';
-import 'firebase/database'
+import 'firebase/database';
 
 const productsLoaded = (newItems) => {
     const objectsToArray = Object.values(newItems);
@@ -55,5 +55,5 @@ export {
     fetchProducts,
     productsError,
     productsSpinnerOpen,
-    productsSpinnerClose
+    productsSpinnerClose,
 }

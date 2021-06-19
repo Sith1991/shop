@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {FormControl, FormHelperText, FormLabel} from "@material-ui/core";
 import {ThemeProvider} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -12,15 +12,20 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useLoginButtonStyles from "../../styles/customizing-material-ui-components/button-login-style";
+import ErrorMessageText from "../error-message-text";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 import './login.scss';
 
-const Login = () => {
+const Login = ({history}) => {
 
     const classes = useLoginButtonStyles();
 
+    const [errorMessage, setErrorMessage] = useState(null);
+
     const validationSchema = yup.object().shape({
-        name: yup.string().typeError('Должно быть строкой')
+        email: yup.string().typeError('Должно быть строкой')
             .min(4, "Логин должен быть не менее 4 символов")
             .max(20, "Логин должен быть не болле 20 символов")
             .required('Обязательное поле'),
@@ -31,13 +36,25 @@ const Login = () => {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
+            email: '',
             password: '',
             showPassword: false,
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values)
+            console.log(values);
+            const {email, password} = values;
+            const auth = firebase.auth();
+            const promise = auth.signInWithEmailAndPassword(email, password);
+            promise
+                .then(() => {
+                    setErrorMessage(null);
+                    history.push('/');
+                })
+                .catch(e => {
+                    console.log(e.message);
+                    return setErrorMessage(e.message);
+                });
         },
         validateOnBlur: true,
     });
@@ -49,19 +66,20 @@ const Login = () => {
         <div className={'login'}>
             <form onSubmit={handleSubmit} className={'form-wrap'}>
                 <h4>Вход</h4>
+                {errorMessage ? <ErrorMessageText message={errorMessage}/> : null}
                 <div className={'login-wrap'}>
-                    <FormControl fullWidth error={touched.name && errors.name}>
+                    <FormControl fullWidth error={touched.email && errors.email}>
                         <FormLabel>Логин</FormLabel>
                         <OutlinedInput type="text"
                                        variant="outlined"
                                        notched={false}
                                        placeholder='Введите логин'
-                                       name={'name'}
+                                       name={'email'}
                                        onChange={handleChange}
                                        onBlur={handleBlur}
-                                       value={values.name}>
+                                       value={values.email}>
                         </OutlinedInput>
-                        {touched.name && errors.name && <FormHelperText>{errors.name}</FormHelperText>}
+                        {touched.email && errors.email && <FormHelperText>{errors.email}</FormHelperText>}
                     </FormControl>
                     <FormControl fullWidth error={touched.password && errors.password}>
                         <FormLabel>Пароль</FormLabel>
@@ -112,4 +130,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default withRouter(Login);

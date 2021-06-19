@@ -5,6 +5,13 @@
   .header {
     margin-bottom: 14px;
     display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
     .wrap {
       margin-right: 30px;
@@ -60,6 +67,33 @@
         width: 150px;
         font-size: 16px;
       }
+    }
+
+    .button-log-out {
+      color: white;
+      width: 100px;
+      height: 32px;
+      padding: 1px 6px;
+      margin: 0 10px;
+      @include font-params(normal, 16px, 19px, #FFFFFF);
+
+      &:hover,
+      &:focus,
+      &:visited {
+        color: white;
+      }
+    }
+
+    .user-name {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .button-log-out-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 
