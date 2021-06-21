@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useFormik} from 'formik';
 import * as yup from 'yup';
 import {ThemeProvider} from "@material-ui/core/styles";
@@ -11,15 +11,18 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useRegistrationButtonStyles from "../../styles/customizing-material-ui-components/button-registration-style";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import firebase from 'firebase/app';
 import 'firebase/database';
+import ErrorMessageText from "../error-message-text";
 
 import './registration.scss';
 
-const Registration = () => {
+const Registration = ({history}) => {
 
     const classes = useRegistrationButtonStyles();
+
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const validationSchema = yup.object().shape({
         name: yup.string()
@@ -50,7 +53,15 @@ const Registration = () => {
             const {email, password} = values;
             const auth = firebase.auth();
             const promise = auth.createUserWithEmailAndPassword(email, password);
-            promise.catch(e => console.log(e.message));
+            promise
+                .then(() => {
+                    setErrorMessage(null);
+                    history.push('/');
+                })
+                .catch(e => {
+                    console.log(e.message);
+                    setErrorMessage(e.message);
+                });
         },
         validateOnBlur: true,
     });
@@ -60,6 +71,7 @@ const Registration = () => {
         <div className={'registration'}>
             <form onSubmit={handleSubmit} className={'form-wrap'}>
                 <h4>Регистрация</h4>
+                {errorMessage ? <ErrorMessageText message={errorMessage}/> : null}
                 <div className={'registration-wrap'}>
                         <FormControl fullWidth error={touched.name && errors.name}>
                             <FormLabel>Имя</FormLabel>
@@ -173,4 +185,4 @@ const Registration = () => {
     );
 };
 
-export default Registration;
+export default withRouter(Registration);

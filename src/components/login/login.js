@@ -53,7 +53,7 @@ const Login = ({history}) => {
                 })
                 .catch(e => {
                     console.log(e.message);
-                    return setErrorMessage(e.message);
+                    setErrorMessage(e.message);
                 });
         },
         validateOnBlur: true,
