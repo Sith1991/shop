@@ -14,14 +14,12 @@ import useProductCardItemSelectStyles
 
 import './product-card.scss';
 
-const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
+const ProductCard = ({selectedProduct, clearSelectedProduct, logIn}) => {
 
     const classes = useLoginButtonStyles();
     const classesSelect = useProductCardItemSelectStyles();
 
     const {itemName, fileUrl, description, price, propertiesOfProduct} = selectedProduct;
-
-    console.log(propertiesOfProduct);
 
     // При первом реднере компоненты, прохожу по массиву свойств товара и в случае, когда свойство имеет тип Dropdown,
     // его первое значение из массива значений сразу устанавливаю в initialValues формика, т.к. если пользователь не выберет
@@ -131,11 +129,13 @@ const ProductCard = ({selectedProduct, clearSelectedProduct}) => {
         <div className={'product-card'}>
             <div className={'product-card-bordered-wrap'}>
                 <div className={"product-card-wrap"}>
-                    <div className={'link'}>
-                        <Link to={'/'} onClick={clearSelectedProduct}>
-                            Вернуться
-                        </Link>
-                    </div>
+                    {logIn ?
+                        <div className={'link'}>
+                            <Link to={'/'} onClick={clearSelectedProduct}>
+                                Вернуться
+                            </Link>
+                        </div>
+                        : null}
                     <form onSubmit={handleSubmit} className={'product-card-wrapper'}>
                         <div className={'header-items-row'}>
                             <div className={'item-image'}>

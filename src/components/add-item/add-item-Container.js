@@ -14,6 +14,7 @@ import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
 import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
 import {createdProduct, editedProduct} from "../../store/actions/notifications-actions";
+import {Redirect} from "react-router-dom";
 
 const AddItemContainer = ({
                               fetchProperties,
@@ -34,7 +35,8 @@ const AddItemContainer = ({
                               editedProduct,
                               productsSpinnerOpen,
                               productsSpinnerClose,
-                              match
+                              match,
+                              logIn
                           }) => {
 
     const itemId = match.params.id;
@@ -50,6 +52,10 @@ const AddItemContainer = ({
         // данные ранее редактируемого товара
         return () => clearSelectedProduct();
     }, [itemId])
+
+    if (!logIn) {
+        return <Redirect to={'/login'}/>
+    }
 
     if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {
         return <Spinner/>
@@ -68,7 +74,7 @@ const AddItemContainer = ({
                  clearSelectedProduct={clearSelectedProduct}
                  createdProduct={createdProduct}
                  editedProduct={editedProduct}
-                 productsSpinnerOpen={productsSpinnerClose}
+                 productsSpinnerOpen={productsSpinnerOpen}
                  productsSpinnerClose={productsSpinnerClose}
         />
     )
@@ -85,6 +91,7 @@ const mapStateToProps = (state) => {
         loadingEditingProduct: state.selectedProduct.loading,
         errorEditingProduct: state.selectedProduct.error,
         editingProduct: state.selectedProduct.selectedProduct,
+        logIn: state.isAuth.logIn,
     }
 };
 

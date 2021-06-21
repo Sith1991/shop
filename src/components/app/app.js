@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import Login from "../login";
-import Registration from "../registration";
+import LoginContainer from "../login/login-Container";
+import RegistrationContainer from "../registration/registration-Container";
 import ProductList from "../product-list";
 import PropertyList from "../property-list";
 import AddPropertyContainer from "../add-property/add-property-Container";
@@ -29,9 +29,9 @@ const App = () => {
                     <Route path={'/add-item/:id?'}
                            component={AddItemContainer}/>
                     <Route path={'/login'}
-                           component={Login}/>
+                           component={LoginContainer}/>
                     <Route path={'/registration'}
-                           component={Registration}/>
+                           component={RegistrationContainer}/>
                     <Route render={ () => <ErrorIndicator /> } />       {/* Switch перекинет на страницу с ошибкой, если
                                                                             ввести несуществующий адрес*/}
                 </Switch>

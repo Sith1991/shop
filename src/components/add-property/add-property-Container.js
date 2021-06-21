@@ -12,6 +12,7 @@ import AddProperty from "../add-property";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import {createdProperty} from "../../store/actions/notifications-actions";
+import {Redirect} from "react-router-dom";
 
 const AddPropertyContainer = ({
                                   fetchProperties,
@@ -21,12 +22,17 @@ const AddPropertyContainer = ({
                                   error,
                                   createdProperty,
                                   propertiesSpinnerOpen,
-                                  propertiesSpinnerClose
+                                  propertiesSpinnerClose,
+                                  logIn
                               }) => {
 
     useEffect(() => {
         fetchProperties();
     }, [])
+
+    if (!logIn) {
+        return <Redirect to={'/login'}/>
+    }
 
     if (loading) {
         return <Spinner/>
@@ -51,6 +57,7 @@ const mapStateToProps = (state) => {
         properties: state.properties.properties,
         loading: state.properties.loading,
         error: state.properties.error,
+        logIn: state.isAuth.logIn,
     }
 };
 

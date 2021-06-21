@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import {Button} from "react-bootstrap";
 import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
@@ -61,11 +61,15 @@ class ProductList extends Component {
     }
 
     render() {
-        const {products, loading, error, userLogOut, email} = this.props;
+        const {products, loading, error, userLogOut, email, logIn} = this.props;
 
         const {term} = this.state;
 
         const visibleItems = this.searchItems(products, term);
+
+        if (!logIn) {
+            return <Redirect to={'/login'}/>
+        }
 
         return (
             <div className={'product-list-wrap'}>
@@ -123,6 +127,7 @@ const mapStateToProps = (state) => {
         loading: state.products.loading,
         error: state.products.error,
         email: state.isAuth.email,
+        logIn: state.isAuth.logIn,
     }
 };
 

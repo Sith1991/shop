@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import PropertyListTable from "../property-list-table";
 import {connect} from "react-redux";
@@ -13,7 +13,7 @@ import {userLogOut} from "../../store/actions/isAuth-actions";
 
 import './property-list.scss';
 
-const PropertyList = ({fetchProperties, deletedProperty, userLogOut, properties, loading, error, email}) => {
+const PropertyList = ({fetchProperties, deletedProperty, userLogOut, properties, loading, error, email, logIn}) => {
 
     useEffect(() => {
         fetchProperties();
@@ -30,6 +30,10 @@ const PropertyList = ({fetchProperties, deletedProperty, userLogOut, properties,
                 deletedProperty();
             }
         });
+    }
+
+    if (!logIn) {
+        return <Redirect to={'/login'}/>
     }
 
     if (loading) {
@@ -88,6 +92,7 @@ const mapStateToProps = (state) => {
         loading: state.properties.loading,
         error: state.properties.error,
         email: state.isAuth.email,
+        logIn: state.isAuth.logIn,
     }
 };
 

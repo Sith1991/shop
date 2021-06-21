@@ -42,7 +42,6 @@ const Login = ({history}) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
             const {email, password} = values;
             const auth = firebase.auth();
             const promise = auth.signInWithEmailAndPassword(email, password);

@@ -5,7 +5,7 @@ import ErrorIndicator from "../error-indicator";
 import ProductCard from "./product-card";
 import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
 
-const ProductCardContainer = ({match, selectedProduct, loading, error, fetchSelectedProduct, clearSelectedProduct}) => {
+const ProductCardContainer = ({match, selectedProduct, loading, error, fetchSelectedProduct, clearSelectedProduct, logIn}) => {
     const itemId = match.params.id;
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const ProductCardContainer = ({match, selectedProduct, loading, error, fetchSele
     }
 
     return (
-        <ProductCard selectedProduct={selectedProduct} clearSelectedProduct={clearSelectedProduct}/>
+        <ProductCard selectedProduct={selectedProduct} clearSelectedProduct={clearSelectedProduct} logIn={logIn}/>
     )
 }
 
@@ -34,6 +34,7 @@ const mapStateToProps = (state) => {
         loading: state.selectedProduct.loading,
         error: state.selectedProduct.error,
         selectedProduct: state.selectedProduct.selectedProduct,
+        logIn: state.isAuth.logIn,
     }
 };
 
