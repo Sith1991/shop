@@ -110,7 +110,4 @@ const mapDispatchToProps = {
     resetNotifications
 };
 
-export default compose(
-    withShopService(),
-    connect(mapStateToProps, mapDispatchToProps)
-)(AddItemContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AddItemContainer);

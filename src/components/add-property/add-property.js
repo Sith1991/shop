@@ -47,7 +47,7 @@ const AddProperty = ({properties, propertiesError, createdProperty, propertiesSp
             propertyType: 'Dropdown',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             propertiesSpinnerOpen();
             const {propertyName} = values;
             const trimmedPropertyName = propertyName.trim();
@@ -56,7 +56,7 @@ const AddProperty = ({properties, propertiesError, createdProperty, propertiesSp
                 propertyName: trimmedPropertyName,
             };
 
-            postItemsToDatabase(newValues, 'properties', propertiesError, propertiesSpinnerClose, createdProperty);
+            await postItemsToDatabase(newValues, 'properties', propertiesError, propertiesSpinnerClose, createdProperty);
         },
         validateOnBlur: true,
     });
