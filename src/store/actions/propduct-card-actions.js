@@ -4,8 +4,7 @@ import {
     FETCH_SELECTED_PRODUCT_REQUEST,
     FETCH_SELECTED_PRODUCT_SUCCESS
 } from "../../action-types";
-import firebase from 'firebase/app';
-import 'firebase/database'
+import {getSelectedProduct} from "../../services/firebase-service";
 
 const selectedProductLoaded = (products, itemId) => {
     const objectsToArray = Object.values(products);
@@ -46,16 +45,7 @@ const selectedProductError = (error) => {
 
 const fetchSelectedProduct = (itemId) => (dispatch) => {
     dispatch(selectedProductRequested());
-    const db = firebase.database();
-    const dbDataRef = db.ref().child('products');
-    dbDataRef.on('value', snap => {
-        const data = snap.val();
-        if (data === null) {
-            dispatch((selectedProductLoaded([])))
-        } else {
-            dispatch((selectedProductLoaded(data, itemId)))
-        }
-    })
+    getSelectedProduct(dispatch, selectedProductLoaded, itemId)
 }
 
 export {

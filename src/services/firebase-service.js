@@ -28,12 +28,40 @@ const deleteItem = async (key, path, itemError, deletedItem) => {
     });
 }
 
+const getSelectedProduct = (dispatch, selectedProductLoaded, itemId) => {
+    const db = firebase.database();
+    const dbDataRef = db.ref().child('products');
+    dbDataRef.on('value', snap => {
+        const data = snap.val();
+        if (data === null) {
+            dispatch((selectedProductLoaded([])))
+        } else {
+            dispatch((selectedProductLoaded(data, itemId)))
+        }
+    })
+}
+
+const getUserAuth = (dispatch, userIsLoggedIn, userIsNotLoggedIn) => {
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+            if (firebaseUser) {
+                dispatch(userIsLoggedIn(firebaseUser.email));
+            } else {
+                dispatch(userIsNotLoggedIn());
+            }
+        }
+    )
+}
+
 const userLogOut = () => {
-    firebase.auth().signOut();
+    firebase.auth().signOut()
+        .then(e => console.log(e))
+        .catch(e => console.log(e));
 }
 
 export {
     getItems,
     deleteItem,
-    userLogOut
+    getSelectedProduct,
+    getUserAuth,
+    userLogOut,
 }
