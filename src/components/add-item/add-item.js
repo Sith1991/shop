@@ -1,7 +1,4 @@
 import React, {useState} from 'react';
-import firebase from 'firebase/app';
-import 'firebase/database';
-import {storage} from "../../services/firebase-config";
 import AddPropertyToProduct from "../add-property-to-product";
 import {Link} from "react-router-dom";
 import * as yup from "yup";
@@ -21,6 +18,8 @@ import NumberFormat from 'react-number-format';
 import Thumb from "../thumb";
 import PriceFormatInput from "../price-format-input";
 import {withRouter} from 'react-router-dom';
+import {getDateOfChange, postItemsToDatabase, putItemsToDatabase} from "../../services/firebase-service";
+import {storage} from "../../services/firebase-config";
 
 import "./add-item.scss";
 
@@ -47,11 +46,6 @@ const AddItem = ({
     // отображенире цены происходит с пробелами чсерез каждых три символа
     const priceFormat = (value) => {
         return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
-    }
-
-    // получение таймстампа с сервера Firebase
-    const getDateOfChange = () => {
-        return firebase.database.ServerValue.TIMESTAMP;
     }
 
     const validationSchema = yup.object().shape({
@@ -190,33 +184,14 @@ const AddItem = ({
                                                                             // realtime firebase, файл загружается в firebase storage
                                     fileUrl: url,
                                 };
+
                                 // Сработает, если товар редактируется
                                 if (itemId) {
-                                    const db = firebase.database();
-                                    const ref = db.ref('products');
-                                    const dbDataRef = ref.child(itemId);
-                                    dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                                        function (error) {
-                                            if (error) {
-                                                productsError(error);
-                                            } else {
-                                                productsSpinnerClose();
-                                                editedProduct();
-                                            }
-                                        });
+                                    putItemsToDatabase({...newValues, dateOfChange: getDateOfChange()}, itemId,
+                                        'products', productsError, productsSpinnerClose, editedProduct);
                                 } else {
-                                    const db = firebase.database();
-                                    const ref = db.ref('products');
-                                    const dbDataRef = ref.push();
-                                    dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                                        function (error) {
-                                            if (error) {
-                                                productsError(error);
-                                            } else {
-                                                productsSpinnerClose();
-                                                createdProduct();
-                                            }
-                                        });
+                                    postItemsToDatabase({...newValues, dateOfChange: getDateOfChange()},
+                                        'products', productsError, productsSpinnerClose, createdProduct);
                                 }
                             });
                     }
@@ -233,18 +208,9 @@ const AddItem = ({
                     file: [],                               // чистим массив с фото, т.к. он не нужен в
                                                             // realtime firebase, файл загружается в firebase storage
                 };
-                const db = firebase.database();
-                const ref = db.ref('products');
-                const dbDataRef = ref.child(itemId);
-                await dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
-                    function (error) {
-                        if (error) {
-                            productsError(error);
-                        } else {
-                            productsSpinnerClose();
-                            editedProduct();
-                        }
-                    })
+
+                await putItemsToDatabase({...newValues, dateOfChange: getDateOfChange()}, itemId,
+                    'products', productsError, productsSpinnerClose, editedProduct);
             }
         },
         validateOnBlur: true,

@@ -2,7 +2,6 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
-
 const getItems = (dispatch, items, itemsLoaded) => {
     const db = firebase.database();                     // нельзя выносить как общую переменную, иначе выдает ошибку
     const dbDataRef = db.ref().child(`${items}`);
@@ -63,14 +62,12 @@ const submitLogIn = (values) => {
     const {email, password} = values;
     const auth = firebase.auth();
     return auth.signInWithEmailAndPassword(email, password)
-
 }
 
 const submitRegistration = (values) => {
     const {email, password} = values;
     const auth = firebase.auth();
     return auth.createUserWithEmailAndPassword(email, password)
-
 }
 
 const postItemsToDatabase = async (newValues, path, itemError, itemSpinnerClose, notificationItem) => {
@@ -87,6 +84,26 @@ const postItemsToDatabase = async (newValues, path, itemError, itemSpinnerClose,
     });
 }
 
+const putItemsToDatabase = async (newValues, itemId, path, itemError, itemSpinnerClose, notificationItem) => {
+    const db = firebase.database();
+    const ref = db.ref(`${path}`);
+    const dbDataRef = ref.child(itemId);
+    await dbDataRef.set(newValues,
+        function (error) {
+            if (error) {
+                itemError(error);
+            } else {
+                itemSpinnerClose();
+                notificationItem();
+            }
+        })
+}
+
+// получение таймстампа с сервера Firebase
+const getDateOfChange = () => {
+    return firebase.database.ServerValue.TIMESTAMP;
+}
+
 export {
     getItems,
     deleteItem,
@@ -95,5 +112,7 @@ export {
     userLogOut,
     submitLogIn,
     submitRegistration,
-    postItemsToDatabase
+    postItemsToDatabase,
+    putItemsToDatabase,
+    getDateOfChange,
 }

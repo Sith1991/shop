@@ -13,6 +13,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+// Не работает, если переместить в firebase-service
 const storage = firebase.storage();
 
 export {storage, firebase as default};
