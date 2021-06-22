@@ -11,7 +11,7 @@ import {connect} from "react-redux";
 import AddProperty from "../add-property";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
-import {createdProperty} from "../../store/actions/notifications-actions";
+import {createdProperty, resetNotifications} from "../../store/actions/notifications-actions";
 import {Redirect} from "react-router-dom";
 
 const AddPropertyContainer = ({
@@ -23,10 +23,12 @@ const AddPropertyContainer = ({
                                   createdProperty,
                                   propertiesSpinnerOpen,
                                   propertiesSpinnerClose,
-                                  logIn
+                                  logIn,
+                                  resetNotifications
                               }) => {
 
     useEffect(() => {
+        resetNotifications();
         fetchProperties();
     }, [])
 
@@ -66,7 +68,8 @@ const mapDispatchToProps = {
     propertiesError,
     createdProperty,
     propertiesSpinnerOpen,
-    propertiesSpinnerClose
+    propertiesSpinnerClose,
+    resetNotifications
 };
 
 export default compose(

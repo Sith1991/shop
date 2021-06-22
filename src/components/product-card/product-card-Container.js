@@ -4,11 +4,22 @@ import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import ProductCard from "./product-card";
 import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
+import {resetNotifications} from "../../store/actions/notifications-actions";
 
-const ProductCardContainer = ({match, selectedProduct, loading, error, fetchSelectedProduct, clearSelectedProduct, logIn}) => {
+const ProductCardContainer = ({
+                                  match,
+                                  selectedProduct,
+                                  loading,
+                                  error,
+                                  fetchSelectedProduct,
+                                  clearSelectedProduct,
+                                  logIn,
+                                  resetNotifications
+                              }) => {
     const itemId = match.params.id;
 
     useEffect(() => {
+        resetNotifications();
         fetchSelectedProduct(itemId);
         // срабатывает при уничтожении компоненты. Очищаю бывранный товар, т.к. если этого не делать, то при нажатии
         // на backspace с редактируемого товара и последующем переходе на добавление товара в инпуты прогружаются
@@ -40,7 +51,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     fetchSelectedProduct,
-    clearSelectedProduct
+    clearSelectedProduct,
+    resetNotifications
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCardContainer);

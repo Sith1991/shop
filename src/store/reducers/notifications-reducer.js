@@ -1,7 +1,7 @@
 import {
     NOTIFICATION_CREATED_PRODUCT, NOTIFICATION_CREATED_PROPERTY,
     NOTIFICATION_DELETED_PRODUCT, NOTIFICATION_DELETED_PROPERTY,
-    NOTIFICATION_EDITED_PRODUCT, NOTIFICATION_GO_TO_CLOSE
+    NOTIFICATION_EDITED_PRODUCT, NOTIFICATION_GO_TO_CLOSE, NOTIFICATION_STATUS_RESET
 } from "../../action-types";
 
 const notificationsReducer = (state, action) => {
@@ -55,6 +55,13 @@ const notificationsReducer = (state, action) => {
             return {
                 ...state,
                 showNotification: false,
+            }
+        case NOTIFICATION_STATUS_RESET:
+            return {
+                showNotification: false,
+                path: null,
+                isEditing: false,
+                deletedItem: null,
             }
         default:
             return state

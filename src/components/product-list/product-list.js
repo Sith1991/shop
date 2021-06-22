@@ -8,7 +8,7 @@ import {fetchProducts, productsError} from "../../store/actions/propducts-action
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
-import {deletedProduct} from "../../store/actions/notifications-actions";
+import {deletedProduct, resetNotifications} from "../../store/actions/notifications-actions";
 import {userIsAuth} from "../../store/actions/isAuth-actions";
 import {deleteItem, userLogOut} from "../../services/firebase-service";
 
@@ -22,8 +22,9 @@ class ProductList extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchProducts();
         this.props.userIsAuth();
+        this.props.resetNotifications();
+        this.props.fetchProducts();
     }
 
     columnChange = (columnName) => {
@@ -125,6 +126,7 @@ const mapDispatchToProps = {
     productsError,
     deletedProduct,
     userIsAuth,
+    resetNotifications
 };
 
 export default compose(

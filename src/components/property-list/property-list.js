@@ -6,14 +6,15 @@ import {connect} from "react-redux";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import {fetchProperties, propertiesError} from "../../store/actions/properties-actions";
-import {deletedProperty} from "../../store/actions/notifications-actions";
+import {deletedProperty, resetNotifications} from "../../store/actions/notifications-actions";
 import {deleteItem, userLogOut} from "../../services/firebase-service";
 
 import './property-list.scss';
 
-const PropertyList = ({fetchProperties, propertiesError, deletedProperty, properties, loading, error, email, logIn}) => {
+const PropertyList = ({fetchProperties, propertiesError, deletedProperty, properties, loading, error, email, logIn, resetNotifications}) => {
 
     useEffect(() => {
+        resetNotifications();
         fetchProperties();
     }, [])
 
@@ -88,6 +89,7 @@ const mapDispatchToProps = {
     fetchProperties,
     propertiesError,
     deletedProperty,
+    resetNotifications
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyList);

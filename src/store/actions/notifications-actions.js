@@ -1,7 +1,7 @@
 import {
     NOTIFICATION_CREATED_PRODUCT, NOTIFICATION_CREATED_PROPERTY,
     NOTIFICATION_DELETED_PRODUCT, NOTIFICATION_DELETED_PROPERTY,
-    NOTIFICATION_EDITED_PRODUCT, NOTIFICATION_GO_TO_CLOSE
+    NOTIFICATION_EDITED_PRODUCT, NOTIFICATION_GO_TO_CLOSE, NOTIFICATION_STATUS_RESET
 } from "../../action-types";
 
 const createdProduct = () => {
@@ -45,11 +45,20 @@ const closeNotifications = () => {
     }
 }
 
+// Необходимо для того, что бы при переходе на другую страницу, не перебрасывало обратно после срабатывания нотификации,
+// как это сделано в логике компоненты notifications.js
+const resetNotifications = () => {
+    return {
+        type: NOTIFICATION_STATUS_RESET,
+    }
+}
+
 export {
     createdProduct,
     editedProduct,
     deletedProduct,
     createdProperty,
     deletedProperty,
-    closeNotifications
+    closeNotifications,
+    resetNotifications
 }

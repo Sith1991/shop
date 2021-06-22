@@ -13,7 +13,7 @@ import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
 import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
-import {createdProduct, editedProduct} from "../../store/actions/notifications-actions";
+import {createdProduct, editedProduct, resetNotifications} from "../../store/actions/notifications-actions";
 import {Redirect} from "react-router-dom";
 
 const AddItemContainer = ({
@@ -36,12 +36,14 @@ const AddItemContainer = ({
                               productsSpinnerOpen,
                               productsSpinnerClose,
                               match,
-                              logIn
+                              logIn,
+                              resetNotifications
                           }) => {
 
     const itemId = match.params.id;
 
     useEffect(() => {
+        resetNotifications();
         fetchProducts();
         fetchProperties();
         if (itemId) {
@@ -104,7 +106,8 @@ const mapDispatchToProps = {
     createdProduct,
     editedProduct,
     productsSpinnerOpen,
-    productsSpinnerClose
+    productsSpinnerClose,
+    resetNotifications
 };
 
 export default compose(
