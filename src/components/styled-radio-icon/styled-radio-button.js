@@ -4,8 +4,6 @@ import clsx from "clsx";
 import {makeStyles} from "@material-ui/core/styles";
 import image from "../../img/Ellipse.svg";
 
-
-
 const StyledRadio = (props) => {
 
     const useStyles = makeStyles({

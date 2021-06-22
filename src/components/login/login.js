@@ -13,8 +13,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useLoginButtonStyles from "../../styles/customizing-material-ui-components/button-login-style";
 import ErrorMessageText from "../error-message-text";
-import firebase from 'firebase/app';
-import 'firebase/database';
+import {submitLogIn} from "../../services/firebase-service";
 
 import './login.scss';
 
@@ -42,10 +41,7 @@ const Login = ({history}) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            const {email, password} = values;
-            const auth = firebase.auth();
-            const promise = auth.signInWithEmailAndPassword(email, password);
-            promise
+            submitLogIn(values)
                 .then(() => {
                     setErrorMessage(null);
                     history.push('/');

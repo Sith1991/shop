@@ -12,9 +12,8 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useRegistrationButtonStyles from "../../styles/customizing-material-ui-components/button-registration-style";
 import {Link, withRouter} from "react-router-dom";
-import firebase from 'firebase/app';
-import 'firebase/database';
 import ErrorMessageText from "../error-message-text";
+import {submitRegistration} from "../../services/firebase-service";
 
 import './registration.scss';
 
@@ -49,11 +48,7 @@ const Registration = ({history}) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
-            const {email, password} = values;
-            const auth = firebase.auth();
-            const promise = auth.createUserWithEmailAndPassword(email, password);
-            promise
+            submitRegistration(values)
                 .then(() => {
                     setErrorMessage(null);
                     history.push('/');

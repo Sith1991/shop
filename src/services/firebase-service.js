@@ -54,8 +54,22 @@ const getUserAuth = (dispatch, userIsLoggedIn, userIsNotLoggedIn) => {
 
 const userLogOut = () => {
     firebase.auth().signOut()
-        .then(e => console.log(e))
+        .then(() => console.log('sign out'))
         .catch(e => console.log(e));
+}
+
+const submitLogIn = (values) => {
+    const {email, password} = values;
+    const auth = firebase.auth();
+    return auth.signInWithEmailAndPassword(email, password)
+
+}
+
+const submitRegistration = (values) => {
+    const {email, password} = values;
+    const auth = firebase.auth();
+    return auth.createUserWithEmailAndPassword(email, password)
+
 }
 
 export {
@@ -64,4 +78,6 @@ export {
     getSelectedProduct,
     getUserAuth,
     userLogOut,
+    submitLogIn,
+    submitRegistration
 }
