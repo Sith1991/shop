@@ -162,9 +162,6 @@ const AddItem = ({
                 } else return props;
             })
 
-            const db = firebase.database();
-            const ref = db.ref('products');
-
             if (image) {
                 // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
                 // не перезаписывали друг друга
@@ -195,6 +192,8 @@ const AddItem = ({
                                 };
                                 // Сработает, если товар редактируется
                                 if (itemId) {
+                                    const db = firebase.database();
+                                    const ref = db.ref('products');
                                     const dbDataRef = ref.child(itemId);
                                     dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
                                         function (error) {
@@ -206,6 +205,8 @@ const AddItem = ({
                                             }
                                         });
                                 } else {
+                                    const db = firebase.database();
+                                    const ref = db.ref('products');
                                     const dbDataRef = ref.push();
                                     dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
                                         function (error) {
@@ -232,6 +233,8 @@ const AddItem = ({
                     file: [],                               // чистим массив с фото, т.к. он не нужен в
                                                             // realtime firebase, файл загружается в firebase storage
                 };
+                const db = firebase.database();
+                const ref = db.ref('products');
                 const dbDataRef = ref.child(itemId);
                 await dbDataRef.set({...newValues, dateOfChange: getDateOfChange()},
                     function (error) {

@@ -12,8 +12,7 @@ import Button from "@material-ui/core/Button";
 import useSaveButtonStyles from "../../styles/customizing-material-ui-components/button-save-style";
 import usePropertyLabelStyles from "../../styles/customizing-material-ui-components/add-property-radio-style";
 import StyledRadio from "../styled-radio-icon";
-import firebase from 'firebase/app';
-import 'firebase/database';
+import {postItemsToDatabase} from "../../services/firebase-service";
 
 import './add-property.scss';
 
@@ -48,7 +47,7 @@ const AddProperty = ({properties, propertiesError, createdProperty, propertiesSp
             propertyType: 'Dropdown',
         },
         validationSchema: validationSchema,
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             propertiesSpinnerOpen();
             const {propertyName} = values;
             const trimmedPropertyName = propertyName.trim();
@@ -57,17 +56,7 @@ const AddProperty = ({properties, propertiesError, createdProperty, propertiesSp
                 propertyName: trimmedPropertyName,
             };
 
-            const db = firebase.database();
-            const ref = db.ref('properties');
-            const dbDataRef = ref.push();
-            await dbDataRef.set(newValues, function (error) {
-                if (error) {
-                    propertiesError(error);
-                } else {
-                    propertiesSpinnerClose();
-                    createdProperty();
-                }
-            });
+            postItemsToDatabase(newValues, 'properties', propertiesError, propertiesSpinnerClose, createdProperty);
         },
         validateOnBlur: true,
     });

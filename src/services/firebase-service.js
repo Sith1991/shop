@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
+
 const getItems = (dispatch, items, itemsLoaded) => {
     const db = firebase.database();                     // нельзя выносить как общую переменную, иначе выдает ошибку
     const dbDataRef = db.ref().child(`${items}`);
@@ -72,6 +73,20 @@ const submitRegistration = (values) => {
 
 }
 
+const postItemsToDatabase = async (newValues, path, itemError, itemSpinnerClose, notificationItem) => {
+    const db = firebase.database();
+    const ref = db.ref(`${path}`);
+    const dbDataRef = ref.push();
+    await dbDataRef.set(newValues, function (error) {
+        if (error) {
+            itemError(error);
+        } else {
+            itemSpinnerClose();
+            notificationItem();
+        }
+    });
+}
+
 export {
     getItems,
     deleteItem,
@@ -79,5 +94,6 @@ export {
     getUserAuth,
     userLogOut,
     submitLogIn,
-    submitRegistration
+    submitRegistration,
+    postItemsToDatabase
 }
