@@ -17,7 +17,7 @@ import PropertyListTableHeader from "./property-list-table-header";
 
 import './property-list-table.scss';
 
-const PropertyListTable = ({properties, onDeleted}) => {
+const PropertyListTable = ({properties, onDeleted, propertiesError, deletedProperty}) => {
 
     // русская локализация
     const theme = createMuiTheme({
@@ -109,7 +109,8 @@ const PropertyListTable = ({properties, onDeleted}) => {
                                                 <div className={'property-type table-body'}>{propertyType}</div>
                                             </TableCell>
                                             <TableCell align={"right"}>
-                                                <Link to={'#'} onClick={() => onDeleted(id)}
+                                                <Link to={'#'}
+                                                      onClick={() => onDeleted(id, 'properties', propertiesError, deletedProperty)}
                                                       className={'link'}>Удалить</Link>
                                             </TableCell>
                                         </TableRow>

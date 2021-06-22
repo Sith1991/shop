@@ -1,6 +1,7 @@
+import {USER_IS_LOGGED_IN, USER_IS_LOGGED_OUT} from "../../action-types";
 import firebase from 'firebase/app';
 import 'firebase/database';
-import {USER_IS_LOGGED_IN, USER_IS_LOGGED_OUT} from "../../action-types";
+import "firebase/auth";
 
 const userIsAuth = () => (dispatch) => {
     firebase.auth().onAuthStateChanged(firebaseUser => {
@@ -26,11 +27,8 @@ const userIsNotLoggedIn = () => {
     }
 }
 
-const userLogOut = () => () => {
-    firebase.auth().signOut();
-}
-
 export {
     userIsAuth,
-    userLogOut
+    userIsLoggedIn,
+    userIsNotLoggedIn
 }

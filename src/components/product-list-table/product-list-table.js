@@ -16,7 +16,7 @@ import Spinner from "../spinner";
 
 import './product-list-table.scss';
 
-const ProductListTable = ({products, onDeleted, loading}) => {
+const ProductListTable = ({products, onDeleted, loading, productsError, deletedProduct}) => {
 
     // русская локализация
     const theme = createMuiTheme({
@@ -121,7 +121,8 @@ const ProductListTable = ({products, onDeleted, loading}) => {
                                                 <TableCell>
                                                     <div className="links">
                                                         <Link to={`/add-item/${id}`} className={'link'}>Ред.</Link>
-                                                        <Link to={'#'} onClick={() => onDeleted(id)}
+                                                        <Link to={'#'}
+                                                              onClick={() => onDeleted(id, 'products', productsError, deletedProduct)}
                                                               className={'link'}>Удалить</Link>
                                                     </div>
                                                 </TableCell>

@@ -8,9 +8,9 @@ import {fetchProducts, productsError} from "../../store/actions/propducts-action
 import compose from "../../utils";
 import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
-import firebase from "firebase";
 import {deletedProduct} from "../../store/actions/notifications-actions";
-import {userIsAuth, userLogOut} from "../../store/actions/isAuth-actions";
+import {userIsAuth} from "../../store/actions/isAuth-actions";
+import {deleteItem, userLogOut} from "../../services/firebase-service";
 
 import './product-list.scss';
 
@@ -24,19 +24,6 @@ class ProductList extends Component {
     componentDidMount() {
         this.props.fetchProducts();
         this.props.userIsAuth();
-    }
-
-    deleteItem = async (key) => {
-        const db = firebase.database();
-        const ref = db.ref('products');
-        const dbDataRef = ref.child(key);
-        await dbDataRef.set(null, (error) => {        // отправляем null для того чтобы удалить свойство полностью по ключу key
-            if (error) {
-                this.props.productsError(error);
-            } else {
-                this.props.deletedProduct();
-            }
-        });
     }
 
     columnChange = (columnName) => {
@@ -61,7 +48,7 @@ class ProductList extends Component {
     }
 
     render() {
-        const {products, loading, error, userLogOut, email, logIn} = this.props;
+        const {products, loading, error, email, logIn, productsError, deletedProduct} = this.props;
 
         const {term} = this.state;
 
@@ -111,8 +98,10 @@ class ProductList extends Component {
                         <div>
                             <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange}/>
                             <ProductListTable products={visibleItems}
-                                              onDeleted={this.deleteItem}
-                                              loading={loading}/>
+                                              onDeleted={deleteItem}
+                                              loading={loading}
+                                              productsError={productsError}
+                                              deletedProduct={deletedProduct} />
                         </div>
                     }
                 </div>
@@ -136,7 +125,6 @@ const mapDispatchToProps = {
     productsError,
     deletedProduct,
     userIsAuth,
-    userLogOut
 };
 
 export default compose(

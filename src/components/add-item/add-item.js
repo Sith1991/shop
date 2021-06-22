@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
-import {storage} from "../../services/firebase-service";
+import {storage} from "../../services/firebase-config";
 import AddPropertyToProduct from "../add-property-to-product";
 import {Link} from "react-router-dom";
 import * as yup from "yup";

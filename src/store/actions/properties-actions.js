@@ -3,8 +3,7 @@ import {
     FETCH_PROPERTIES_SPINNER_OPEN,
     FETCH_PROPERTIES_SUCCESS
 } from "../../action-types";
-import firebase from 'firebase/app';
-import 'firebase/database';
+import {getItems} from "../../services/firebase-service";
 
 const propertiesLoaded = (newItems) => {
     const objectsToArray = Object.values(newItems);
@@ -39,21 +38,13 @@ const propertiesError = (error) => {
 
 const fetchProperties = () => (dispatch) => {
     dispatch(propertiesSpinnerOpen());
-    const db = firebase.database();
-    const dbDataRef = db.ref().child('properties');
-    dbDataRef.on('value', snap => {
-        const data = snap.val();
-        if (data === null) {
-            dispatch((propertiesLoaded([])))
-        } else {
-            dispatch((propertiesLoaded(data)))
-        }
-    })
+    getItems(dispatch, 'properties', propertiesLoaded);
 }
 
 export {
     fetchProperties,
     propertiesError,
     propertiesSpinnerOpen,
-    propertiesSpinnerClose
+    propertiesSpinnerClose,
+    propertiesLoaded
 }

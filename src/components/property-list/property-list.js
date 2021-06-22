@@ -6,31 +6,16 @@ import {connect} from "react-redux";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import {fetchProperties, propertiesError} from "../../store/actions/properties-actions";
-import firebase from 'firebase/app';
-import 'firebase/database';
 import {deletedProperty} from "../../store/actions/notifications-actions";
-import {userLogOut} from "../../store/actions/isAuth-actions";
+import {deleteItem, userLogOut} from "../../services/firebase-service";
 
 import './property-list.scss';
 
-const PropertyList = ({fetchProperties, deletedProperty, userLogOut, properties, loading, error, email, logIn}) => {
+const PropertyList = ({fetchProperties, propertiesError, deletedProperty, properties, loading, error, email, logIn}) => {
 
     useEffect(() => {
         fetchProperties();
     }, [])
-
-    const deleteItem = async (key) => {
-        const db = firebase.database();
-        const ref = db.ref('properties');
-        const dbDataRef = ref.child(key);
-        await dbDataRef.set(null, function (error) {        // отправляем null для того чтобы удалть полностью свойство по ключу key
-            if (error) {
-                propertiesError(error);
-            } else {
-                deletedProperty();
-            }
-        });
-    }
 
     if (!logIn) {
         return <Redirect to={'/login'}/>
@@ -80,7 +65,10 @@ const PropertyList = ({fetchProperties, deletedProperty, userLogOut, properties,
                         </Button>
                     </Link>
                 </div>
-                <PropertyListTable properties={properties} onDeleted={deleteItem} />
+                <PropertyListTable properties={properties}
+                                   onDeleted={deleteItem}
+                                   propertiesError={propertiesError}
+                                   deletedProperty={deletedProperty} />
             </div>
         </div>
     )
@@ -100,7 +88,6 @@ const mapDispatchToProps = {
     fetchProperties,
     propertiesError,
     deletedProperty,
-    userLogOut
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyList);

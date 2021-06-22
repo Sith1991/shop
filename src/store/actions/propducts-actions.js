@@ -3,8 +3,7 @@ import {
     FETCH_PRODUCTS_SPINNER_OPEN,
     FETCH_PRODUCTS_SUCCESS,
 } from "../../action-types";
-import firebase from 'firebase/app';
-import 'firebase/database';
+import {getItems} from "../../services/firebase-service";
 
 const productsLoaded = (newItems) => {
     const objectsToArray = Object.values(newItems);
@@ -39,16 +38,7 @@ const productsError = (error) => {
 
 const fetchProducts = () => (dispatch) => {
     dispatch(productsSpinnerOpen());
-    const db = firebase.database();
-    const dbDataRef = db.ref().child('products');
-    dbDataRef.on('value', snap => {
-        const data = snap.val();
-        if (data === null) {
-            dispatch((productsLoaded([])))
-        } else {
-            dispatch((productsLoaded(data)))
-        }
-    })
+    getItems(dispatch, 'products', productsLoaded);
 }
 
 export {
@@ -56,4 +46,5 @@ export {
     productsError,
     productsSpinnerOpen,
     productsSpinnerClose,
+    productsLoaded
 }
