@@ -1,6 +1,4 @@
 import React, {useEffect} from 'react';
-import compose from "../../utils";
-import withShopService from "../../hoc";
 import {connect} from "react-redux";
 import {fetchProperties} from "../../store/actions/properties-actions";
 import {

@@ -5,8 +5,6 @@ import {
     propertiesSpinnerClose,
     propertiesSpinnerOpen
 } from "../../store/actions/properties-actions";
-import compose from "../../utils";
-import withShopService from "../../hoc";
 import {connect} from "react-redux";
 import AddProperty from "../add-property";
 import Spinner from "../spinner";

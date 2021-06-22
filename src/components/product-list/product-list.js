@@ -5,8 +5,6 @@ import ProductListTable from "../product-list-table";
 import SearchPanel from "../search-panel";
 import {connect} from "react-redux";
 import {fetchProducts, productsError} from "../../store/actions/propducts-actions";
-import compose from "../../utils";
-import withShopService from "../../hoc";
 import ErrorIndicator from "../error-indicator";
 import {deletedProduct, resetNotifications} from "../../store/actions/notifications-actions";
 import {userIsAuth} from "../../store/actions/isAuth-actions";
