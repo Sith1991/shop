@@ -137,13 +137,15 @@ const ProductListTable = ({products, onDeleted, loading, productsError, deletedP
                             </TableBody>
                         }
                         <TableFooter>
-                            <UniversalTablePagination
-                                array={products}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                handleChangePage={handleChangePage}
-                                handleChangeRowsPerPage={handleChangeRowsPerPage}
-                            />
+                            <TableRow>
+                                <UniversalTablePagination
+                                    array={products}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                />
+                            </TableRow>
                         </TableFooter>
                     </Table>
                 </TableContainer>

@@ -123,13 +123,15 @@ const PropertyListTable = ({properties, onDeleted, propertiesError, deletedPrope
                             )}
                         </TableBody>
                         <TableFooter>
-                            <UniversalTablePagination
-                                array={properties}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                handleChangePage={handleChangePage}
-                                handleChangeRowsPerPage={handleChangeRowsPerPage}
-                            />
+                            <TableRow>
+                                <UniversalTablePagination
+                                    array={properties}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                />
+                            </TableRow>
                         </TableFooter>
                     </Table>
                 </TableContainer>
