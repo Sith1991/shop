@@ -5,6 +5,7 @@ import ErrorIndicator from "../error-indicator";
 import ProductCard from "./product-card";
 import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
 import {resetNotifications} from "../../store/actions/notifications-actions";
+import {userIsAuth} from "../../store/actions/isAuth-actions";
 
 const ProductCardContainer = ({
                                   match,
@@ -14,11 +15,13 @@ const ProductCardContainer = ({
                                   fetchSelectedProduct,
                                   clearSelectedProduct,
                                   logIn,
-                                  resetNotifications
+                                  resetNotifications,
+                                  userIsAuth
                               }) => {
     const itemId = match.params.id;
 
     useEffect(() => {
+        userIsAuth();
         resetNotifications();
         fetchSelectedProduct(itemId);
         // срабатывает при уничтожении компоненты. Очищаю бывранный товар, т.к. если этого не делать, то при нажатии
@@ -52,7 +55,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     fetchSelectedProduct,
     clearSelectedProduct,
-    resetNotifications
+    resetNotifications,
+    userIsAuth,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCardContainer);
