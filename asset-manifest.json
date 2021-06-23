@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/shop/static/css/main.613ac623.chunk.css",
+    "main.js": "/shop/static/js/main.d6fc1c2a.chunk.js",
+    "main.js.map": "/shop/static/js/main.d6fc1c2a.chunk.js.map",
+    "runtime-main.js": "/shop/static/js/runtime-main.c6fead29.js",
+    "runtime-main.js.map": "/shop/static/js/runtime-main.c6fead29.js.map",
+    "static/css/2.fabbef47.chunk.css": "/shop/static/css/2.fabbef47.chunk.css",
+    "static/js/2.53b506de.chunk.js": "/shop/static/js/2.53b506de.chunk.js",
+    "static/js/2.53b506de.chunk.js.map": "/shop/static/js/2.53b506de.chunk.js.map",
+    "index.html": "/shop/index.html",
+    "static/css/2.fabbef47.chunk.css.map": "/shop/static/css/2.fabbef47.chunk.css.map",
+    "static/css/main.613ac623.chunk.css.map": "/shop/static/css/main.613ac623.chunk.css.map",
+    "static/js/2.53b506de.chunk.js.LICENSE.txt": "/shop/static/js/2.53b506de.chunk.js.LICENSE.txt",
+    "static/media/Ellipse.7ad78ffd.svg": "/shop/static/media/Ellipse.7ad78ffd.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c6fead29.js",
+    "static/css/2.fabbef47.chunk.css",
+    "static/js/2.53b506de.chunk.js",
+    "static/css/main.613ac623.chunk.css",
+    "static/js/main.d6fc1c2a.chunk.js"
+  ]
+}
