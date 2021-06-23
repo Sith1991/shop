@@ -1,7 +1,8 @@
-import {USER_IS_LOGGED_IN, USER_IS_LOGGED_OUT} from "../../action-types";
+import {USER_IS_LOGGED_IN, USER_IS_LOGGED_OUT, USER_IS_LOGGED_REQUEST} from "../../action-types";
 import {getUserAuth} from "../../services/firebase-service";
 
 const userIsAuth = () => (dispatch) => {
+    dispatch(userIsAuthRequest());
     getUserAuth(dispatch, userIsLoggedIn, userIsNotLoggedIn);
 }
 
@@ -15,6 +16,13 @@ const userIsLoggedIn = (email) => {
 const userIsNotLoggedIn = () => {
     return {
         type: USER_IS_LOGGED_OUT,
+    }
+}
+
+const userIsAuthRequest = () => {
+    console.log('сработало')
+    return {
+        type: USER_IS_LOGGED_REQUEST
     }
 }
 
