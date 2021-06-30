@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useLoginButtonStyles from "../../styles/customizing-material-ui-components/button-login-style";
-import ErrorMessageText from "../error-message-text";
+import ErrorMessageText from "../../components/error-message-text";
 import {submitLogIn} from "../../services/firebase-service";
 
 import './login.scss';

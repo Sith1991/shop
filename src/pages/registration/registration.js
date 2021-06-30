@@ -12,7 +12,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import theme from "../../styles/customizing-material-ui-components/theme";
 import useRegistrationButtonStyles from "../../styles/customizing-material-ui-components/button-registration-style";
 import {Link, withRouter} from "react-router-dom";
-import ErrorMessageText from "../error-message-text";
+import ErrorMessageText from "../../components/error-message-text";
 import {submitRegistration} from "../../services/firebase-service";
 
 import './registration.scss';

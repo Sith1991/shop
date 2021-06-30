@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import ProductListTable from '../product-list-table';
-import SearchPanel from '../search-panel';
+import ProductListTable from '../../components/product-list-table';
+import SearchPanel from '../../components/search-panel';
 import { connect } from 'react-redux';
 import {
   fetchProducts,

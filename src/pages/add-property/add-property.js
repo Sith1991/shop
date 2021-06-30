@@ -11,7 +11,7 @@ import useAddItemInputStyles from "../../styles/customizing-material-ui-componen
 import Button from "@material-ui/core/Button";
 import useSaveButtonStyles from "../../styles/customizing-material-ui-components/button-save-style";
 import usePropertyLabelStyles from "../../styles/customizing-material-ui-components/add-property-radio-style";
-import StyledRadio from "../styled-radio-icon";
+import StyledRadio from "../../components/styled-radio-icon";
 import {postItemsToDatabase} from "../../services/firebase-service";
 
 import './add-property.scss';

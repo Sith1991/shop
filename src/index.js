@@ -6,7 +6,7 @@ import store from '../src/store/store';
 import ErrorBoundry from './components/error-boundry';
 import App from './components/app';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NotificationsContainer from "./components/notifications/notifications-Container";
+import NotificationsContainer from "./components/notifications/notifications-container";
 
 ReactDOM.render(
     <Provider store={store}> {/*Предоставляет доступ к Redux Store*/}

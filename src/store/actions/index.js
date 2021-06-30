@@ -2,7 +2,7 @@ import {
   userIsAuth,
   userIsLoggedIn,
   userIsNotLoggedIn,
-} from './isAuth-actions';
+} from './is-auth-actions';
 
 import {
   createdProduct,

@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {Button} from "react-bootstrap";
-import PropertyListTable from "../property-list-table";
+import PropertyListTable from "../../components/property-list-table";
 import {connect} from "react-redux";
-import Spinner from "../spinner";
+import Spinner from "../../components/spinner";
 import ErrorIndicator from "../error-indicator";
 import {fetchProperties, propertiesError} from "../../store/actions/properties-actions";
 import {deletedProperty, resetNotifications} from "../../store/actions/notifications-actions";

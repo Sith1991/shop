@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddPropertyToProduct from "../add-property-to-product";
+import AddPropertyToProduct from "../../components/add-property-to-product";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -15,8 +15,8 @@ import themeUploadBtn from "../../styles/customizing-material-ui-components/them
 import useAddItemInputStyles from "../../styles/customizing-material-ui-components/add-item-input-style";
 import useAddItemTextareaStyles from "../../styles/customizing-material-ui-components/add-item-textarea-style";
 import NumberFormat from "react-number-format";
-import Thumb from "../thumb";
-import PriceFormatInput from "../price-format-input";
+import Thumb from "../../components/thumb";
+import PriceFormatInput from "../../components/price-format-input";
 import { withRouter } from "react-router-dom";
 import {
   getDateOfChange,

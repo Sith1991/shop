@@ -6,8 +6,8 @@ import {
     propertiesSpinnerOpen
 } from "../../store/actions/properties-actions";
 import {connect} from "react-redux";
-import AddProperty from "../add-property";
-import Spinner from "../spinner";
+import AddProperty from "./index";
+import Spinner from "../../components/spinner";
 import ErrorIndicator from "../error-indicator";
 import {createdProperty, resetNotifications} from "../../store/actions/notifications-actions";
 import {Redirect} from "react-router-dom";

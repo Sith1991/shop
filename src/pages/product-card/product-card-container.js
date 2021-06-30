@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import Spinner from "../spinner";
+import Spinner from "../../components/spinner";
 import ErrorIndicator from "../error-indicator";
 import ProductCard from "./product-card";
 import {
@@ -8,7 +8,7 @@ import {
   fetchSelectedProduct,
 } from "../../store/actions/propduct-card-actions";
 import { resetNotifications } from "../../store/actions/notifications-actions";
-import { userIsAuth } from "../../store/actions/isAuth-actions";
+import { userIsAuth } from "../../store/actions/is-auth-actions";
 
 const ProductCardContainer = ({
   match,

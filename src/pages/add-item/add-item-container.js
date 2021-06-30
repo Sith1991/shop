@@ -7,7 +7,7 @@ import {
   productsSpinnerClose,
   productsSpinnerOpen,
 } from "../../store/actions/propducts-actions";
-import Spinner from "../spinner";
+import Spinner from "../../components/spinner";
 import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
 import {
