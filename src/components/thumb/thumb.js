@@ -33,7 +33,7 @@ class Thumb extends Component {
 
         return (<img src={thumb}
                      alt={file.name}
-                     className={"thumb img-thumbnail mt-2"}/>);
+                     className={"thumb svg-thumbnail mt-2"}/>);
     }
 }
 

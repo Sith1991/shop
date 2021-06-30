@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { ThemeProvider } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import theme from "../../styles/customizing-material-ui-components/theme";
-import useLoginButtonStyles from "../../styles/customizing-material-ui-components/button-login-style";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import useProductCardItemSelectStyles from "../../styles/customizing-material-ui-components/product-card-item-select-style";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { ThemeProvider } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import theme from '../../styles/customizing-material-ui-components/theme';
+import useLoginButtonStyles from '../../styles/customizing-material-ui-components/button-login-style';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import useProductCardItemSelectStyles from '../../styles/customizing-material-ui-components/product-card-item-select-style';
 
-import "./product-card.scss";
+import './product-card.scss';
 
 const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
   const classes = useLoginButtonStyles();
@@ -25,7 +25,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
   // вручную какое либо свойство из селекта (т.е. не сработает onChange селекта), то в initialValues передастся весь
   // массив значений свойств Dropdown, а не только одно значение.
   const setFirstValuesFromDropDowns = (property, index) => {
-    if (property.propertyType === "Dropdown") {
+    if (property.propertyType === 'Dropdown') {
       return setFieldValue(
         `propertiesOfProduct.${index}.propertyValue`,
         propertiesOfProduct[index].propertyValue[0].propertyValue,
@@ -43,21 +43,21 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
   const validationSchema = yup.object().shape({
     itemName: yup
       .string()
-      .typeError("Должно быть строкой")
-      .required("Обязательное поле"),
+      .typeError('Должно быть строкой')
+      .required('Обязательное поле'),
     description: yup
       .string()
-      .typeError("Должно быть строкой")
-      .required("Обязательное поле"),
+      .typeError('Должно быть строкой')
+      .required('Обязательное поле'),
     fileUrl: yup
       .string()
-      .typeError("Должно быть строкой")
-      .required("Обязательное поле"),
+      .typeError('Должно быть строкой')
+      .required('Обязательное поле'),
     price: yup
       .number()
-      .typeError("Должно быть числом")
-      .integer("Должно быть целым числом")
-      .required("Обязательное поле"),
+      .typeError('Должно быть числом')
+      .integer('Должно быть целым числом')
+      .required('Обязательное поле'),
     propertiesOfProduct: yup.array().of(
       yup.object().shape({
         id: yup.string(),
@@ -105,7 +105,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
   const renderPropertiesOfProduct = (property, index) => {
     const { propertyName, propertyType, propertyValue } = property;
     switch (propertyType) {
-      case "Dropdown":
+      case 'Dropdown':
         return (
           <div key={index}>
             <h4>{propertyName}</h4>
@@ -124,7 +124,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
                 /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                                этому полю было присвоено первое значение свойства из массива значений*/
+                                                этому полю было присвоено первое значение свойства из массива значений*/
                 value={values.propertiesOfProduct[index].propertyValue}
               >
                 {propertyValue.map(renderMenuItems)}
@@ -132,14 +132,14 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
             </FormControl>
           </div>
         );
-      case "Number":
+      case 'Number':
         return (
           <div key={index}>
             <h4>{propertyName}</h4>
             <p>{propertyValue}</p>
           </div>
         );
-      case "String":
+      case 'String':
         return (
           <div key={index}>
             <h4>{propertyName}</h4>
@@ -152,43 +152,43 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
   };
 
   return (
-    <div className={"product-card"}>
-      <div className={"product-card-bordered-wrap"}>
-        <div className={"product-card-wrap"}>
+    <div className={'product-card'}>
+      <div className={'product-card-bordered-wrap'}>
+        <div className={'product-card-wrap'}>
           {logIn ? (
-            <div className={"link"}>
-              <Link to={"/"} onClick={clearSelectedProduct}>
+            <div className={'link'}>
+              <Link to={'/'} onClick={clearSelectedProduct}>
                 Вернуться
               </Link>
             </div>
           ) : null}
-          <form onSubmit={handleSubmit} className={"product-card-wrapper"}>
-            <div className={"header-items-row"}>
-              <div className={"item-image"}>
-                <img src={fileUrl} alt="product" />
+          <form onSubmit={handleSubmit} className={'product-card-wrapper'}>
+            <div className={'header-items-row'}>
+              <div className={'item-image'}>
+                <img src={fileUrl} alt={'product'} />
               </div>
-              <div className={"item-information"}>
+              <div className={'item-information'}>
                 <h3>{itemName}</h3>
                 <p>{description}</p>
               </div>
             </div>
-            <div className={"bottom-items-row"}>
-              <div className={"item-properties"}>
+            <div className={'bottom-items-row'}>
+              <div className={'item-properties'}>
                 {propertiesOfProduct &&
                   propertiesOfProduct.map(renderPropertiesOfProduct)}
                 <h4>Стоимость</h4>
-                <span className={"price"}>
-                  {price.toLocaleString("ru-RU")}$
+                <span className={'price'}>
+                  {price.toLocaleString('ru-RU')}$
                 </span>
               </div>
-              <div className={"button-wrap"}>
+              <div className={'button-wrap'}>
                 <ThemeProvider theme={theme}>
                   <Button
                     classes={{
                       root: classes.root,
                       label: classes.label,
                     }}
-                    type={"submit"}
+                    type={'submit'}
                     disabled={!isValid}
                     onClick={handleSubmit}
                   >

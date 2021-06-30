@@ -495,7 +495,7 @@ const AddItem = ({
                   <img
                     src={values.fileUrl}
                     alt={"изображение товара"}
-                    className={"thumb img-thumbnail mt-2"}
+                    className={"thumb svg-thumbnail mt-2"}
                   />
                 ) : (
                   <Thumb

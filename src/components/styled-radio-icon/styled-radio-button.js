@@ -2,7 +2,7 @@ import React from 'react';
 import {Radio} from "@material-ui/core";
 import clsx from "clsx";
 import {makeStyles} from "@material-ui/core/styles";
-import image from "../../img/Ellipse.svg";
+import image from "../../svg/Ellipse.svg";
 
 const StyledRadio = (props) => {
 
