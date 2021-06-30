@@ -1,3 +1,3 @@
-import UniversalTablePagination from "./universal-table-pagination";
+import { UniversalTablePagination } from './universal-table-pagination';
 
-export default UniversalTablePagination;
+export { UniversalTablePagination };

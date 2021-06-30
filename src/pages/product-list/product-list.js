@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import ProductListTable from '../../components/product-list-table';
+import {ProductListTable} from '../../components/product-list-table';
 import SearchPanel from '../../components/search-panel';
 import { connect } from 'react-redux';
 import {
@@ -12,7 +12,7 @@ import {
   userIsAuth,
 } from '../../store/actions';
 import ErrorIndicator from '../error-indicator';
-import { deleteItem, userLogOut } from '../../services/firebase-service';
+import { deleteItem, userLogOut } from '../../services';
 
 import './product-list.scss';
 

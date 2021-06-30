@@ -1,3 +1,4 @@
-import ProductListTable from "./product-list-table";
+import { ProductListTable } from './product-list-table';
+import { ProductListTableHeader } from './product-list-table-header';
 
-export default ProductListTable;
+export { ProductListTable, ProductListTableHeader };
