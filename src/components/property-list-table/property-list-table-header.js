@@ -61,7 +61,7 @@ const PropertyListTableHeader = (props) => {
               onClick={createSortHandler(headCell.id)}
               IconComponent={ExpandMoreIcon}
             >
-              <span className={'table-header'}>{headCell.label}</span>
+              <div className={'table-header'}>{headCell.label}</div>
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -71,7 +71,7 @@ const PropertyListTableHeader = (props) => {
           </TableCell>
         ))}
         <TableCell key={'administration'} id={'administration'}>
-          <span className={'table-header'}>Управление</span>
+          <div className={'table-header'}>Управление</div>
         </TableCell>
       </TableRow>
     </TableHead>

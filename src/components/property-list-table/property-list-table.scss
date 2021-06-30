@@ -2,10 +2,10 @@
 
 .property-list-table {
 
-.table-header {
-  @include font-params(normal, 16px, 19px, #828282);
-  opacity: 0.8;
-}
+  .table-header {
+    @include font-params(normal, 16px, 19px, #828282);
+    opacity: 0.8;
+  }
 
   th {
     padding: 12px 16px;
@@ -13,6 +13,10 @@
 
   td {
     padding: 13.5px 16px;
+  }
+
+  #propName {
+    text-align: center;
   }
 
   .MuiTableSortLabel-root {
@@ -24,6 +28,7 @@
     @include media('max', 'md') {
       margin-right: 0;
     }
+
     &.MuiTableSortLabel-active .table-header {
       color: black;
       font-weight: bold;
@@ -79,9 +84,11 @@
   #propName {
     width: 33%;
   }
+
   #propType {
     width: 42%;
   }
+
   #administration {
     width: 25%;
   }

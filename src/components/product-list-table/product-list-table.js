@@ -102,14 +102,20 @@ const ProductListTable = ({
     <div className={'product-list-table'}>
       <ThemeProvider theme={theme}>
         <TableContainer>
-          <Table children={'div'}>
+          <Table>
             <ProductListTableHeader
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
             {loading ? (
-              <Spinner />
+              <TableBody>
+                <TableRow>
+                  <th>
+                    <Spinner />
+                  </th>
+                </TableRow>
+              </TableBody>
             ) : (
               <TableBody>
                 {/*Если rowsPerPage = -1 (т.е. выбрано в пагинации "Показать Все", то мапим без слайса)*/}
@@ -127,21 +133,19 @@ const ProductListTable = ({
                     <TableRow key={id}>
                       <TableCell align={'center'} className={'link table-body'}>
                         <Link to={`/item-card/${id}`}>
-                          <span className={'table-value'}>{itemName}</span>
+                          <div className={'table-value'}>{itemName}</div>
                         </Link>
                       </TableCell>
                       <TableCell className={'table-body'}>
-                        <span className={'table-value'}>
-                          {formattedPrice} $
-                        </span>
+                        <div className={'table-value'}>{formattedPrice} $</div>
                       </TableCell>
                       <TableCell className={'table-body'}>
-                        <span className={'table-value'}>
+                        <div className={'table-value'}>
                           {formattedDateOfChange}
-                        </span>
+                        </div>
                       </TableCell>
                       <TableCell>
-                        <span className="links">
+                        <div className="links">
                           <Link to={`/add-item/${id}`} className={'link'}>
                             Ред.
                           </Link>
@@ -159,7 +163,7 @@ const ProductListTable = ({
                           >
                             Удалить
                           </Link>
-                        </span>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );

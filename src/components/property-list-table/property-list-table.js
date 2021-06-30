@@ -92,7 +92,7 @@ const PropertyListTable = ({
     <div className={'property-list-table'}>
       <ThemeProvider theme={theme}>
         <TableContainer>
-          <Table children={'div'}>
+          <Table>
             <PropertyListTableHeader
               order={order}
               orderBy={orderBy}
@@ -111,14 +111,14 @@ const PropertyListTable = ({
                 return (
                   <TableRow key={id}>
                     <TableCell>
-                      <span className={'property-name table-body'}>
+                      <div className={'property-name table-body'}>
                         {propertyName}
-                      </span>
+                      </div>
                     </TableCell>
                     <TableCell>
-                      <span className={'property-type table-body'}>
+                      <div className={'property-type table-body'}>
                         {propertyType}
-                      </span>
+                      </div>
                     </TableCell>
                     <TableCell align={'right'}>
                       <Link
