@@ -23,7 +23,7 @@ import {
   postItemsToDatabase,
   putItemsToDatabase,
 } from "../../services/firebase-service";
-import { storage } from "../../services/firebase-config";
+import { storage } from "../../services/firebase-service";
 
 import "./add-item.scss";
 

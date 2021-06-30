@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect} from "react-redux";
-import {userIsAuth} from "../../store/actions/isAuth-actions";
+import {userIsAuth} from "../../store/actions";
 import Login from "./login";
 import {Redirect} from 'react-router-dom';
 import Spinner from "../spinner";
