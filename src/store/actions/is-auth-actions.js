@@ -3,7 +3,7 @@ import {
   USER_IS_LOGGED_OUT,
   USER_IS_LOGGED_REQUEST,
 } from '../action-types';
-import { getUserAuth } from '../../services/firebase-service';
+import { getUserAuth } from '../../services';
 
 const userIsAuth = () => (dispatch) => {
   dispatch(userIsAuthRequest());

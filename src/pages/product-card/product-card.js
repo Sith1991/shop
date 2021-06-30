@@ -4,12 +4,15 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import theme from '../../styles/customizing-material-ui-components/theme';
-import useLoginButtonStyles from '../../styles/customizing-material-ui-components/button-login-style';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import useProductCardItemSelectStyles from '../../styles/customizing-material-ui-components/product-card-item-select-style';
+
+import {
+  theme,
+  useLoginButtonStyles,
+  useProductCardItemSelectStyles,
+} from '../../styles/customizing-material-ui-components';
 
 import './product-card.scss';
 
@@ -124,7 +127,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
                 /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                                                этому полю было присвоено первое значение свойства из массива значений*/
+                                                                этому полю было присвоено первое значение свойства из массива значений*/
                 value={values.propertiesOfProduct[index].propertyValue}
               >
                 {propertyValue.map(renderMenuItems)}

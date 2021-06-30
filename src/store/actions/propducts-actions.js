@@ -3,7 +3,7 @@ import {
   FETCH_PRODUCTS_SPINNER_OPEN,
   FETCH_PRODUCTS_SUCCESS,
 } from '../action-types';
-import { getItems } from '../../services/firebase-service';
+import { getItems } from '../../services';
 
 const productsLoaded = (newItems) => {
   const objectsToArray = Object.values(newItems);

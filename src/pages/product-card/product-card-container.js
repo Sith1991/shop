@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import Spinner from "../../components/spinner";
-import ErrorIndicator from "../error-indicator";
-import ProductCard from "./product-card";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+
+import Spinner from '../../components/spinner';
+import ErrorIndicator from '../error-indicator';
+import ProductCard from './product-card';
 import {
   clearSelectedProduct,
   fetchSelectedProduct,
-} from "../../store/actions/propduct-card-actions";
-import { resetNotifications } from "../../store/actions/notifications-actions";
-import { userIsAuth } from "../../store/actions/is-auth-actions";
+  resetNotifications,
+  userIsAuth,
+} from '../../store/actions';
 
 const ProductCardContainer = ({
   match,

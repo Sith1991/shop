@@ -1,25 +1,22 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { fetchProperties } from "../../store/actions/properties-actions";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
+import Spinner from '../../components/spinner';
+import ErrorIndicator from '../error-indicator';
+import AddItem from './add-item';
 import {
+  fetchProperties,
   fetchProducts,
   productsError,
   productsSpinnerClose,
   productsSpinnerOpen,
-} from "../../store/actions/propducts-actions";
-import Spinner from "../../components/spinner";
-import ErrorIndicator from "../error-indicator";
-import AddItem from "./add-item";
-import {
   clearSelectedProduct,
   fetchSelectedProduct,
-} from "../../store/actions/propduct-card-actions";
-import {
   createdProduct,
   editedProduct,
   resetNotifications,
-} from "../../store/actions/notifications-actions";
-import { Redirect } from "react-router-dom";
+} from '../../store/actions';
 
 const AddItemContainer = ({
   fetchProperties,
@@ -60,7 +57,7 @@ const AddItemContainer = ({
   }, [itemId]);
 
   if (!logIn) {
-    return <Redirect to={"/login"} />;
+    return <Redirect to={'/login'} />;
   }
 
   if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {

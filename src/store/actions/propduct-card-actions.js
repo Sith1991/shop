@@ -4,7 +4,7 @@ import {
   FETCH_SELECTED_PRODUCT_REQUEST,
   FETCH_SELECTED_PRODUCT_SUCCESS,
 } from '../action-types';
-import { getSelectedProduct } from '../../services/firebase-service';
+import { getSelectedProduct } from '../../services';
 
 const selectedProductLoaded = (products, itemId) => {
   const objectsToArray = Object.values(products);

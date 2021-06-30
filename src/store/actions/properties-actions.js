@@ -4,7 +4,7 @@ import {
   FETCH_PROPERTIES_SPINNER_OPEN,
   FETCH_PROPERTIES_SUCCESS,
 } from '../action-types';
-import { getItems } from '../../services/firebase-service';
+import { getItems } from '../../services';
 
 const propertiesLoaded = (newItems) => {
   const objectsToArray = Object.values(newItems);
