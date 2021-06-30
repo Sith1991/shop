@@ -34,11 +34,17 @@
 
   .button-back {
     @include buttons(#ff0000, #d40000);
+    @include media('max', 'sm') {
+      margin: 0 10px 10px 10px;
+    }
   }
 
   .button-save {
     margin-left: 30px;
     margin-bottom: 20px;
+    @include media('max', 'sm') {
+      margin: 0 10px 10px 10px;
+    }
   }
 
   .add-item-head {

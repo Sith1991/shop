@@ -64,6 +64,9 @@
       }
       .right-column-add-button {
         margin-left: -8px;
+        @include media('max', 'sm') {
+          margin-left: 0;
+        }
       }
     }
   }

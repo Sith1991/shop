@@ -1,111 +1,118 @@
-import React, {useEffect} from 'react';
-import {connect} from "react-redux";
-import {fetchProperties} from "../../store/actions/properties-actions";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { fetchProperties } from "../../store/actions/properties-actions";
 import {
-    fetchProducts,
-    productsError,
-    productsSpinnerClose,
-    productsSpinnerOpen
+  fetchProducts,
+  productsError,
+  productsSpinnerClose,
+  productsSpinnerOpen,
 } from "../../store/actions/propducts-actions";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 import AddItem from "./add-item";
-import {clearSelectedProduct, fetchSelectedProduct} from "../../store/actions/propduct-card-actions";
-import {createdProduct, editedProduct, resetNotifications} from "../../store/actions/notifications-actions";
-import {Redirect} from "react-router-dom";
+import {
+  clearSelectedProduct,
+  fetchSelectedProduct,
+} from "../../store/actions/propduct-card-actions";
+import {
+  createdProduct,
+  editedProduct,
+  resetNotifications,
+} from "../../store/actions/notifications-actions";
+import { Redirect } from "react-router-dom";
 
 const AddItemContainer = ({
-                              fetchProperties,
-                              fetchProducts,
-                              productsError,
-                              properties,
-                              loadingProps,
-                              errorProps,
-                              products,
-                              loadingProducts,
-                              errorProducts,
-                              loadingEditingProduct,
-                              errorEditingProduct,
-                              editingProduct,
-                              fetchSelectedProduct,
-                              clearSelectedProduct,
-                              createdProduct,
-                              editedProduct,
-                              productsSpinnerOpen,
-                              productsSpinnerClose,
-                              match,
-                              logIn,
-                              resetNotifications
-                          }) => {
+  fetchProperties,
+  fetchProducts,
+  productsError,
+  properties,
+  loadingProps,
+  errorProps,
+  products,
+  loadingProducts,
+  errorProducts,
+  loadingEditingProduct,
+  errorEditingProduct,
+  editingProduct,
+  fetchSelectedProduct,
+  clearSelectedProduct,
+  createdProduct,
+  editedProduct,
+  productsSpinnerOpen,
+  productsSpinnerClose,
+  match,
+  logIn,
+  resetNotifications,
+}) => {
+  const itemId = match.params.id;
 
-    const itemId = match.params.id;
-
-    useEffect(() => {
-        resetNotifications();
-        fetchProducts();
-        fetchProperties();
-        if (itemId) {
-            fetchSelectedProduct(itemId);
-        }
-        // срабатывает при уничтожении компоненты. Очищаю бывранный товар, т.к. если этого не делать, то при нажатии
-        // на backspace с редактируемого товара и последующем переходе на добавление товара в инпуты прогружаются
-        // данные ранее редактируемого товара
-        return () => clearSelectedProduct();
-    }, [itemId])
-
-    if (!logIn) {
-        return <Redirect to={'/login'}/>
+  useEffect(() => {
+    resetNotifications();
+    fetchProducts();
+    fetchProperties();
+    if (itemId) {
+      fetchSelectedProduct(itemId);
     }
+    // срабатывает при уничтожении компоненты. Очищаю бывранный товар, т.к. если этого не делать, то при нажатии
+    // на backspace с редактируемого товара и последующем переходе на добавление товара в инпуты прогружаются
+    // данные ранее редактируемого товара
+    return () => clearSelectedProduct();
+  }, [itemId]);
 
-    if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {
-        return <Spinner/>
-    }
+  if (!logIn) {
+    return <Redirect to={"/login"} />;
+  }
 
-    if (errorProps || errorProducts || (errorEditingProduct && itemId)) {
-        return <ErrorIndicator/>
-    }
+  if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {
+    return <Spinner />;
+  }
 
-    return (
-        <AddItem properties={properties}
-                 products={products}
-                 productsError={productsError}
-                 itemId={itemId}
-                 editingProduct={editingProduct}
-                 clearSelectedProduct={clearSelectedProduct}
-                 createdProduct={createdProduct}
-                 editedProduct={editedProduct}
-                 productsSpinnerOpen={productsSpinnerOpen}
-                 productsSpinnerClose={productsSpinnerClose}
-        />
-    )
-}
+  if (errorProps || errorProducts || (errorEditingProduct && itemId)) {
+    return <ErrorIndicator />;
+  }
+
+  return (
+    <AddItem
+      properties={properties}
+      products={products}
+      productsError={productsError}
+      itemId={itemId}
+      editingProduct={editingProduct}
+      clearSelectedProduct={clearSelectedProduct}
+      createdProduct={createdProduct}
+      editedProduct={editedProduct}
+      productsSpinnerOpen={productsSpinnerOpen}
+      productsSpinnerClose={productsSpinnerClose}
+    />
+  );
+};
 
 const mapStateToProps = (state) => {
-    return {
-        properties: state.properties.properties,
-        loadingProps: state.properties.loading,
-        errorProps: state.properties.error,
-        products: state.products.products,
-        loadingProducts: state.products.loading,
-        errorProducts: state.products.error,
-        loadingEditingProduct: state.selectedProduct.loading,
-        errorEditingProduct: state.selectedProduct.error,
-        editingProduct: state.selectedProduct.selectedProduct,
-        logIn: state.isAuth.logIn,
-    }
+  return {
+    properties: state.properties.properties,
+    loadingProps: state.properties.loading,
+    errorProps: state.properties.error,
+    products: state.products.products,
+    loadingProducts: state.products.loading,
+    errorProducts: state.products.error,
+    loadingEditingProduct: state.selectedProduct.loading,
+    errorEditingProduct: state.selectedProduct.error,
+    editingProduct: state.selectedProduct.selectedProduct,
+    logIn: state.isAuth.logIn,
+  };
 };
 
 const mapDispatchToProps = {
-    fetchProperties,
-    fetchProducts,
-    productsError,
-    fetchSelectedProduct,
-    clearSelectedProduct,
-    createdProduct,
-    editedProduct,
-    productsSpinnerOpen,
-    productsSpinnerClose,
-    resetNotifications
+  fetchProperties,
+  fetchProducts,
+  productsError,
+  fetchSelectedProduct,
+  clearSelectedProduct,
+  createdProduct,
+  editedProduct,
+  productsSpinnerOpen,
+  productsSpinnerClose,
+  resetNotifications,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddItemContainer);

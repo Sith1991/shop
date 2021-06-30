@@ -20,7 +20,6 @@ const userIsNotLoggedIn = () => {
 }
 
 const userIsAuthRequest = () => {
-    console.log('сработало')
     return {
         type: USER_IS_LOGGED_REQUEST
     }
