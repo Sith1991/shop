@@ -13,7 +13,7 @@ import {
   RadioGroup,
 } from '@material-ui/core';
 
-import StyledRadio from '../../components/styled-radio-icon';
+import { StyledRadio } from '../../components/styled-radio-icon';
 import { postItemsToDatabase } from '../../services';
 
 import {

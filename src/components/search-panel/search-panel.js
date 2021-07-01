@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -9,46 +9,46 @@ import Select from '@material-ui/core/Select';
 
 import './search-panel.scss';
 
+export class SearchPanel extends Component {
+  onSearchChange = (e) => {
+    this.props.termSetup(e.target.value);
+  };
 
-export default class SearchPanel extends Component {
+  onColumnChange = (e) => {
+    this.props.columnChange(e.target.value);
+  };
 
-    onSearchChange = (e) => {
-        this.props.termSetup(e.target.value)
-    }
-
-    onColumnChange = (e) => {
-        this.props.columnChange(e.target.value)
-    }
-
-    render() {
-
-        return (
-            <div className={'search-panel'}>
-                <TextField className={'input'}
-                           size="small"
-                           label="Поиск"
-                           type="search"
-                           variant="outlined"
-                           onChange={this.onSearchChange}
-                           InputProps={{
-                               startAdornment: (
-                                   <InputAdornment position="start">
-                                       <SearchIcon/>
-                                   </InputAdornment>
-                               ),
-                           }}/>
-                <FormControl className={'select'} variant="outlined" size="small">
-                    <InputLabel>Категория</InputLabel>
-                    <Select
-                        label={'Категория'}
-                        defaultValue={'itemName'}
-                        onChange={this.onColumnChange}>
-                        <MenuItem value={'itemName'}>Перечень товаров</MenuItem>
-                        <MenuItem value={'price'}>Стоимость</MenuItem>
-                        <MenuItem value={'dateOfChange'}>Дата изменения</MenuItem>
-                    </Select>
-                </FormControl>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div className={'search-panel'}>
+        <TextField
+          className={'input'}
+          size="small"
+          label="Поиск"
+          type="search"
+          variant="outlined"
+          onChange={this.onSearchChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <FormControl className={'select'} variant="outlined" size="small">
+          <InputLabel>Категория</InputLabel>
+          <Select
+            label={'Категория'}
+            defaultValue={'itemName'}
+            onChange={this.onColumnChange}
+          >
+            <MenuItem value={'itemName'}>Перечень товаров</MenuItem>
+            <MenuItem value={'price'}>Стоимость</MenuItem>
+            <MenuItem value={'dateOfChange'}>Дата изменения</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
+    );
+  }
 }

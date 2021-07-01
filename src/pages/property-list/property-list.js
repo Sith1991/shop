@@ -3,9 +3,9 @@ import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import {PropertyListTable} from '../../components/property-list-table';
-import Spinner from '../../components/spinner';
-import ErrorIndicator from '../error-indicator';
+import { PropertyListTable } from '../../components/property-list-table';
+import { Spinner } from '../../components/spinner';
+import { ErrorIndicator } from '../error-indicator';
 import {
   fetchProperties,
   propertiesError,

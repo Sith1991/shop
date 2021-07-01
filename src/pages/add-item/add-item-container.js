@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import Spinner from '../../components/spinner';
-import ErrorIndicator from '../error-indicator';
+import { Spinner } from '../../components/spinner';
+import { ErrorIndicator } from '../error-indicator';
 import AddItem from './add-item';
 import {
   fetchProperties,

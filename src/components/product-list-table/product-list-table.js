@@ -12,7 +12,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
 import { UniversalTablePagination } from '../universal-table-pagination';
 import { ProductListTableHeader } from './';
-import Spinner from '../spinner';
+import { Spinner } from '../spinner';
 
 import './product-list-table.scss';
 

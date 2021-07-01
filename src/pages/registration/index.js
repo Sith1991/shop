@@ -1,3 +1,4 @@
-import Registration from "./registration";
+import Registration from './registration';
+import RegistrationContainer from './registration-container';
 
-export default Registration;
+export { Registration, RegistrationContainer };

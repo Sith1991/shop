@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import AddProperty from './index';
-import Spinner from '../../components/spinner';
-import ErrorIndicator from '../error-indicator';
+import { AddProperty } from './index';
+import { Spinner } from '../../components/spinner';
+import { ErrorIndicator } from '../error-indicator';
 import {
   fetchProperties,
   propertiesError,

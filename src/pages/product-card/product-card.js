@@ -207,4 +207,4 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
   );
 };
 
-export default ProductCard;
+export { ProductCard };

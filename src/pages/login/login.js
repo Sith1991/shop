@@ -11,7 +11,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import ErrorMessageText from '../../components/error-message-text';
+import { ErrorMessageText } from '../../components/error-message-text';
 import { submitLogIn } from '../../services';
 
 import {

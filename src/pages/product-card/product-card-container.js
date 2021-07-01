@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import Spinner from '../../components/spinner';
-import ErrorIndicator from '../error-indicator';
-import ProductCard from './product-card';
+import { Spinner } from '../../components/spinner';
+import { ErrorIndicator } from '../error-indicator';
+import { ProductCard } from './product-card';
 import {
   clearSelectedProduct,
   fetchSelectedProduct,

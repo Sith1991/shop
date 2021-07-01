@@ -1,3 +1,4 @@
-import AddProperty from "./add-property";
+import AddProperty from './add-property';
+import AddPropertyContainer from './add-property-container';
 
-export default AddProperty;
+export { AddProperty, AddPropertyContainer };

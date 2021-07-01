@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import Login from './login';
 import { userIsAuth } from '../../store/actions';
-import Spinner from '../../components/spinner';
+import { Spinner } from '../../components/spinner';
 
 const LoginContainer = ({ logIn, userIsAuth, loading }) => {
   useEffect(() => {

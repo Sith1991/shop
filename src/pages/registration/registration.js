@@ -11,7 +11,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { Link, withRouter } from 'react-router-dom';
 
-import ErrorMessageText from '../../components/error-message-text';
+import { ErrorMessageText } from '../../components/error-message-text';
 import { submitRegistration } from '../../services';
 
 import {
@@ -104,7 +104,7 @@ const Registration = ({ history }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.name}
-            ></OutlinedInput>
+            />
             {touched.name && errors.name && (
               <FormHelperText>{errors.name}</FormHelperText>
             )}
@@ -123,7 +123,7 @@ const Registration = ({ history }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.secondName}
-            ></OutlinedInput>
+            />
             {touched.secondName && errors.secondName && (
               <FormHelperText>{errors.secondName}</FormHelperText>
             )}
@@ -139,7 +139,7 @@ const Registration = ({ history }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
-            ></OutlinedInput>
+            />
             {touched.email && errors.email && (
               <FormHelperText>{errors.email}</FormHelperText>
             )}

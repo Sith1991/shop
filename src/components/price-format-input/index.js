@@ -1,3 +1,3 @@
-import PriceFormatInput from "./price-format-input";
+import { PriceFormatInput } from './price-format-input';
 
-export default PriceFormatInput;
+export { PriceFormatInput };

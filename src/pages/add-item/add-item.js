@@ -9,8 +9,8 @@ import { FormControl, FormHelperText, FormLabel } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
 import AddPropertyToProduct from '../../components/add-property-to-product';
-import Thumb from '../../components/thumb';
-import PriceFormatInput from '../../components/price-format-input';
+import { Thumb } from '../../components/thumb';
+import { PriceFormatInput } from '../../components/price-format-input';
 import {
   getDateOfChange,
   postItemsToDatabase,
