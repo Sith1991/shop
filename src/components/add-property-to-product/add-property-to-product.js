@@ -359,4 +359,4 @@ const AddPropertyToProduct = ({
   );
 };
 
-export default AddPropertyToProduct;
+export { AddPropertyToProduct };

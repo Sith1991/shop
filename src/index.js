@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import store from '../src/store/store';
 import {ErrorBoundry} from './components/error-boundry';
-import App from './components/app';
+import { App } from './components/app';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NotificationsContainer from './components/notifications/notifications-container';
 

@@ -7,7 +7,7 @@ export class Thumb extends Component {
     thumb: undefined,
   };
 
-  componentWillReceiveProps = (nextProps) => {
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
     if (!nextProps.file) {
       return;
     }

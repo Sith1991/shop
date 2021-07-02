@@ -1,3 +1,3 @@
-import AddPropertyToProduct from "./add-property-to-product";
+import { AddPropertyToProduct } from './add-property-to-product';
 
-export default AddPropertyToProduct;
+export { AddPropertyToProduct };
