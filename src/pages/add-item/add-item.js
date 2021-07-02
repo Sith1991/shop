@@ -336,6 +336,7 @@ const AddItem = ({
     handleSubmit,
     dirty,
     setFieldTouched,
+    setFieldValue,
   } = formik;
 
   return (
@@ -546,6 +547,8 @@ const AddItem = ({
                 values={values}
                 properties={properties}
                 getError={getError}
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
               />
             </form>
           </div>

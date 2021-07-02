@@ -24,6 +24,8 @@ const AddPropertyToProduct = ({
   values,
   properties,
   getError,
+  setFieldValue,
+  setFieldTouched
 }) => {
   const classesSelect = useAddItemSelectStyles();
   const classesButton = useAddPropertyButtonStyles();
@@ -49,9 +51,15 @@ const AddPropertyToProduct = ({
     [properties, propertiesOfProduct]
   );
 
-  // удаляю выбранное свойство из массива оставшихся свойств
-  const removeSelectedProperties = (event) => {
+  const removeSelectedProperties = (event, index) => {
     handleChange(event);
+    // При перевыборе свойства, очищаю его значение (устанвливаю значение на пустую строку), что бы при выборе другого
+    // свойства, ранее вбитые значения не присваивались ему автоматически
+    setFieldValue(`propertiesOfProduct.${index}.propertyValue`, '', false);
+    // При перевыборе свойства, очищаю параметр touched т.к. если этого не сделать, то сработавшие errors передадутся на
+    // заново выбранное свойство
+    setFieldTouched(`propertiesOfProduct.${index}.propertyValue`, false, false);
+    // удаляю выбранное свойство из массива оставшихся свойств
     const { value } = event.target;
     const lastProps = lastProperties.filter(
       (item) => item.propertyName !== value
@@ -87,7 +95,11 @@ const AddPropertyToProduct = ({
 
   const renderMenuItems = (item, index) => {
     const { propertyName } = item;
-    return <MenuItem value={propertyName} key={index}>{propertyName}</MenuItem>;
+    return (
+      <MenuItem value={propertyName} key={index}>
+        {propertyName}
+      </MenuItem>
+    );
   };
 
   const renderValueInputs = (selectedProp, index) => {
@@ -103,15 +115,17 @@ const AddPropertyToProduct = ({
     switch (selectedProperty.propertyType) {
       case 'Dropdown':
         const errorConditionDropdown = (idx) => {
-          return ( touched.propertiesOfProduct &&
-                touched.propertiesOfProduct[index] &&
-                errors.propertiesOfProduct &&
-                errors.propertiesOfProduct[index] &&
-                touched.propertiesOfProduct[index].propertyValue &&
-                errors.propertiesOfProduct[index].propertyValue &&
-                touched.propertiesOfProduct[index].propertyValue[idx] &&
-                errors.propertiesOfProduct[index].propertyValue[idx]
-        )}
+          return (
+            touched.propertiesOfProduct &&
+            touched.propertiesOfProduct[index] &&
+            errors.propertiesOfProduct &&
+            errors.propertiesOfProduct[index] &&
+            touched.propertiesOfProduct[index].propertyValue &&
+            errors.propertiesOfProduct[index].propertyValue &&
+            touched.propertiesOfProduct[index].propertyValue[idx] &&
+            errors.propertiesOfProduct[index].propertyValue[idx]
+          );
+        };
         return (
           <FieldArray name={`${nameOfFieldArray}`}>
             {({ remove, push }) => (
@@ -126,7 +140,7 @@ const AddPropertyToProduct = ({
                         error={
                           errorConditionDropdown(idx)
                             ? Boolean(touched.propertiesOfProduct[index].propertyValue[idx].propertyValue &&
-                              errors.propertiesOfProduct[index].propertyValue[idx].propertyValue)
+                                  errors.propertiesOfProduct[index].propertyValue[idx].propertyValue)
                             : null
                         }
                       >
@@ -145,8 +159,14 @@ const AddPropertyToProduct = ({
                           value={propertiesOfProduct[index].propertyValue[idx].propertyValue}
                         />
                         {errorConditionDropdown(idx)
-                          ? getError(touched.propertiesOfProduct[index].propertyValue[idx].propertyValue,
-                              errors.propertiesOfProduct[index].propertyValue[idx].propertyValue)
+                          ? getError(
+                              touched.propertiesOfProduct[index].propertyValue[
+                                idx
+                              ].propertyValue,
+                              errors.propertiesOfProduct[index].propertyValue[
+                                idx
+                              ].propertyValue
+                            )
                           : null}
                       </FormControl>
                       <IconButton
@@ -170,18 +190,21 @@ const AddPropertyToProduct = ({
           </FieldArray>
         );
       case 'Number':
-        const errorConditionNumber = touched.propertiesOfProduct &&
-            touched.propertiesOfProduct[index] &&
-            errors.propertiesOfProduct &&
-            errors.propertiesOfProduct[index];
+        const errorConditionNumber =
+          touched.propertiesOfProduct &&
+          touched.propertiesOfProduct[index] &&
+          errors.propertiesOfProduct &&
+          errors.propertiesOfProduct[index];
         return (
           <div className={'add-property-right-column'}>
             <p className={'property-name'}>Значение</p>
             <FormControl
               error={
                 errorConditionNumber
-                  ? Boolean(touched.propertiesOfProduct[index].propertyValue &&
-                    errors.propertiesOfProduct[index].propertyValue)
+                  ? Boolean(
+                      touched.propertiesOfProduct[index].propertyValue &&
+                        errors.propertiesOfProduct[index].propertyValue
+                    )
                   : null
               }
             >
@@ -198,7 +221,8 @@ const AddPropertyToProduct = ({
                 onBlur={handleBlur}
                 value={propertiesOfProduct[index].propertyValue}
               />
-              {errorConditionNumber ? getError(
+              {errorConditionNumber
+                ? getError(
                     touched.propertiesOfProduct[index].propertyValue,
                     errors.propertiesOfProduct[index].propertyValue
                   )
@@ -207,17 +231,21 @@ const AddPropertyToProduct = ({
           </div>
         );
       case 'String':
-        const errorConditionString = touched.propertiesOfProduct &&
-            touched.propertiesOfProduct[index] &&
-            errors.propertiesOfProduct &&
-            errors.propertiesOfProduct[index];
+        const errorConditionString =
+          touched.propertiesOfProduct &&
+          touched.propertiesOfProduct[index] &&
+          errors.propertiesOfProduct &&
+          errors.propertiesOfProduct[index];
         return (
           <div className={'add-property-right-column'}>
             <p className={'property-name'}>Значение</p>
             <FormControl
-              error={errorConditionString
-                  ? Boolean(touched.propertiesOfProduct[index].propertyValue &&
-                    errors.propertiesOfProduct[index].propertyValue)
+              error={
+                errorConditionString
+                  ? Boolean(
+                      touched.propertiesOfProduct[index].propertyValue &&
+                        errors.propertiesOfProduct[index].propertyValue
+                    )
                   : null
               }
             >
@@ -235,7 +263,8 @@ const AddPropertyToProduct = ({
                 onBlur={handleBlur}
                 value={propertiesOfProduct[index].propertyValue}
               />
-              {errorConditionString ? getError(
+              {errorConditionString
+                ? getError(
                     touched.propertiesOfProduct[index].propertyValue,
                     errors.propertiesOfProduct[index].propertyValue
                   )
@@ -304,10 +333,12 @@ const AddPropertyToProduct = ({
                       name={`propertiesOfProduct.${index}.propertyName`}
                       value={propertiesOfProduct[index].propertyName}
                       onChange={(event) => {
-                        removeSelectedProperties(event);
+                        removeSelectedProperties(event, index);
                       }}
                       onBlur={handleBlur}
-                      notched={false} /*Если true, на контуре сделана выемка для размещения метки.*/
+                      notched={
+                        false
+                      } /*Если true, на контуре сделана выемка для размещения метки.*/
                     >
                       {/*если в селекте выбрано свойство, добавить его к оставшимся свойствам,
                       но только для рендеринга итемов для селекта,иначе просто отрендерить оставшием свойства*/}

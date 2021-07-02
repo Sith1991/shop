@@ -127,7 +127,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
                 /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                                                                этому полю было присвоено первое значение свойства из массива значений*/
+                этому полю было присвоено первое значение свойства из массива значений*/
                 value={values.propertiesOfProduct[index].propertyValue}
               >
                 {propertyValue.map(renderMenuItems)}
