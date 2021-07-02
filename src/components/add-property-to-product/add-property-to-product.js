@@ -142,10 +142,7 @@ const AddPropertyToProduct = ({
                           name={`${nameOfFieldArray}.${idx}.propertyValue`}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={
-                            propertiesOfProduct[index].propertyValue[idx]
-                              .propertyValue
-                          }
+                          value={propertiesOfProduct[index].propertyValue[idx].propertyValue}
                         />
                         {errorConditionDropdown(idx)
                           ? getError(touched.propertiesOfProduct[index].propertyValue[idx].propertyValue,
@@ -310,12 +307,10 @@ const AddPropertyToProduct = ({
                         removeSelectedProperties(event);
                       }}
                       onBlur={handleBlur}
-                      notched={
-                        false
-                      } /*Если true, на контуре сделана выемка для размещения метки.*/
+                      notched={false} /*Если true, на контуре сделана выемка для размещения метки.*/
                     >
-                      {/*если в селекте выбрано свойство, добавить его к оставшимся свойствам, но только для рендеринга итемов для селекта,
-                                            иначе просто отрендерить оставшием свойства*/}
+                      {/*если в селекте выбрано свойство, добавить его к оставшимся свойствам,
+                      но только для рендеринга итемов для селекта,иначе просто отрендерить оставшием свойства*/}
                       {propertiesOfProduct[index].propertyName
                         ? selectedWithLastProperties(
                             propertiesOfProduct[index].propertyName

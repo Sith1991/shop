@@ -14,6 +14,7 @@ const useAddItemSelectStyles = makeStyles((theme) => ({
     color: '#000000',
     paddingTop: 8.5,
     paddingBottom: 6.5,
+    opacity: 0.8,
   },
   icon: {
     color: '#0258FF',

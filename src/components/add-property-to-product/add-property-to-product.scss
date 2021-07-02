@@ -8,6 +8,8 @@
       margin: 0;
     }
     -moz-appearance: textfield;
+    @include font-params(normal, 14px, 16px, #000000);
+    opacity: 0.8;
   }
   .add-property-head {
     margin-top: 12px;
