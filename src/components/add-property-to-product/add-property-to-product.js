@@ -85,9 +85,9 @@ const AddPropertyToProduct = ({
     return arr.map(renderMenuItems);
   };
 
-  const renderMenuItems = (item) => {
+  const renderMenuItems = (item, index) => {
     const { propertyName } = item;
-    return <MenuItem value={propertyName}>{propertyName}</MenuItem>;
+    return <MenuItem value={propertyName} key={index}>{propertyName}</MenuItem>;
   };
 
   const renderValueInputs = (selectedProp, index) => {
@@ -102,6 +102,16 @@ const AddPropertyToProduct = ({
     const nameOfFieldArray = `propertiesOfProduct.${index}.propertyValue`;
     switch (selectedProperty.propertyType) {
       case 'Dropdown':
+        const errorConditionDropdown = (idx) => {
+          return ( touched.propertiesOfProduct &&
+                touched.propertiesOfProduct[index] &&
+                errors.propertiesOfProduct &&
+                errors.propertiesOfProduct[index] &&
+                touched.propertiesOfProduct[index].propertyValue &&
+                errors.propertiesOfProduct[index].propertyValue &&
+                touched.propertiesOfProduct[index].propertyValue[idx] &&
+                errors.propertiesOfProduct[index].propertyValue[idx]
+        )}
         return (
           <FieldArray name={`${nameOfFieldArray}`}>
             {({ remove, push }) => (
@@ -114,22 +124,9 @@ const AddPropertyToProduct = ({
                     <div className={'input-with-remove-button'} key={idx}>
                       <FormControl
                         error={
-                          touched.propertiesOfProduct &&
-                          touched.propertiesOfProduct[index] &&
-                          errors.propertiesOfProduct &&
-                          errors.propertiesOfProduct[index] &&
-                          touched.propertiesOfProduct[index].propertyValue &&
-                          errors.propertiesOfProduct[index].propertyValue &&
-                          touched.propertiesOfProduct[index].propertyValue[
-                            idx
-                          ] &&
-                          errors.propertiesOfProduct[index].propertyValue[idx]
-                            ? touched.propertiesOfProduct[index].propertyValue[
-                                idx
-                              ].propertyValue &&
-                              errors.propertiesOfProduct[index].propertyValue[
-                                idx
-                              ].propertyValue
+                          errorConditionDropdown(idx)
+                            ? Boolean(touched.propertiesOfProduct[index].propertyValue[idx].propertyValue &&
+                              errors.propertiesOfProduct[index].propertyValue[idx].propertyValue)
                             : null
                         }
                       >
@@ -150,22 +147,9 @@ const AddPropertyToProduct = ({
                               .propertyValue
                           }
                         />
-                        {touched.propertiesOfProduct &&
-                        touched.propertiesOfProduct[index] &&
-                        errors.propertiesOfProduct &&
-                        errors.propertiesOfProduct[index] &&
-                        touched.propertiesOfProduct[index].propertyValue &&
-                        errors.propertiesOfProduct[index].propertyValue &&
-                        touched.propertiesOfProduct[index].propertyValue[idx] &&
-                        errors.propertiesOfProduct[index].propertyValue[idx]
-                          ? getError(
-                              touched.propertiesOfProduct[index].propertyValue[
-                                idx
-                              ].propertyValue,
-                              errors.propertiesOfProduct[index].propertyValue[
-                                idx
-                              ].propertyValue
-                            )
+                        {errorConditionDropdown(idx)
+                          ? getError(touched.propertiesOfProduct[index].propertyValue[idx].propertyValue,
+                              errors.propertiesOfProduct[index].propertyValue[idx].propertyValue)
                           : null}
                       </FormControl>
                       <IconButton
@@ -189,17 +173,18 @@ const AddPropertyToProduct = ({
           </FieldArray>
         );
       case 'Number':
+        const errorConditionNumber = touched.propertiesOfProduct &&
+            touched.propertiesOfProduct[index] &&
+            errors.propertiesOfProduct &&
+            errors.propertiesOfProduct[index];
         return (
           <div className={'add-property-right-column'}>
             <p className={'property-name'}>Значение</p>
             <FormControl
               error={
-                touched.propertiesOfProduct &&
-                touched.propertiesOfProduct[index] &&
-                errors.propertiesOfProduct &&
-                errors.propertiesOfProduct[index]
-                  ? touched.propertiesOfProduct[index].propertyValue &&
-                    errors.propertiesOfProduct[index].propertyValue
+                errorConditionNumber
+                  ? Boolean(touched.propertiesOfProduct[index].propertyValue &&
+                    errors.propertiesOfProduct[index].propertyValue)
                   : null
               }
             >
@@ -216,11 +201,7 @@ const AddPropertyToProduct = ({
                 onBlur={handleBlur}
                 value={propertiesOfProduct[index].propertyValue}
               />
-              {touched.propertiesOfProduct &&
-              touched.propertiesOfProduct[index] &&
-              errors.propertiesOfProduct &&
-              errors.propertiesOfProduct[index]
-                ? getError(
+              {errorConditionNumber ? getError(
                     touched.propertiesOfProduct[index].propertyValue,
                     errors.propertiesOfProduct[index].propertyValue
                   )
@@ -229,17 +210,17 @@ const AddPropertyToProduct = ({
           </div>
         );
       case 'String':
+        const errorConditionString = touched.propertiesOfProduct &&
+            touched.propertiesOfProduct[index] &&
+            errors.propertiesOfProduct &&
+            errors.propertiesOfProduct[index];
         return (
           <div className={'add-property-right-column'}>
             <p className={'property-name'}>Значение</p>
             <FormControl
-              error={
-                touched.propertiesOfProduct &&
-                touched.propertiesOfProduct[index] &&
-                errors.propertiesOfProduct &&
-                errors.propertiesOfProduct[index]
-                  ? touched.propertiesOfProduct[index].propertyValue &&
-                    errors.propertiesOfProduct[index].propertyValue
+              error={errorConditionString
+                  ? Boolean(touched.propertiesOfProduct[index].propertyValue &&
+                    errors.propertiesOfProduct[index].propertyValue)
                   : null
               }
             >
@@ -257,11 +238,7 @@ const AddPropertyToProduct = ({
                 onBlur={handleBlur}
                 value={propertiesOfProduct[index].propertyValue}
               />
-              {touched.propertiesOfProduct &&
-              touched.propertiesOfProduct[index] &&
-              errors.propertiesOfProduct &&
-              errors.propertiesOfProduct[index]
-                ? getError(
+              {errorConditionString ? getError(
                     touched.propertiesOfProduct[index].propertyValue,
                     errors.propertiesOfProduct[index].propertyValue
                   )
@@ -280,8 +257,7 @@ const AddPropertyToProduct = ({
         <div className={'add-property-to-product'}>
           <div className={'add-property-head'}>
             <h5>Добавление товару свойств</h5>
-            {/*отключаем кнопку добавления свойств, когда кол-во свойств в товаре равно количеству достпуных
-                        свойств*/}
+            {/*отключаем кнопку добавления свойств, когда кол-во свойств в товаре равно количеству достпуных свойств*/}
             {properties.length > propertiesOfProduct.length && (
               <IconButton
                 classes={{ root: classesButton.root }}

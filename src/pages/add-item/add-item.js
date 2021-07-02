@@ -374,7 +374,7 @@ const AddItem = ({
                 </h5>
               </div>
               <div className={'add-item-body'}>
-                <FormControl error={touched.itemName && errors.itemName}>
+                <FormControl error={Boolean(touched.itemName && errors.itemName)}>
                   <FormLabel
                     classes={{ root: classesLabel.root }}
                     className={'labels'}
@@ -399,7 +399,7 @@ const AddItem = ({
                   {getError(touched.itemName, errors.itemName)}
                 </FormControl>
 
-                <FormControl error={touched.price && errors.price}>
+                <FormControl error={Boolean(touched.price && errors.price)}>
                   <FormLabel
                     classes={{ root: classesLabel.root }}
                     className={'labels'}
@@ -417,7 +417,7 @@ const AddItem = ({
                   {getError(touched.price, errors.price)}
                 </FormControl>
 
-                <FormControl error={touched.file && errors.file}>
+                <FormControl error={Boolean(touched.file && errors.file)}>
                   <FormLabel
                     classes={{ root: classesLabel.root }}
                     className={'labels'}
@@ -509,7 +509,9 @@ const AddItem = ({
                     }
                   />
                 )}
-                <FormControl error={touched.description && errors.description}>
+                <FormControl
+                  error={Boolean(touched.description && errors.description)}
+                >
                   <FormLabel
                     classes={{ root: classesLabel.root }}
                     className={'labels'}
