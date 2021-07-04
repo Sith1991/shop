@@ -205,8 +205,8 @@ const AddItem = ({
     return result;
   };
 
-  const getError = (touched, error) => {
-    return touched && error && <FormHelperText>{error}</FormHelperText>;
+  const getError = (touched, error, index) => {
+    return touched && error && <FormHelperText key={index}>{error}</FormHelperText>;
   };
 
   const formik = useFormik({
@@ -490,8 +490,8 @@ const AddItem = ({
                       </div>
                     )}
                   </FieldArray>
-                  {getArrErrorsMessages(errors.file).map((error) =>
-                    getError(true, error)
+                  {getArrErrorsMessages(errors.file).map((error, index) =>
+                    getError(true, error, index)
                   )}
                 </FormControl>
                 {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки

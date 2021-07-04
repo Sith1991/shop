@@ -26,7 +26,7 @@ const PropertyListTableHeader = (props) => {
   PropertyListTableHeader.propTypes = {
     onRequestSort: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-    orderBy: PropTypes.string.isRequired,
+    orderBy: PropTypes.string,
   };
 
   const useStyles = makeStyles(() => ({

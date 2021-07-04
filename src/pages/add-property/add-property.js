@@ -131,7 +131,7 @@ const AddProperty = ({
               <h5>Добавление свойства</h5>
             </div>
             <div className={'add-prop-body'}>
-              <FormControl error={touched.propertyName && errors.propertyName}>
+              <FormControl error={Boolean(touched.propertyName && errors.propertyName)}>
                 <FormLabel
                   classes={{ root: classesLabel.root }}
                   className={'labels'}

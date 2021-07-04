@@ -43,7 +43,7 @@
       }
 
       p {
-        @include font-params(normal, 16px, 19px, #828282);
+        @include font-params(normal, 16px, 19px, #000000);
         margin: 0;
       }
 
@@ -76,7 +76,7 @@
       }
 
       p {
-        @include font-params(normal, 14px, 16px, #828282);
+        @include font-params(normal, 14px, 16px, #000000);
         margin: 0;
       }
 

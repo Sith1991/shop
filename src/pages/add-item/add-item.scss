@@ -78,13 +78,13 @@
     }
 
     input, textarea {
-      @include font-params(normal, 14px, 16px, #828282);
+      @include font-params(normal, 14px, 16px, #000000);
       opacity: 0.8;
     }
 
     .add-item-textarea {
       textarea {
-        @include font-params(normal, 16px, 19px, #828282);
+        @include font-params(normal, 16px, 19px, #000000);
         opacity: 0.8;
       }
     }

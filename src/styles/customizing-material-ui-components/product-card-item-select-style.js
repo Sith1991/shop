@@ -11,7 +11,7 @@ const useProductCardItemSelectStyles = makeStyles((theme) => ({
     fontWeight: 'normal',
     fontSize: 14,
     lineHeight: '16px',
-    color: '#828282',
+    color: '#000000',
     paddingTop: 8.5,
     paddingBottom: 6.5,
   },
