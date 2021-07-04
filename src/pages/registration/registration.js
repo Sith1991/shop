@@ -93,7 +93,7 @@ const Registration = ({ history }) => {
         <h4>Регистрация</h4>
         {errorMessage ? <ErrorMessageText message={errorMessage} /> : null}
         <div className={'registration-wrap'}>
-          <FormControl fullWidth error={touched.name && errors.name}>
+          <FormControl fullWidth error={Boolean(touched.name && errors.name)}>
             <FormLabel>Имя</FormLabel>
             <OutlinedInput
               type="text"
@@ -111,7 +111,7 @@ const Registration = ({ history }) => {
           </FormControl>
           <FormControl
             fullWidth
-            error={touched.secondName && errors.secondName}
+            error={Boolean(touched.secondName && errors.secondName)}
           >
             <FormLabel>Фамилия</FormLabel>
             <OutlinedInput
@@ -128,7 +128,7 @@ const Registration = ({ history }) => {
               <FormHelperText>{errors.secondName}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth error={touched.email && errors.email}>
+          <FormControl fullWidth error={Boolean(touched.email && errors.email)}>
             <FormLabel>E-mail</FormLabel>
             <OutlinedInput
               type="email"
@@ -144,7 +144,7 @@ const Registration = ({ history }) => {
               <FormHelperText>{errors.email}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth error={touched.password && errors.password}>
+          <FormControl fullWidth error={Boolean(touched.password && errors.password)}>
             <FormLabel>Пароль</FormLabel>
             <OutlinedInput
               notched={false}
@@ -174,7 +174,7 @@ const Registration = ({ history }) => {
           </FormControl>
           <FormControl
             fullWidth
-            error={touched.confirmPassword && errors.confirmPassword}
+            error={Boolean(touched.confirmPassword && errors.confirmPassword)}
           >
             <FormLabel>Повторите пароль</FormLabel>
             <OutlinedInput

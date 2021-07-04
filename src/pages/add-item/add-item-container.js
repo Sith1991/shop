@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { compose } from 'redux';
 
 import { Spinner } from '../../components/spinner';
 import { ErrorIndicator } from '../error-indicator';
@@ -17,6 +17,7 @@ import {
   editedProduct,
   resetNotifications,
 } from '../../store/actions';
+import { withAuthRedirect } from '../../hoc';
 
 const AddItemContainer = ({
   fetchProperties,
@@ -38,7 +39,6 @@ const AddItemContainer = ({
   productsSpinnerOpen,
   productsSpinnerClose,
   match,
-  logIn,
   resetNotifications,
 }) => {
   const itemId = match.params.id;
@@ -55,10 +55,6 @@ const AddItemContainer = ({
     // данные ранее редактируемого товара
     return () => clearSelectedProduct();
   }, [itemId]);
-
-  if (!logIn) {
-    return <Redirect to={'/login'} />;
-  }
 
   if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {
     return <Spinner />;
@@ -95,7 +91,6 @@ const mapStateToProps = (state) => {
     loadingEditingProduct: state.selectedProduct.loading,
     errorEditingProduct: state.selectedProduct.error,
     editingProduct: state.selectedProduct.selectedProduct,
-    logIn: state.isAuth.logIn,
   };
 };
 
@@ -112,4 +107,7 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddItemContainer);
+export default compose(
+  withAuthRedirect,
+  connect(mapStateToProps, mapDispatchToProps)
+)(AddItemContainer);

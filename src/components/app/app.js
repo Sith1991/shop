@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { LoginContainer } from '../../pages/login';
 import { RegistrationContainer } from '../../pages/registration';
@@ -9,10 +10,15 @@ import { AddPropertyContainer } from '../../pages/add-property';
 import { AddItemContainer } from '../../pages/add-item';
 import { ProductCardContainer } from '../../pages/product-card';
 import { ErrorIndicator } from '../../pages/error-indicator';
+import { userIsAuth } from '../../store/actions';
 
 import './app.scss';
 
-const App = () => {
+const App = ({ userIsAuth }) => {
+  useEffect(() => {
+    userIsAuth();
+  }, []);
+
   return (
     <div className={'app'}>
       <div className={'wrapper'}>
@@ -32,4 +38,14 @@ const App = () => {
   );
 };
 
-export { App };
+const mapStateToProps = (state) => {
+  return {
+    loading: state.isAuth.loading,
+  };
+};
+
+const mapDispatchToProps = {
+  userIsAuth,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

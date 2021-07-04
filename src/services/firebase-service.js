@@ -72,7 +72,7 @@ const userLogOut = () => {
   firebase
     .auth()
     .signOut()
-    .then(() => console.log('sign out'))
+    .then(() => {})
     .catch((e) => console.log(e));
 };
 

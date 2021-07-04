@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import { ProductListTable } from '../../components/product-list-table';
 import { SearchPanel } from '../../components/search-panel';
@@ -10,10 +11,10 @@ import {
   productsError,
   deletedProduct,
   resetNotifications,
-  userIsAuth,
 } from '../../store/actions';
 import { ErrorIndicator } from '../error-indicator';
 import { deleteItem, userLogOut } from '../../services';
+import { withAuthRedirect } from '../../hoc';
 
 import './product-list.scss';
 
@@ -24,7 +25,6 @@ class ProductList extends Component {
   };
 
   componentDidMount() {
-    this.props.userIsAuth();
     this.props.resetNotifications();
     this.props.fetchProducts();
   }
@@ -61,7 +61,6 @@ class ProductList extends Component {
       loading,
       error,
       email,
-      logIn,
       productsError,
       deletedProduct,
     } = this.props;
@@ -69,10 +68,6 @@ class ProductList extends Component {
     const { term } = this.state;
 
     const visibleItems = this.searchItems(products, term);
-
-    if (!logIn) {
-      return <Redirect to={'/login'} />;
-    }
 
     return (
       <div className={'product-list-wrap'}>
@@ -141,7 +136,6 @@ const mapStateToProps = (state) => {
     loading: state.products.loading,
     error: state.products.error,
     email: state.isAuth.email,
-    logIn: state.isAuth.logIn,
   };
 };
 
@@ -149,8 +143,10 @@ const mapDispatchToProps = {
   fetchProducts,
   productsError,
   deletedProduct,
-  userIsAuth,
   resetNotifications,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+export default compose(
+  withAuthRedirect,
+  connect(mapStateToProps, mapDispatchToProps)
+)(ProductList);

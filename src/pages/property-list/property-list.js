@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import { PropertyListTable } from '../../components/property-list-table';
 import { Spinner } from '../../components/spinner';
@@ -13,6 +14,7 @@ import {
   resetNotifications,
 } from '../../store/actions';
 import { deleteItem, userLogOut } from '../../services';
+import { withAuthRedirect } from '../../hoc';
 
 import './property-list.scss';
 
@@ -24,17 +26,12 @@ const PropertyList = ({
   loading,
   error,
   email,
-  logIn,
   resetNotifications,
 }) => {
   useEffect(() => {
     resetNotifications();
     fetchProperties();
   }, []);
-
-  if (!logIn) {
-    return <Redirect to={'/login'} />;
-  }
 
   if (loading) {
     return <Spinner />;
@@ -99,7 +96,6 @@ const mapStateToProps = (state) => {
     loading: state.properties.loading,
     error: state.properties.error,
     email: state.isAuth.email,
-    logIn: state.isAuth.logIn,
   };
 };
 
@@ -110,4 +106,7 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PropertyList);
+export default compose(
+  withAuthRedirect,
+  connect(mapStateToProps, mapDispatchToProps)
+)(PropertyList);

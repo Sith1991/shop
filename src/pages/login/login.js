@@ -79,7 +79,7 @@ const Login = ({ history }) => {
         <h4>Вход</h4>
         {errorMessage ? <ErrorMessageText message={errorMessage} /> : null}
         <div className={'login-wrap'}>
-          <FormControl fullWidth error={touched.email && errors.email}>
+          <FormControl fullWidth error={Boolean(touched.email && errors.email)}>
             <FormLabel>Логин</FormLabel>
             <OutlinedInput
               type="text"
@@ -95,7 +95,7 @@ const Login = ({ history }) => {
               <FormHelperText>{errors.email}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth error={touched.password && errors.password}>
+          <FormControl fullWidth error={Boolean(touched.password && errors.password)}>
             <FormLabel>Пароль</FormLabel>
             <OutlinedInput
               notched={false}

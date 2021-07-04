@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import { AddProperty } from './index';
 import { Spinner } from '../../components/spinner';
@@ -13,6 +13,7 @@ import {
   createdProperty,
   resetNotifications,
 } from '../../store/actions';
+import { withAuthRedirect } from '../../hoc';
 
 const AddPropertyContainer = ({
   fetchProperties,
@@ -30,10 +31,6 @@ const AddPropertyContainer = ({
     resetNotifications();
     fetchProperties();
   }, []);
-
-  if (!logIn) {
-    return <Redirect to={'/login'} />;
-  }
 
   if (loading) {
     return <Spinner />;
@@ -72,7 +69,7 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withAuthRedirect,
+  connect(mapStateToProps, mapDispatchToProps)
 )(AddPropertyContainer);
