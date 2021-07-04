@@ -212,7 +212,8 @@ const AddItem = ({
   const formik = useFormik({
     initialValues: {
       itemName: editingProduct.itemName,
-      price: editingProduct.price,
+      // для контролируемого input необходимо задать изначально пустую строку либо определенное значение
+      price: itemId ? editingProduct.price : '',
       file: undefined,
       fileUrl: editingProduct.fileUrl,
       dateOfChange: '',
