@@ -127,8 +127,10 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
                 /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                этому полю было присвоено первое значение свойства из массива значений*/
-                value={values.propertiesOfProduct[index].propertyValue}
+                этому полю было присвоено первое значение свойства из массива значений.
+                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
+                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
+                value={Array.isArray(values.propertiesOfProduct[index].propertyValue) ? '' : values.propertiesOfProduct[index].propertyValue}
               >
                 {propertyValue.map(renderMenuItems)}
               </Select>
