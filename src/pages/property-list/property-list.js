@@ -43,7 +43,7 @@ const PropertyList = ({
 
   return (
     <div className={'property-list-wrap'}>
-      <div className={'header'}>
+{/*      <div className={'header'}>
         <div className={'button-group'}>
           <div className={'wrap'}>
             <div className={'background'} />
@@ -70,7 +70,7 @@ const PropertyList = ({
             </Button>
           </div>
         </div>
-      </div>
+      </div>*/}
       <div className={'property-list'}>
         <div className={'button-wrap'}>
           <Link to={'/add-property'} className={'add-property-link'}>

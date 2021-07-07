@@ -19,16 +19,17 @@ const Notifications = ({
     return history.push(`${path}`);
   };
 
-  const handleClose = (event, reason) => {
+  const handleClose = (event, reason, dontBack) => {
     if (reason === 'clickaway') {
       return;
     }
+
     closeNotifications();
 
-    backToListItems(path);
+    if (!dontBack) backToListItems(path);
   };
 
-  if (isEditing && !deletedItem && path === '/') {
+  if (isEditing && !deletedItem && path === '/product-list') {
     return (
       <Snackbar
         open={showNotification}
@@ -43,7 +44,7 @@ const Notifications = ({
     );
   }
 
-  if (!isEditing && !deletedItem && path === '/') {
+  if (!isEditing && !deletedItem && path === '/product-list') {
     return (
       <Snackbar
         open={showNotification}
@@ -78,9 +79,9 @@ const Notifications = ({
       <Snackbar
         open={showNotification}
         autoHideDuration={4000}
-        onClose={handleClose}
+        onClose={(event, reason) => handleClose(event, reason, true)}
       >
-        <Alert onClose={handleClose} severity="success">
+        <Alert onClose={(event, reason) => handleClose(event, reason, true)} severity="success">
           {deletedItem === 'товар' ? 'Товар успешно удален' : null}
           {deletedItem === 'свойство' ? 'Свойство успешно удалено' : null}
         </Alert>

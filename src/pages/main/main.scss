@@ -1,0 +1,101 @@
+@import "../../styles/mixins";
+
+.main-wrap {
+
+  .header {
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .wrap {
+      margin-right: 30px;
+      width: 255px;
+      height: 60px;
+
+      &.colored {
+        border-top: 2px solid Blue;
+
+        .background {
+          background: linear-gradient(180deg, #0258FF 0%, rgba(2, 88, 255, 0) 100%);
+          opacity: 0.1;
+        }
+
+        .header-links {
+          color: #0258FF;
+          opacity: 1;
+        }
+      }
+    }
+
+    .header-links {
+      width: 255px;
+      height: 60px;
+      text-align: center;
+      @include font-params(300, 22px, 65px, black);
+      position: absolute;
+      z-index: 1;
+      opacity: 0.8;
+
+      &:hover {
+        text-decoration: none;
+        color: #0258FF;
+      }
+    }
+
+    .background {
+      position: absolute;
+      z-index: 0;
+      width: 255px;
+      height: 60px;
+    }
+
+    @include media("max", "sm") {
+      .wrap {
+        margin-right: 10px;
+        width: 150px;
+      }
+      .background {
+        width: 150px;
+      }
+      .header-links {
+        width: 150px;
+        font-size: 16px;
+      }
+    }
+
+    .button-log-out {
+      color: white;
+      width: 100px;
+      height: 32px;
+      padding: 1px 6px;
+      margin: 0 10px;
+      @include font-params(normal, 16px, 19px, #FFFFFF);
+
+      &:hover,
+      &:focus,
+      &:visited {
+        color: white;
+      }
+    }
+
+    .user-name {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-decoration: underline;
+    }
+
+    .button-log-out-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+}

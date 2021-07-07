@@ -71,7 +71,7 @@ class ProductList extends Component {
 
     return (
       <div className={'product-list-wrap'}>
-        <div className={'header'}>
+{/*        <div className={'header'}>
           <div className={'button-group'}>
             <div className={'wrap colored'}>
               <div className={'background'}></div>
@@ -98,7 +98,7 @@ class ProductList extends Component {
               </Button>
             </div>
           </div>
-        </div>
+        </div>*/}
         <div className={'product-list'}>
           <div className={'button-wrap'}>
             <Link to={'/add-item'} className={'add-item-link'}>

@@ -1,22 +1,20 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {Main} from "./index";
+import { connect } from 'react-redux';
+import { Main } from './index';
+import { compose } from 'redux';
+import { withAuthRedirect } from '../../hoc';
 
-const MainContainer = () => {
-
-    return (
-       <Main />
-    )
-}
+const MainContainer = ({email, history}) => {
+  return <Main email={email} history={history}/>;
+};
 
 const mapStateToProps = (state) => {
-    return {
+  return {
+    email: state.isAuth.email,
+  };
+};
 
-    }
-}
-
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
+export default compose(
+  withAuthRedirect,
+  connect(mapStateToProps, null)
+)(MainContainer);

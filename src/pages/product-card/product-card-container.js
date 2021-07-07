@@ -8,7 +8,6 @@ import {
   clearSelectedProduct,
   fetchSelectedProduct,
   resetNotifications,
-  userIsAuth,
 } from '../../store/actions';
 
 const ProductCardContainer = ({
@@ -20,12 +19,10 @@ const ProductCardContainer = ({
   clearSelectedProduct,
   logIn,
   resetNotifications,
-  userIsAuth,
 }) => {
   const itemId = match.params.id;
 
   useEffect(() => {
-    userIsAuth();
     resetNotifications();
     fetchSelectedProduct(itemId);
     // срабатывает при уничтожении компоненты. Очищаю бывранный товар, т.к. если этого не делать, то при нажатии
@@ -64,7 +61,6 @@ const mapDispatchToProps = {
   fetchSelectedProduct,
   clearSelectedProduct,
   resetNotifications,
-  userIsAuth,
 };
 
 export default connect(

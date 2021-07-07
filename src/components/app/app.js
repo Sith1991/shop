@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import {MainContainer} from "../../pages/main";
 import { LoginContainer } from '../../pages/login';
 import { RegistrationContainer } from '../../pages/registration';
 import { ProductList } from '../../pages/product-list';
@@ -23,14 +24,16 @@ const App = ({ userIsAuth }) => {
     <div className={'app'}>
       <div className={'wrapper'}>
         <Switch>
-          <Route path={'/'} component={ProductList} exact />
-          <Route path={'/property-list'} component={PropertyList} />
+{/*          <Route path={'/'} component={ProductList} exact />
+          <Route path={'/main'} component={Main} exact />
+          <Route path={'/property-list'} component={PropertyList} />*/}
           <Route path={'/add-property'} component={AddPropertyContainer} />
           <Route path={'/item-card/:id'} component={ProductCardContainer} />
           <Route path={'/add-item/:id?'} component={AddItemContainer} />
           <Route path={'/login'} component={LoginContainer} />
           <Route path={'/registration'} component={RegistrationContainer} />
-          <Route render={() => <ErrorIndicator />} />{' '}
+          <Route path={'/'} component={MainContainer}/>
+{/*          <Route render={() => <ErrorIndicator />} />*/}
           {/* Switch перекинет на страницу с ошибкой, если ввести несуществующий адрес*/}
         </Switch>
       </div>
@@ -38,14 +41,8 @@ const App = ({ userIsAuth }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loading: state.isAuth.loading,
-  };
-};
-
 const mapDispatchToProps = {
-  userIsAuth,
+  userIsAuth
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

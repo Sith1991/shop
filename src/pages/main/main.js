@@ -1,0 +1,69 @@
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+
+import { ProductList } from '../product-list';
+import { PropertyList } from '../property-list';
+import { userLogOut } from '../../services';
+
+import './main.scss';
+
+const Main = ({ email, history }) => {
+  console.log(history.location);
+
+  const { pathname } = history.location;
+
+  useEffect(() => {
+    if (pathname === '/') history.push('/product-list');
+  }, [pathname]);
+
+  return (
+    <div className={'main-wrap'}>
+      <div className={'header'}>
+        <div className={'button-group'}>
+          <div
+            className={`wrap ${
+              pathname === '/product-list' ? 'colored' : null
+            }`}
+          >
+            <div className={'background'} />
+            <Link to={'/product-list'} className={'header-links'}>
+              Листинг товаров
+            </Link>
+          </div>
+          <div
+            className={`wrap ${
+              pathname === '/property-list' ? 'colored' : null
+            }`}
+          >
+            <div className={'background'} />
+            <Link to={'/property-list'} className={'header-links'}>
+              Листинг проперти
+            </Link>
+          </div>
+        </div>
+        <div className={'button-group'}>
+          <div className={'user-name'}>Пользователь (E-mail): {email}</div>
+          <div className={'button-log-out-wrap'}>
+            <Button
+              className={'button-log-out'}
+              variant={'warning'}
+              onClick={userLogOut}
+            >
+              Выйти
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className={'content'}>
+        <Switch>
+          <Route path="/product-list" component={ProductList} exact />
+          <Route path="/property-list" component={PropertyList} exact />
+        </Switch>
+      </div>
+    </div>
+  );
+};
+
+export { Main };

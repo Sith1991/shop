@@ -350,7 +350,7 @@ const AddItem = ({
             <form onSubmit={handleSubmit} className={'add-item-wrap'}>
               <div className={'buttons-wrap'}>
                 <Link
-                  to={'/'}
+                  to={'/product-list'}
                   className={'button-back'}
                   onClick={clearSelectedProduct}
                 >
