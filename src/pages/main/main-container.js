@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Main } from './index';
 import { compose } from 'redux';
+
+import { Main } from './index';
 import { withAuthRedirect } from '../../hoc';
 
-const MainContainer = ({email, history}) => {
-  return <Main email={email} history={history}/>;
+const MainContainer = ({ email, history }) => {
+  return <Main email={email} history={history} />;
 };
 
 const mapStateToProps = (state) => {

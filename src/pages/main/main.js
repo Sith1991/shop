@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -16,11 +16,7 @@ const Main = ({ email, history }) => {
     <div className={'main-wrap'}>
       <div className={'header'}>
         <div className={'button-group'}>
-          <div
-            className={`wrap ${
-              pathname === '/' ? 'colored' : null
-            }`}
-          >
+          <div className={`wrap ${pathname === '/' ? 'colored' : null}`}>
             <div className={'background'} />
             <Link to={'/'} className={'header-links'}>
               Листинг товаров

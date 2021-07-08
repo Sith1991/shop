@@ -13,6 +13,7 @@ import './product-list-table.scss';
 
 const ProductListTableHeader = (props) => {
   const { order, orderBy, onRequestSort } = props;
+
   const headCells = [
     { id: 'itemName', label: 'Перечень товаров' },
     { id: 'price', label: 'Стоимость' },
@@ -42,6 +43,7 @@ const ProductListTableHeader = (props) => {
   }));
 
   const classes = useStyles();
+
   return (
     <TableHead>
       <TableRow>

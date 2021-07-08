@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
 import { UniversalTablePagination } from '../universal-table-pagination';
-import { ProductListTableHeader } from './';
+import { ProductListTableHeader } from './index';
 import { Spinner } from '../spinner';
 
 import './product-list-table.scss';
@@ -51,6 +51,7 @@ const ProductListTable = ({
   // закончили с пагинацией
 
   // начинаем делать сортировку
+
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
       return -1;
@@ -85,6 +86,8 @@ const ProductListTable = ({
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+
+  // закончили с сортировкой
 
   const timestampToDate = (timestamp) => {
     const d = new Date();

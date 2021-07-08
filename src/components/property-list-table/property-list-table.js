@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 
 import { UniversalTablePagination } from '../universal-table-pagination';
-import { PropertyListTableHeader } from './';
+import { PropertyListTableHeader } from './index';
 
 import './property-list-table.scss';
 
