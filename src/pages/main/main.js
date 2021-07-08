@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
-import { ProductList } from '../product-list';
-import { PropertyList } from '../property-list';
+import { ProductList } from '../../components/product-list';
+import { PropertyList } from '../../components/property-list';
 import { userLogOut } from '../../services';
 
 import './main.scss';
