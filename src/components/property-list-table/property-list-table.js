@@ -106,8 +106,8 @@ const PropertyListTable = ({
                     page * rowsPerPage + rowsPerPage
                   )
                 : stableSort(properties, getComparator(order, orderBy))
-              ).map((properties) => {
-                const { id, propertyName, propertyType } = properties;
+              ).map((property) => {
+                const { id, propertyName, propertyType } = property;
                 return (
                   <TableRow key={id}>
                     <TableCell>

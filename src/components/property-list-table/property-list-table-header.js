@@ -15,8 +15,8 @@ const PropertyListTableHeader = (props) => {
   const { order, orderBy, onRequestSort } = props;
 
   const headCells = [
-    { id: 'propName', label: 'Перечень проперти' },
-    { id: 'propType', label: 'Тип' },
+    { id: 'propertyName', label: 'Перечень проперти' },
+    { id: 'propertyType', label: 'Тип' },
   ];
 
   const createSortHandler = (property) => (event) => {
@@ -53,7 +53,7 @@ const PropertyListTableHeader = (props) => {
             key={headCell.id}
             sortDirection={orderBy === headCell.id ? order : false}
             id={`${headCell.id}`}
-            align={headCell.id === 'itemName' ? 'center' : 'left'}
+            align={headCell.id === 'propertyName' ? 'center' : 'left'}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
