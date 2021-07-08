@@ -549,6 +549,7 @@ const AddItem = ({
                 getError={getError}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
+                itemId={itemId}
               />
             </form>
           </div>

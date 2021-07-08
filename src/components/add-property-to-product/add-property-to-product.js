@@ -25,13 +25,40 @@ const AddPropertyToProduct = ({
   properties,
   getError,
   setFieldValue,
-  setFieldTouched
+  setFieldTouched,
+  itemId
 }) => {
   const classesSelect = useAddItemSelectStyles();
   const classesButton = useAddPropertyButtonStyles();
   const classesInput = useAddPropInputStyles();
 
   const { propertiesOfProduct } = values;
+
+  const [uniqueProperties, setUniqueProperties] = useState(properties);
+
+  const createUniqueArray = (result1, result2) => {
+//Find values that are in result1 but not in result2
+    const uniqueResultOne = result1.filter(function(obj) {
+      return !result2.some(function(obj2) {
+        return obj.id === obj2.id;
+      });
+    });
+
+//Find values that are in result2 but not in result1
+    const uniqueResultTwo = result2.filter(function(obj) {
+      return !result1.some(function(obj2) {
+        return obj.id === obj2.id;
+      });
+    });
+
+//Combine the two arrays of unique entries
+    const result = result1.concat(uniqueResultTwo);
+
+    return setUniqueProperties(result)
+  };
+
+  if (itemId) createUniqueArray(properties, propertiesOfProduct);
+
   // Храним массив оставшихся свойств.
   const [lastProperties, setLastProperties] = useState(properties);
 
@@ -46,9 +73,13 @@ const AddPropertyToProduct = ({
     setLastProperties(result);
   };
 
+
+
   useEffect(
-    () => propertiesWithEditing(properties, propertiesOfProduct),
-    [properties, propertiesOfProduct]
+      () => {
+        propertiesWithEditing(properties, propertiesOfProduct);
+      },
+      [properties, propertiesOfProduct]
   );
 
   const removeSelectedProperties = (event, index) => {
@@ -87,10 +118,10 @@ const AddPropertyToProduct = ({
     );
     // делаю копию массива оставшихся свойств
     const arr = lastProperties.slice();
-    // пушу к этому массиву выбранное в селекте свойство
-    arr.push(selectedProperty);
-    // рендерю итемы для селекта свойств
-    return arr.map(renderMenuItems);
+      // пушу к этому массиву выбранное в селекте свойство
+      arr.push(selectedProperty);
+      // рендерю итемы для селекта свойств
+      return arr.map(renderMenuItems);
   };
 
   const renderMenuItems = (item, index) => {
@@ -341,7 +372,7 @@ const AddPropertyToProduct = ({
                       } /*Если true, на контуре сделана выемка для размещения метки.*/
                     >
                       {/*если в селекте выбрано свойство, добавить его к оставшимся свойствам,
-                      но только для рендеринга итемов для селекта,иначе просто отрендерить оставшием свойства*/}
+                      но только для рендеринга итемов для селекта,иначе просто отрендерить оставшиеся свойства*/}
                       {propertiesOfProduct[index].propertyName
                         ? selectedWithLastProperties(
                             propertiesOfProduct[index].propertyName
