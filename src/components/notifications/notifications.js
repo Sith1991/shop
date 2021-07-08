@@ -29,7 +29,7 @@ const Notifications = ({
     if (!dontBack) backToListItems(path);
   };
 
-  if (isEditing && !deletedItem && path === '/product-list') {
+  if (isEditing && !deletedItem && path === '/') {
     return (
       <Snackbar
         open={showNotification}
@@ -44,7 +44,7 @@ const Notifications = ({
     );
   }
 
-  if (!isEditing && !deletedItem && path === '/product-list') {
+  if (!isEditing && !deletedItem && path === '/') {
     return (
       <Snackbar
         open={showNotification}

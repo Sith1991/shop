@@ -162,7 +162,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
         <div className={'product-card-wrap'}>
           {logIn ? (
             <div className={'link'}>
-              <Link to={'/product-list'} onClick={clearSelectedProduct}>
+              <Link to={'/'} onClick={clearSelectedProduct}>
                 Вернуться
               </Link>
             </div>

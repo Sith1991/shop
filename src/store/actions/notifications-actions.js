@@ -11,21 +11,21 @@ import {
 const createdProduct = () => {
   return {
     type: NOTIFICATION_CREATED_PRODUCT,
-    payload: '/product-list',
+    payload: '/',
   };
 };
 
 const editedProduct = () => {
   return {
     type: NOTIFICATION_EDITED_PRODUCT,
-    payload: '/product-list',
+    payload: '/',
   };
 };
 
 const deletedProduct = () => {
   return {
     type: NOTIFICATION_DELETED_PRODUCT,
-    payload: '/product-list',
+    payload: '/',
   };
 };
 

@@ -67,7 +67,7 @@ const Registration = ({ history }) => {
       submitRegistration(values)
         .then(() => {
           setErrorMessage(null);
-          history.push('/product-list');
+          history.push('/');
         })
         .catch((e) => {
           console.log(e.message);

@@ -10,13 +10,7 @@ import { userLogOut } from '../../services';
 import './main.scss';
 
 const Main = ({ email, history }) => {
-  console.log(history.location);
-
   const { pathname } = history.location;
-
-  useEffect(() => {
-    if (pathname === '/') history.push('/product-list');
-  }, [pathname]);
 
   return (
     <div className={'main-wrap'}>
@@ -24,11 +18,11 @@ const Main = ({ email, history }) => {
         <div className={'button-group'}>
           <div
             className={`wrap ${
-              pathname === '/product-list' ? 'colored' : null
+              pathname === '/' ? 'colored' : null
             }`}
           >
             <div className={'background'} />
-            <Link to={'/product-list'} className={'header-links'}>
+            <Link to={'/'} className={'header-links'}>
               Листинг товаров
             </Link>
           </div>
@@ -58,7 +52,7 @@ const Main = ({ email, history }) => {
       </div>
       <div className={'content'}>
         <Switch>
-          <Route path="/product-list" component={ProductList} exact />
+          <Route path="/" component={ProductList} exact />
           <Route path="/property-list" component={PropertyList} exact />
         </Switch>
       </div>

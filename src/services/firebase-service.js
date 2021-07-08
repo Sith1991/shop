@@ -73,7 +73,7 @@ const userLogOut = () => {
     .auth()
     .signOut()
     .then(() => {})
-    .catch((e) => console.log(e));
+    .catch(() => {});
 };
 
 const submitLogIn = (values) => {

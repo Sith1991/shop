@@ -342,7 +342,6 @@ const AddItem = ({
 
   return (
     <FormikProvider value={formik}>
-      {' '}
       {/*для того чтобы работал arrayHelper в инпуте type file*/}
       <ThemeProvider theme={theme}>
         <div className={'add-item'}>
@@ -350,7 +349,7 @@ const AddItem = ({
             <form onSubmit={handleSubmit} className={'add-item-wrap'}>
               <div className={'buttons-wrap'}>
                 <Link
-                  to={'/product-list'}
+                  to={'/'}
                   className={'button-back'}
                   onClick={clearSelectedProduct}
                 >
