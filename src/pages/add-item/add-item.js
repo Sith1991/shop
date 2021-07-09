@@ -57,6 +57,10 @@ const AddItem = ({
   // Создаем массив "уникальных" свойсв, который включает в себя все свойства с сервера и свойства товара,
   // которых нет на сервере (т.е. товар был создан с свойствами, которые в последствии были удалены с сервреа).
   const createUniqueProperties = (allProperties, propertiesOfProduct) => {
+    // Если товав не имеет свойств, то возвращаем все свойства с сервера
+    if(!propertiesOfProduct) {
+      return allProperties;
+    }
     // Находим все свойства товара, которых нет в общем массиве свойств на сервере
     const uniqueResultTwo = propertiesOfProduct.filter(function (obj) {
       return !allProperties.some(function (obj2) {

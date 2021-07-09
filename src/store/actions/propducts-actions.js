@@ -1,6 +1,7 @@
 import {
   FETCH_PRODUCTS_FAILURE,
   FETCH_PRODUCTS_SPINNER_OPEN,
+  FETCH_PRODUCTS_SPINNER_CLOSE,
   FETCH_PRODUCTS_SUCCESS,
 } from '../action-types';
 import { getItems } from '../../services';
@@ -26,7 +27,7 @@ const productsSpinnerOpen = () => {
 
 const productsSpinnerClose = () => {
   return {
-    type: FETCH_PRODUCTS_SPINNER_OPEN,
+    type: FETCH_PRODUCTS_SPINNER_CLOSE,
   };
 };
 
