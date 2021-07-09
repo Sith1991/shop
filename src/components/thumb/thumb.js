@@ -1,38 +1,32 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './thumb.scss';
 
-export class Thumb extends Component {
-  state = {
-    thumb: undefined,
-  };
+const Thumb = ({ file }) => {
+  const [thumb, setThumb] = useState(undefined);
 
-  UNSAFE_componentWillReceiveProps = (nextProps) => {
-    if (!nextProps.file) {
+  useEffect(() => {
+    if (!file) {
       return;
     }
-
-    this.setState(() => {
+    setThumb(() => {
       let reader = new FileReader();
 
       reader.onloadend = () => {
-        this.setState({ thumb: reader.result });
+        setThumb(reader.result);
       };
 
-      reader.readAsDataURL(nextProps.file);
+      reader.readAsDataURL(file);
     });
-  };
+  }, [file]);
 
-  render() {
-    const { file } = this.props;
-    const { thumb } = this.state;
-
-    if (!file) {
-      return null;
-    }
-
-    return (
-      <img src={thumb} alt={file.name} className={'thumb svg-thumbnail mt-2'} />
-    );
+  if (!file) {
+    return null;
   }
-}
+
+  return (
+    <img src={thumb} alt={file.name} className={'thumb svg-thumbnail mt-2'} />
+  );
+};
+
+export { Thumb };
