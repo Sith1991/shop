@@ -20,12 +20,12 @@ import {
 
 import {
   theme,
-  useSaveButtonStyles,
-  useUploadButtonStyles,
-  useAddItemLabelStyles,
   themeUploadBtn,
   useAddItemInputStyles,
+  useAddItemLabelStyles,
   useAddItemTextareaStyles,
+  useSaveButtonStyles,
+  useUploadButtonStyles,
 } from '../../styles/customizing-material-ui-components';
 
 import './add-item.scss';
@@ -52,6 +52,20 @@ const AddItem = ({
   // отображенире цены происходит с пробелами чсерез каждых три символа
   const priceFormat = (value) => {
     return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
+  };
+
+  // Создаем массив "уникальных" свойсв, который включает в себя все свойства с сервера и свойства товара,
+  // которых нет на сервере (т.е. товар был создан с свойствами, которые в последствии были удалены с сервреа).
+  const createUniqueProperties = (allProperties, propertiesOfProduct) => {
+    // Находим все свойства товара, которых нет в общем массиве свойств на сервере
+    const uniqueResultTwo = propertiesOfProduct.filter(function (obj) {
+      return !allProperties.some(function (obj2) {
+        return obj.id === obj2.id;
+      });
+    });
+
+    // Добавляем ко всем свойствам, свойства найденные в товаре, но которых нет на сервере
+    return allProperties.concat(uniqueResultTwo);
   };
 
   const validationSchema = yup.object().shape({
@@ -206,7 +220,9 @@ const AddItem = ({
   };
 
   const getError = (touched, error, index) => {
-    return touched && error && <FormHelperText key={index}>{error}</FormHelperText>;
+    return (
+      touched && error && <FormHelperText key={index}>{error}</FormHelperText>
+    );
   };
 
   const formik = useFormik({
@@ -375,7 +391,9 @@ const AddItem = ({
                 </h5>
               </div>
               <div className={'add-item-body'}>
-                <FormControl error={Boolean(touched.itemName && errors.itemName)}>
+                <FormControl
+                  error={Boolean(touched.itemName && errors.itemName)}
+                >
                   <FormLabel
                     classes={{ root: classesLabel.root }}
                     className={'labels'}
@@ -545,11 +563,10 @@ const AddItem = ({
                 errors={errors}
                 handleBlur={handleBlur}
                 values={values}
-                properties={properties}
+                properties={itemId ? createUniqueProperties(properties, editingProduct.propertiesOfProduct) : properties}
                 getError={getError}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
-                itemId={itemId}
               />
             </form>
           </div>

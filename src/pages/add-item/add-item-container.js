@@ -56,6 +56,8 @@ const AddItemContainer = ({
     return () => clearSelectedProduct();
   }, [itemId]);
 
+
+
   if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {
     return <Spinner />;
   }

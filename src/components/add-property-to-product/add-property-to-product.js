@@ -26,38 +26,12 @@ const AddPropertyToProduct = ({
   getError,
   setFieldValue,
   setFieldTouched,
-  itemId
 }) => {
   const classesSelect = useAddItemSelectStyles();
   const classesButton = useAddPropertyButtonStyles();
   const classesInput = useAddPropInputStyles();
 
   const { propertiesOfProduct } = values;
-
-  const [uniqueProperties, setUniqueProperties] = useState(properties);
-
-  const createUniqueArray = (result1, result2) => {
-//Find values that are in result1 but not in result2
-    const uniqueResultOne = result1.filter(function(obj) {
-      return !result2.some(function(obj2) {
-        return obj.id === obj2.id;
-      });
-    });
-
-//Find values that are in result2 but not in result1
-    const uniqueResultTwo = result2.filter(function(obj) {
-      return !result1.some(function(obj2) {
-        return obj.id === obj2.id;
-      });
-    });
-
-//Combine the two arrays of unique entries
-    const result = result1.concat(uniqueResultTwo);
-
-    return setUniqueProperties(result)
-  };
-
-  if (itemId) createUniqueArray(properties, propertiesOfProduct);
 
   // Храним массив оставшихся свойств.
   const [lastProperties, setLastProperties] = useState(properties);
@@ -73,14 +47,9 @@ const AddPropertyToProduct = ({
     setLastProperties(result);
   };
 
-
-
-  useEffect(
-      () => {
-        propertiesWithEditing(properties, propertiesOfProduct);
-      },
-      [properties, propertiesOfProduct]
-  );
+  useEffect(() => {
+    propertiesWithEditing(properties, propertiesOfProduct);
+  }, [properties, propertiesOfProduct]);
 
   const removeSelectedProperties = (event, index) => {
     handleChange(event);
@@ -118,10 +87,10 @@ const AddPropertyToProduct = ({
     );
     // делаю копию массива оставшихся свойств
     const arr = lastProperties.slice();
-      // пушу к этому массиву выбранное в селекте свойство
-      arr.push(selectedProperty);
-      // рендерю итемы для селекта свойств
-      return arr.map(renderMenuItems);
+    // пушу к этому массиву выбранное в селекте свойство
+    arr.push(selectedProperty);
+    // рендерю итемы для селекта свойств
+    return arr.map(renderMenuItems);
   };
 
   const renderMenuItems = (item, index) => {
@@ -187,7 +156,10 @@ const AddPropertyToProduct = ({
                           name={`${nameOfFieldArray}.${idx}.propertyValue`}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={propertiesOfProduct[index].propertyValue[idx].propertyValue}
+                          value={
+                            propertiesOfProduct[index].propertyValue[idx]
+                              .propertyValue
+                          }
                         />
                         {errorConditionDropdown(idx)
                           ? getError(
@@ -392,4 +364,4 @@ const AddPropertyToProduct = ({
   );
 };
 
-export { AddPropertyToProduct };
+export {AddPropertyToProduct};
