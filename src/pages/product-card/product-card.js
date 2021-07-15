@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -22,26 +22,6 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
 
   const { itemName, fileUrl, description, price, propertiesOfProduct } =
     selectedProduct;
-
-  // При первом реднере компоненты, прохожу по массиву свойств товара и в случае, когда свойство имеет тип Dropdown,
-  // его первое значение из массива значений сразу устанавливаю в initialValues формика, т.к. если пользователь не выберет
-  // вручную какое либо свойство из селекта (т.е. не сработает onChange селекта), то в initialValues передастся весь
-  // массив значений свойств Dropdown, а не только одно значение.
-  const setFirstValuesFromDropDowns = (property, index) => {
-    if (property.propertyType === 'Dropdown') {
-      return setFieldValue(
-        `propertiesOfProduct.${index}.propertyValue`,
-        propertiesOfProduct[index].propertyValue[0].propertyValue,
-        false
-      );
-    }
-  };
-
-  useEffect(() => {
-    if (propertiesOfProduct) {
-      propertiesOfProduct.map(setFirstValuesFromDropDowns);
-    }
-  }, []);
 
   const validationSchema = yup.object().shape({
     itemName: yup
@@ -96,6 +76,29 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
     setFieldValue,
   } = formik;
 
+  // При первом реднере компоненты, прохожу по массиву свойств товара и в случае, когда свойство имеет тип Dropdown,
+  // его первое значение из массива значений сразу устанавливаю в initialValues формика, т.к. если пользователь не выберет
+  // вручную какое либо свойство из селекта (т.е. не сработает onChange селекта), то в initialValues передастся весь
+  // массив значений свойств Dropdown, а не только одно значение.
+  const setFirstValuesFromDropDowns = useCallback(
+    (property, index) => {
+      if (property.propertyType === 'Dropdown') {
+        return setFieldValue(
+          `propertiesOfProduct.${index}.propertyValue`,
+          propertiesOfProduct[index].propertyValue[0].propertyValue,
+          false
+        );
+      }
+    },
+    [propertiesOfProduct, setFieldValue]
+  );
+
+  useEffect(() => {
+    if (propertiesOfProduct) {
+      propertiesOfProduct.map(setFirstValuesFromDropDowns);
+    }
+  }, [propertiesOfProduct, setFirstValuesFromDropDowns]);
+
   const renderMenuItems = (item, index) => {
     const { propertyValue } = item;
     return (
@@ -127,10 +130,14 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
                 /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                этому полю было присвоено первое значение свойства из массива значений.
-                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
-                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
-                value={Array.isArray(values.propertiesOfProduct[index].propertyValue) ? '' : values.propertiesOfProduct[index].propertyValue}
+                                этому полю было присвоено первое значение свойства из массива значений.
+                                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
+                                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
+                value={
+                  Array.isArray(values.propertiesOfProduct[index].propertyValue)
+                    ? ''
+                    : values.propertiesOfProduct[index].propertyValue
+                }
               >
                 {propertyValue.map(renderMenuItems)}
               </Select>

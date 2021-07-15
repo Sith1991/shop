@@ -27,10 +27,11 @@ const PropertyList = ({
   error,
   resetNotifications,
 }) => {
+
   useEffect(() => {
-    resetNotifications();
     fetchProperties();
-  }, []);
+    resetNotifications();
+  }, [fetchProperties, resetNotifications]);
 
   if (loading) {
     return <Spinner />;

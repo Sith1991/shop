@@ -18,10 +18,10 @@ firebase.initializeApp(firebaseConfig);
 
 const storage = firebase.storage();
 
-const getItems = (dispatch, items, itemsLoaded) => {
+const getItems = async (dispatch, items, itemsLoaded) => {
   const db = firebase.database(); // нельзя выносить как общую переменную, иначе выдает ошибку
   const dbDataRef = db.ref().child(`${items}`);
-  dbDataRef.on('value', (snap) => {
+  await dbDataRef.on('value', (snap) => {
     const data = snap.val();
     if (data === null) {
       dispatch(itemsLoaded([]));
@@ -45,10 +45,10 @@ const deleteItem = async (key, path, itemError, deletedItem) => {
   });
 };
 
-const getSelectedProduct = (dispatch, selectedProductLoaded, itemId) => {
+const getSelectedProduct = async (dispatch, selectedProductLoaded, itemId) => {
   const db = firebase.database();
   const dbDataRef = db.ref().child('products');
-  dbDataRef.on('value', (snap) => {
+  await dbDataRef.on('value', (snap) => {
     const data = snap.val();
     if (data === null) {
       dispatch(selectedProductLoaded([]));

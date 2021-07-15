@@ -8,7 +8,7 @@ import Registration from './registration';
 const RegistrationContainer = ({ logIn, userIsAuth }) => {
   useEffect(() => {
     userIsAuth();
-  }, []);
+  }, [userIsAuth]);
 
   if (logIn) {
     return <Redirect to={'/'} />;

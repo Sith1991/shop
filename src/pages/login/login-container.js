@@ -9,7 +9,7 @@ import { Spinner } from '../../components/spinner';
 const LoginContainer = ({ logIn, userIsAuth, loading }) => {
   useEffect(() => {
     userIsAuth();
-  }, []);
+  }, [userIsAuth]);
 
   if (loading) {
     return <Spinner />;

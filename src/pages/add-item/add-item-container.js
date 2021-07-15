@@ -54,7 +54,7 @@ const AddItemContainer = ({
     // на backspace с редактируемого товара и последующем переходе на добавление товара в инпуты прогружаются
     // данные ранее редактируемого товара
     return () => clearSelectedProduct();
-  }, [itemId]);
+  }, [itemId, resetNotifications, fetchProducts, fetchProperties, fetchSelectedProduct, clearSelectedProduct]);
 
 
 

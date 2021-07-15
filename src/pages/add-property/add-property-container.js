@@ -30,7 +30,7 @@ const AddPropertyContainer = ({
   useEffect(() => {
     resetNotifications();
     fetchProperties();
-  }, []);
+  }, [resetNotifications, fetchProperties]);
 
   if (loading) {
     return <Spinner />;

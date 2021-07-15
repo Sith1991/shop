@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
-import { App } from './index';
 import { connect } from 'react-redux';
+
+import { App } from './index';
 import { userIsAuth } from '../../store/actions';
 
 const AppContainer = ({ userIsAuth }) => {
 
   useEffect(() => {
     userIsAuth();
-  }, []);
+  }, [userIsAuth]);
 
   return <App />;
 };
