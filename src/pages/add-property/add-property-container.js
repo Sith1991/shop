@@ -24,7 +24,6 @@ const AddPropertyContainer = ({
   createdProperty,
   propertiesSpinnerOpen,
   propertiesSpinnerClose,
-  logIn,
   resetNotifications,
 }) => {
   useEffect(() => {
@@ -56,7 +55,6 @@ const mapStateToProps = (state) => {
     properties: state.properties.properties,
     loading: state.properties.loading,
     error: state.properties.error,
-    logIn: state.isAuth.logIn,
   };
 };
 

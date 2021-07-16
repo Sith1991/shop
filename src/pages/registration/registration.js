@@ -22,6 +22,7 @@ import {
 import './registration.scss';
 
 const Registration = ({ history }) => {
+  console.log('render')
   const classes = useRegistrationButtonStyles();
 
   const [errorMessage, setErrorMessage] = useState(null);

@@ -30,7 +30,7 @@ import {
 
 import './add-item.scss';
 
-const AddItem = ({
+const AddItem =({
   properties,
   productsError,
   itemId,
@@ -41,6 +41,7 @@ const AddItem = ({
   productsSpinnerOpen,
   productsSpinnerClose,
 }) => {
+  console.log('render')
   const [image, setImage] = useState(null);
 
   const classesLabel = useAddItemLabelStyles();
