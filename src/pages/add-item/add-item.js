@@ -11,12 +11,7 @@ import NumberFormat from 'react-number-format';
 import { AddPropertyToProduct } from '../../components/add-property-to-product';
 import { Thumb } from '../../components/thumb';
 import { PriceFormatInput } from '../../components/price-format-input';
-import {
-  getDateOfChange,
-  postItemsToDatabase,
-  putItemsToDatabase,
-  storage,
-} from '../../services';
+import { getDateOfChange, postItemsToDatabase, putItemsToDatabase, storage } from '../../services';
 
 import {
   theme,
@@ -30,7 +25,7 @@ import {
 
 import './add-item.scss';
 
-const AddItem =({
+const AddItem = ({
   properties,
   productsError,
   itemId,
@@ -41,7 +36,7 @@ const AddItem =({
   productsSpinnerOpen,
   productsSpinnerClose,
 }) => {
-  console.log('render')
+  console.log('render');
   const [image, setImage] = useState(null);
 
   const classesLabel = useAddItemLabelStyles();
@@ -59,7 +54,7 @@ const AddItem =({
   // которых нет на сервере (т.е. товар был создан с свойствами, которые в последствии были удалены с сервреа).
   const createUniqueProperties = (allProperties, propertiesOfProduct) => {
     // Если товав не имеет свойств, то возвращаем все свойства с сервера
-    if(!propertiesOfProduct) {
+    if (!propertiesOfProduct) {
       return allProperties;
     }
     // Находим все свойства товара, которых нет в общем массиве свойств на сервере
@@ -74,11 +69,7 @@ const AddItem =({
   };
 
   const validationSchema = yup.object().shape({
-    itemName: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .trim('Без паробелов')
-      .required('Обязательное поле'),
+    itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
     price: yup
       .number()
       .typeError('Должно быть числом')
@@ -93,26 +84,20 @@ const AddItem =({
           yup
             .object()
             .shape({
-              file: yup
-                .mixed()
-                .test(
-                  'fileSize',
-                  'Размер файла не должен превышать 150кб',
-                  (value) => {
-                    if (!value) return false;
-                    return value.size < 153600;
-                  }
-                ),
+              file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+                if (!value) return false;
+                return value.size < 153600;
+              }),
               type: yup
                 .string()
                 .oneOf(
                   ['image/jpeg', 'image/png', 'image/pjpeg'],
-                  'Добавьте файл с правильным форматом .jpg,.jpeg,.png'
+                  'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
                 ),
               name: yup.string(),
             })
             .nullable()
-            .typeError('Добавьте файл')
+            .typeError('Добавьте файл'),
         )
       : yup
           .array()
@@ -122,76 +107,51 @@ const AddItem =({
               .shape({
                 file: yup
                   .mixed()
-                  .test(
-                    'fileSize',
-                    'Размер файла не должен превышать 150кб',
-                    (value) => {
-                      if (!value) return false;
-                      return value.size < 153600;
-                    }
-                  )
+                  .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+                    if (!value) return false;
+                    return value.size < 153600;
+                  })
                   .required(),
                 type: yup
                   .string()
                   .oneOf(
                     ['image/jpeg', 'image/png', 'image/pjpeg'],
-                    'Добавьте файл с правильным форматом .jpg,.jpeg,.png'
+                    'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
                   )
                   .required(),
                 name: yup.string().required(),
               })
-              .typeError('Добавьте файл')
+              .typeError('Добавьте файл'),
           )
           .required(),
     fileUrl: yup.string().nullable().typeError('Должно быть строкой'),
-    description: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .required('Обязательное поле'),
+    description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
     propertiesOfProduct: yup.array().of(
       yup
         .object()
         .shape({
-          id: yup
-            .string()
-            .typeError('Должно быть строкой')
-            .required('Обязательное поле'),
-          propertyName: yup
-            .string()
-            .typeError('Должно быть строкой')
-            .required('Обязательное поле'),
-          propertyType: yup
-            .string()
-            .typeError('Должно быть строкой')
-            .required('Обязательное поле'),
+          id: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+          propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+          propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
           propertyValue: yup.lazy((value) => {
             switch (typeof value) {
               case 'number':
-                return yup
-                  .number()
-                  .typeError('Должно быть числом')
-                  .required('Обязательное поле');
+                return yup.number().typeError('Должно быть числом').required('Обязательное поле');
               case 'string':
-                return yup
-                  .string()
-                  .typeError('Должно быть строкой')
-                  .required('Обязательное поле');
+                return yup.string().typeError('Должно быть строкой').required('Обязательное поле');
               default:
                 return yup
                   .array()
                   .of(
                     yup.object().shape({
-                      propertyValue: yup
-                        .string()
-                        .typeError('Должно быть строкой')
-                        .required('Обязательное поле'),
-                    })
+                      propertyValue: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+                    }),
                   )
                   .required('Обязательное поле');
             }
           }),
         })
-        .required('Обязательное поле')
+        .required('Обязательное поле'),
     ),
   });
 
@@ -225,9 +185,7 @@ const AddItem =({
   };
 
   const getError = (touched, error, index) => {
-    return (
-      touched && error && <FormHelperText key={index}>{error}</FormHelperText>
-    );
+    return touched && error && <FormHelperText key={index}>{error}</FormHelperText>;
   };
 
   const formik = useFormik({
@@ -240,10 +198,7 @@ const AddItem =({
       dateOfChange: '',
       description: editingProduct.description,
       // Если это редактируемый товар, и у него есть свойства, то сюда передается их массив, иначе создается пустой массив
-      propertiesOfProduct:
-        itemId && editingProduct.propertiesOfProduct
-          ? editingProduct.propertiesOfProduct
-          : [],
+      propertiesOfProduct: itemId && editingProduct.propertiesOfProduct ? editingProduct.propertiesOfProduct : [],
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -271,12 +226,8 @@ const AddItem =({
       if (image) {
         // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
         // не перезаписывали друг друга
-        const fileNameWithRndNumber = `${image.name}_${Math.floor(
-          Math.random() * 1000000
-        )}`;
-        const uploadTask = storage
-          .ref(`images/${fileNameWithRndNumber}`)
-          .put(image);
+        const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
+        const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
         await uploadTask.on(
           'state_changed',
           (snapshot) => {},
@@ -308,7 +259,7 @@ const AddItem =({
                     'products',
                     productsError,
                     productsSpinnerClose,
-                    editedProduct
+                    editedProduct,
                   );
                 } else {
                   postItemsToDatabase(
@@ -316,11 +267,11 @@ const AddItem =({
                     'products',
                     productsError,
                     productsSpinnerClose,
-                    createdProduct
+                    createdProduct,
                   );
                 }
               });
-          }
+          },
         );
       }
       // Сработает, если товар редактируется, но при этом изображение не было изменено (не было перевыбрано).
@@ -341,7 +292,7 @@ const AddItem =({
           'products',
           productsError,
           productsSpinnerClose,
-          editedProduct
+          editedProduct,
         );
       }
     },
@@ -369,11 +320,7 @@ const AddItem =({
           <div className={'add-item-bordered-wrap'}>
             <form onSubmit={handleSubmit} className={'add-item-wrap'}>
               <div className={'buttons-wrap'}>
-                <Link
-                  to={'/'}
-                  className={'button-back'}
-                  onClick={clearSelectedProduct}
-                >
+                <Link to={'/'} className={'button-back'} onClick={clearSelectedProduct}>
                   Вернуться
                 </Link>
                 <Button
@@ -391,18 +338,11 @@ const AddItem =({
                 </Button>
               </div>
               <div className={'add-item-head'}>
-                <h5>
-                  {itemId ? 'Редактирование товара' : 'Добавление товара'}
-                </h5>
+                <h5>{itemId ? 'Редактирование товара' : 'Добавление товара'}</h5>
               </div>
               <div className={'add-item-body'}>
-                <FormControl
-                  error={Boolean(touched.itemName && errors.itemName)}
-                >
-                  <FormLabel
-                    classes={{ root: classesLabel.root }}
-                    className={'labels'}
-                  >
+                <FormControl error={Boolean(touched.itemName && errors.itemName)}>
+                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
                     Название товара<span className={'red-star'}>*</span>
                   </FormLabel>
                   <OutlinedInput
@@ -424,10 +364,7 @@ const AddItem =({
                 </FormControl>
 
                 <FormControl error={Boolean(touched.price && errors.price)}>
-                  <FormLabel
-                    classes={{ root: classesLabel.root }}
-                    className={'labels'}
-                  >
+                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
                     Стоимость товара<span className={'red-star'}>*</span>
                   </FormLabel>
                   <NumberFormat
@@ -442,10 +379,7 @@ const AddItem =({
                 </FormControl>
 
                 <FormControl error={Boolean(touched.file && errors.file)}>
-                  <FormLabel
-                    classes={{ root: classesLabel.root }}
-                    className={'labels'}
-                  >
+                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
                     Изображение<span className={'red-star'}>*</span>
                   </FormLabel>
                   <FieldArray name={'file'}>
@@ -478,10 +412,7 @@ const AddItem =({
                             }
                           }}
                         />
-                        <label
-                          className={'upload-bnt-label'}
-                          htmlFor="contained-button-file"
-                        >
+                        <label className={'upload-bnt-label'} htmlFor="contained-button-file">
                           <ThemeProvider theme={themeUploadBtn}>
                             <Button
                               variant="contained"
@@ -491,18 +422,10 @@ const AddItem =({
                                 root: classesUploadBtn.root,
                                 label: classesUploadBtn.label,
                               }}
-                              endIcon={
-                                <i
-                                  className="fa fa-upload"
-                                  aria-hidden="true"
-                                />
-                              }
+                              endIcon={<i className="fa fa-upload" aria-hidden="true" />}
                             >
-                              {values.file === undefined ||
-                              values.file[0] === null ? (
-                                <div className={'upload-btn-name'}>
-                                  Выберите изображение
-                                </div>
+                              {values.file === undefined || values.file[0] === null ? (
+                                <div className={'upload-btn-name'}>Выберите изображение</div>
                               ) : (
                                 values.file[0].file.name
                               )}
@@ -512,34 +435,17 @@ const AddItem =({
                       </div>
                     )}
                   </FieldArray>
-                  {getArrErrorsMessages(errors.file).map((error, index) =>
-                    getError(true, error, index)
-                  )}
+                  {getArrErrorsMessages(errors.file).map((error, index) => getError(true, error, index))}
                 </FormControl>
                 {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
-                                используем мимниатюру Thumb*/}
+                используем мимниатюру Thumb*/}
                 {values.fileUrl ? (
-                  <img
-                    src={values.fileUrl}
-                    alt={'изображение товара'}
-                    className={'thumb svg-thumbnail mt-2'}
-                  />
+                  <img src={values.fileUrl} alt={'изображение товара'} className={'thumb svg-thumbnail mt-2'} />
                 ) : (
-                  <Thumb
-                    file={
-                      values.file === undefined || values.file[0] === null
-                        ? null
-                        : values.file[0].file
-                    }
-                  />
+                  <Thumb file={values.file === undefined || values.file[0] === null ? null : values.file[0].file} />
                 )}
-                <FormControl
-                  error={Boolean(touched.description && errors.description)}
-                >
-                  <FormLabel
-                    classes={{ root: classesLabel.root }}
-                    className={'labels'}
-                  >
+                <FormControl error={Boolean(touched.description && errors.description)}>
+                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
                     Описание<span className={'red-star'}>*</span>
                   </FormLabel>
                   <OutlinedInput
@@ -568,7 +474,9 @@ const AddItem =({
                 errors={errors}
                 handleBlur={handleBlur}
                 values={values}
-                properties={itemId ? createUniqueProperties(properties, editingProduct.propertiesOfProduct) : properties}
+                properties={
+                  itemId ? createUniqueProperties(properties, editingProduct.propertiesOfProduct) : properties
+                }
                 getError={getError}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
