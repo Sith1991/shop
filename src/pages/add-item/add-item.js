@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
@@ -36,7 +36,6 @@ const AddItem = ({
   productsSpinnerOpen,
   productsSpinnerClose,
 }) => {
-  console.log('render');
   const [image, setImage] = useState(null);
 
   const classesLabel = useAddItemLabelStyles();
@@ -80,50 +79,46 @@ const AddItem = ({
       .required('Обязательное поле'),
     file: itemId
       ? // если есть ID продукта, то повторная загрузка картинки не обязательна
-        yup.array().of(
-          yup
-            .object()
-            .shape({
-              file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-                if (!value) return false;
-                return value.size < 153600;
-              }),
-              type: yup
-                .string()
-                .oneOf(
-                  ['image/jpeg', 'image/png', 'image/pjpeg'],
-                  'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
-                ),
-              name: yup.string(),
+
+      yup
+        .object()
+        .shape({
+          file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+            if (!value) return false;
+            return value.size < 153600;
+          }),
+          type: yup
+            .string()
+            .oneOf(
+              ['image/jpeg', 'image/png', 'image/pjpeg'],
+              'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
+            ),
+          name: yup.string(),
+        })
+        .nullable()
+        .typeError('Добавьте файл')
+
+      :
+      yup
+        .object()
+        .shape({
+          file: yup
+            .mixed()
+            .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+              if (!value) return false;
+              return value.size < 153600;
             })
-            .nullable()
-            .typeError('Добавьте файл'),
-        )
-      : yup
-          .array()
-          .of(
-            yup
-              .object()
-              .shape({
-                file: yup
-                  .mixed()
-                  .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-                    if (!value) return false;
-                    return value.size < 153600;
-                  })
-                  .required(),
-                type: yup
-                  .string()
-                  .oneOf(
-                    ['image/jpeg', 'image/png', 'image/pjpeg'],
-                    'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
-                  )
-                  .required(),
-                name: yup.string().required(),
-              })
-              .typeError('Добавьте файл'),
-          )
-          .required(),
+            .required(),
+          type: yup
+            .string()
+            .oneOf(
+              ['image/jpeg', 'image/png', 'image/pjpeg'],
+              'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
+            )
+            .required(),
+          name: yup.string().required(),
+        })
+        .typeError('Добавьте файл').required(),
     fileUrl: yup.string().nullable().typeError('Должно быть строкой'),
     description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
     propertiesOfProduct: yup.array().of(
@@ -184,9 +179,9 @@ const AddItem = ({
     return result;
   };
 
-  const getError = (touched, error, index) => {
+  const getError = useCallback((touched, error, index) => {
     return touched && error && <FormHelperText key={index}>{error}</FormHelperText>;
-  };
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -207,6 +202,7 @@ const AddItem = ({
       const trimmedItemName = itemName.trim();
       const trimmedDescription = description.trim();
       const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+
       const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
         if (typeof props.propertyValue === 'string') {
           return { ...props, propertyValue: props.propertyValue.trim() };
@@ -230,7 +226,7 @@ const AddItem = ({
         const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
         await uploadTask.on(
           'state_changed',
-          (snapshot) => {},
+          (snapshot) => { },
           (error) => {
             productsError(error);
           },
@@ -312,180 +308,171 @@ const AddItem = ({
     setFieldValue,
   } = formik;
 
+  const itemProperties = useMemo(() => {
+    return itemId ? createUniqueProperties(properties, editingProduct.propertiesOfProduct) : properties
+  }, [itemId, properties, editingProduct])
+
   return (
-    <FormikProvider value={formik}>
+    <>
       {/*для того чтобы работал arrayHelper в инпуте type file*/}
-      <ThemeProvider theme={theme}>
-        <div className={'add-item'}>
-          <div className={'add-item-bordered-wrap'}>
-            <form onSubmit={handleSubmit} className={'add-item-wrap'}>
-              <div className={'buttons-wrap'}>
-                <Link to={'/'} className={'button-back'} onClick={clearSelectedProduct}>
-                  Вернуться
-                </Link>
-                <Button
-                  disableRipple={true}
-                  className={'button-save'}
+      <div className={'add-item'}>
+        <div className={'add-item-bordered-wrap'}>
+          <form onSubmit={handleSubmit} className={'add-item-wrap'}>
+            <div className={'buttons-wrap'}>
+              <Link to={'/'} className={'button-back'} onClick={clearSelectedProduct}>
+                Вернуться
+              </Link>
+              <Button
+                disableRipple={true}
+                className={'button-save'}
+                classes={{
+                  root: classesSaveBtn.root,
+                  label: classesSaveBtn.label,
+                }}
+                type={'submit'}
+                disabled={!isValid || !dirty}
+                onClick={handleSubmit}
+              >
+                Сохранить
+              </Button>
+            </div>
+            <div className={'add-item-head'}>
+              <h5>{itemId ? 'Редактирование товара' : 'Добавление товара'}</h5>
+            </div>
+            <div className={'add-item-body'}>
+              <FormControl error={Boolean(touched.itemName && errors.itemName)}>
+                <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
+                  Название товара<span className={'red-star'}>*</span>
+                </FormLabel>
+                <OutlinedInput
+                  type="text"
+                  variant="outlined"
+                  notched={false}
+                  placeholder="Название товара"
+                  multiline
                   classes={{
-                    root: classesSaveBtn.root,
-                    label: classesSaveBtn.label,
+                    root: classesInput.root,
+                    input: classesInput.input,
                   }}
-                  type={'submit'}
-                  disabled={!isValid || !dirty}
-                  onClick={handleSubmit}
-                >
-                  Сохранить
-                </Button>
-              </div>
-              <div className={'add-item-head'}>
-                <h5>{itemId ? 'Редактирование товара' : 'Добавление товара'}</h5>
-              </div>
-              <div className={'add-item-body'}>
-                <FormControl error={Boolean(touched.itemName && errors.itemName)}>
-                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
-                    Название товара<span className={'red-star'}>*</span>
-                  </FormLabel>
-                  <OutlinedInput
-                    type="text"
-                    variant="outlined"
-                    notched={false}
-                    placeholder="Название товара"
-                    multiline
-                    classes={{
-                      root: classesInput.root,
-                      input: classesInput.input,
-                    }}
-                    name={'itemName'}
-                    onChange={handleChange}
+                  name={'itemName'}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.itemName}
+                />
+                {getError(touched.itemName, errors.itemName)}
+              </FormControl>
+
+              <FormControl error={Boolean(touched.price && errors.price)}>
+                <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
+                  Стоимость товара<span className={'red-star'}>*</span>
+                </FormLabel>
+                <NumberFormat
+                  classesInput={classesInput}
+                  onChange={handleChange} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
+                  onBlur={handleBlur} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
+                  values={values}
+                  customInput={PriceFormatInput}
+                  format={priceFormat}
+                />
+                {getError(touched.price, errors.price)}
+              </FormControl>
+
+              <FormControl error={Boolean(touched.file && errors.file)}>
+                <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
+                  Изображение<span className={'red-star'}>*</span>
+                </FormLabel>
+                <div>
+                  <input
+                    accept=".jpg,.jpeg,.png"
+                    className={'upload-input'}
+                    id="contained-button-file"
+                    multiple
+                    type="file"
+                    name={'file'}
                     onBlur={handleBlur}
-                    value={values.itemName}
+                    onChange={(event) => {
+                      const { files } = event.target;
+                      const file = getFileSchema(files.item(0));
+                      fileHandleChange(event);
+                      values.fileUrl = null; // при выборе картинки обнуляю ссылку на неё
+                      if (!file) {
+                        setFieldValue('file', undefined, true)
+                        values.fileUrl = editingProduct.fileUrl; // если отменил выбор картинки (нажал кнопку "отмена"),
+                        // ссылу на изображение беру из редактируемого товара
+                      } else {
+                        setFieldValue('file', file, true)
+                      }
+                    }}
                   />
-                  {getError(touched.itemName, errors.itemName)}
-                </FormControl>
+                  <label className={'upload-bnt-label'} htmlFor="contained-button-file">
+                    <ThemeProvider theme={themeUploadBtn}>
+                      <Button
+                        variant="contained"
+                        component="span"
+                        disableRipple={true}
+                        classes={{
+                          root: classesUploadBtn.root,
+                          label: classesUploadBtn.label,
+                        }}
+                        endIcon={<i className="fa fa-upload" aria-hidden="true" />}
+                      >
+                        {values.file === undefined || values.file === null ? (
+                          <div className={'upload-btn-name'}>Выберите изображение</div>
+                        ) : (
+                          values.file.file.name
+                        )}
+                      </Button>
+                    </ThemeProvider>
+                  </label>
+                </div>
 
-                <FormControl error={Boolean(touched.price && errors.price)}>
-                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
-                    Стоимость товара<span className={'red-star'}>*</span>
-                  </FormLabel>
-                  <NumberFormat
-                    classesInput={classesInput}
-                    onChange={handleChange} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-                    onBlur={handleBlur} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-                    values={values}
-                    customInput={PriceFormatInput}
-                    format={priceFormat}
-                  />
-                  {getError(touched.price, errors.price)}
-                </FormControl>
-
-                <FormControl error={Boolean(touched.file && errors.file)}>
-                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
-                    Изображение<span className={'red-star'}>*</span>
-                  </FormLabel>
-                  <FieldArray name={'file'}>
-                    {(arrayHelper) => (
-                      <div>
-                        <input
-                          accept=".jpg,.jpeg,.png"
-                          className={'upload-input'}
-                          id="contained-button-file"
-                          multiple
-                          type="file"
-                          name={'file'}
-                          onBlur={handleBlur}
-                          onChange={(event) => {
-                            const { files } = event.target;
-                            const file = getFileSchema(files.item(0));
-                            setFieldTouched('file', true, false);
-                            fileHandleChange(event);
-                            values.fileUrl = null; // при выборе картинки обнуляю ссылку на неё
-                            if (!file) {
-                              arrayHelper.remove(0);
-                              setFieldTouched('file', true, false);
-                              values.fileUrl = editingProduct.fileUrl; // если отменил выбор картинки (нажал кнопку "отмена"),
-                              // ссылу на изображение беру из редактируемого товара
-                            }
-                            if (Array.isArray(values.file)) {
-                              arrayHelper.replace(0, file);
-                            } else {
-                              arrayHelper.push(file);
-                            }
-                          }}
-                        />
-                        <label className={'upload-bnt-label'} htmlFor="contained-button-file">
-                          <ThemeProvider theme={themeUploadBtn}>
-                            <Button
-                              variant="contained"
-                              component="span"
-                              disableRipple={true}
-                              classes={{
-                                root: classesUploadBtn.root,
-                                label: classesUploadBtn.label,
-                              }}
-                              endIcon={<i className="fa fa-upload" aria-hidden="true" />}
-                            >
-                              {values.file === undefined || values.file[0] === null ? (
-                                <div className={'upload-btn-name'}>Выберите изображение</div>
-                              ) : (
-                                values.file[0].file.name
-                              )}
-                            </Button>
-                          </ThemeProvider>
-                        </label>
-                      </div>
-                    )}
-                  </FieldArray>
-                  {getArrErrorsMessages(errors.file).map((error, index) => getError(true, error, index))}
-                </FormControl>
-                {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
+              </FormControl>
+              {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
                 используем мимниатюру Thumb*/}
-                {values.fileUrl ? (
-                  <img src={values.fileUrl} alt={'изображение товара'} className={'thumb svg-thumbnail mt-2'} />
-                ) : (
-                  <Thumb file={values.file === undefined || values.file[0] === null ? null : values.file[0].file} />
-                )}
-                <FormControl error={Boolean(touched.description && errors.description)}>
-                  <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
-                    Описание<span className={'red-star'}>*</span>
-                  </FormLabel>
-                  <OutlinedInput
-                    type="text"
-                    multiline={true}
-                    rows={5}
-                    inputProps={{ maxLength: 1000 }}
-                    variant="outlined"
-                    notched={false}
-                    placeholder="Описание товара не должно превышать 1000 символов"
-                    className={'add-item-textarea'}
-                    classes={{
-                      root: classesTextarea.root,
-                    }}
-                    name={'description'}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.description}
-                  />
-                  {getError(touched.description, errors.description)}
-                </FormControl>
-              </div>
-              <AddPropertyToProduct
-                handleChange={handleChange}
-                touched={touched}
-                errors={errors}
-                handleBlur={handleBlur}
-                values={values}
-                properties={
-                  itemId ? createUniqueProperties(properties, editingProduct.propertiesOfProduct) : properties
-                }
-                getError={getError}
-                setFieldValue={setFieldValue}
-                setFieldTouched={setFieldTouched}
-              />
-            </form>
-          </div>
+              {values.fileUrl ? (
+                <img src={values.fileUrl} alt={'изображение товара'} className={'thumb svg-thumbnail mt-2'} />
+              ) : (
+                <Thumb file={values.file === undefined || values.file === null ? null : values.file.file} />
+              )}
+              <FormControl error={Boolean(touched.description && errors.description)}>
+                <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
+                  Описание<span className={'red-star'}>*</span>
+                </FormLabel>
+                <OutlinedInput
+                  type="text"
+                  multiline={true}
+                  rows={5}
+                  inputProps={{ maxLength: 1000 }}
+                  variant="outlined"
+                  notched={false}
+                  placeholder="Описание товара не должно превышать 1000 символов"
+                  className={'add-item-textarea'}
+                  classes={{
+                    root: classesTextarea.root,
+                  }}
+                  name={'description'}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.description}
+                />
+                {getError(touched.description, errors.description)}
+              </FormControl>
+            </div>
+            <AddPropertyToProduct
+              handleChange={handleChange}
+              touched={touched.propertiesOfProduct}
+              errors={errors.propertiesOfProduct}
+              handleBlur={handleBlur}
+              propertiesOfProduct={values.propertiesOfProduct}
+              // properties={itemProperties}
+              getError={getError}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+            />
+          </form>
         </div>
-      </ThemeProvider>
-    </FormikProvider>
+      </div>
+    </>
   );
 };
 
