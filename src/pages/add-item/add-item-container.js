@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { Spinner } from '../../components/spinner';
 import { ErrorIndicator } from '../error-indicator';
-import AddItem from './add-item';
+import AddItemOld from './add-item-old';
+
 import {
   fetchProperties,
   fetchProducts,
@@ -56,29 +57,34 @@ const AddItemContainer = ({
     return () => clearSelectedProduct();
   }, [itemId, resetNotifications, fetchProducts, fetchProperties, fetchSelectedProduct, clearSelectedProduct]);
 
+  const loadIndicator = useMemo(() => {
+    return loadingProps || loadingProducts || (loadingEditingProduct && itemId);
+  }, [loadingProps, loadingProducts, loadingEditingProduct, itemId]);
 
+  const errorIndicator = useMemo(() => {
+    return errorProps || errorProducts || (errorEditingProduct && itemId);
+  }, [errorProps, errorProducts, errorEditingProduct, itemId]);
 
-  if (loadingProps || loadingProducts || (loadingEditingProduct && itemId)) {
-    return <Spinner />;
-  }
-
-  if (errorProps || errorProducts || (errorEditingProduct && itemId)) {
+  if (errorIndicator) {
     return <ErrorIndicator />;
   }
 
   return (
-    <AddItem
-      properties={properties}
-      products={products}
-      productsError={productsError}
-      itemId={itemId}
-      editingProduct={editingProduct}
-      clearSelectedProduct={clearSelectedProduct}
-      createdProduct={createdProduct}
-      editedProduct={editedProduct}
-      productsSpinnerOpen={productsSpinnerOpen}
-      productsSpinnerClose={productsSpinnerClose}
-    />
+    <>
+      {loadIndicator && <Spinner />}
+      <AddItemOld
+        properties={properties}
+        products={products}
+        productsError={productsError}
+        itemId={itemId}
+        editingProduct={editingProduct}
+        clearSelectedProduct={clearSelectedProduct}
+        createdProduct={createdProduct}
+        editedProduct={editedProduct}
+        productsSpinnerOpen={productsSpinnerOpen}
+        productsSpinnerClose={productsSpinnerClose}
+      />
+    </>
   );
 };
 
@@ -109,7 +115,4 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default compose(
-  withAuthRedirect,
-  connect(mapStateToProps, mapDispatchToProps)
-)(AddItemContainer);
+export default compose(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps))(AddItemContainer);

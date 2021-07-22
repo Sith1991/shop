@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Table,
   TableBody,
@@ -34,11 +34,10 @@ const ProductListTable = ({
   );
 
   // начинаем делать пагинацию
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -78,8 +77,8 @@ const ProductListTable = ({
     return stabilizedThis.map((el) => el[0]);
   }
 
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState();
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -186,6 +185,7 @@ const ProductListTable = ({
                   page={page}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  setPage={setPage}
                 />
               </TableRow>
             </TableFooter>

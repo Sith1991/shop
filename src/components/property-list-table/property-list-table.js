@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
@@ -33,8 +33,8 @@ const PropertyListTable = ({
   );
 
   // начинаем делать пагинацию
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, properties.length - page * rowsPerPage);
@@ -77,8 +77,8 @@ const PropertyListTable = ({
     return stabilizedThis.map((el) => el[0]);
   }
 
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState();
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] =useState();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -153,6 +153,7 @@ const PropertyListTable = ({
                   page={page}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  setPage={setPage}
                 />
               </TableRow>
             </TableFooter>
