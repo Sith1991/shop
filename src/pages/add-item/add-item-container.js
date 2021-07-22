@@ -27,7 +27,6 @@ const AddItemContainer = ({
   properties,
   loadingProps,
   errorProps,
-  products,
   loadingProducts,
   errorProducts,
   loadingEditingProduct,
@@ -69,12 +68,13 @@ const AddItemContainer = ({
     return <ErrorIndicator />;
   }
 
+  if (loadIndicator) {
+    return <Spinner />;
+  }
+
   return (
-    <>
-      {loadIndicator && <Spinner />}
       <AddItemOld
         properties={properties}
-        products={products}
         productsError={productsError}
         itemId={itemId}
         editingProduct={editingProduct}
@@ -84,7 +84,6 @@ const AddItemContainer = ({
         productsSpinnerOpen={productsSpinnerOpen}
         productsSpinnerClose={productsSpinnerClose}
       />
-    </>
   );
 };
 
@@ -93,7 +92,6 @@ const mapStateToProps = (state) => {
     properties: state.properties.properties,
     loadingProps: state.properties.loading,
     errorProps: state.properties.error,
-    products: state.products.products,
     loadingProducts: state.products.loading,
     errorProducts: state.products.error,
     loadingEditingProduct: state.selectedProduct.loading,

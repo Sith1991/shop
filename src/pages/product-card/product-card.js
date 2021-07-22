@@ -2,14 +2,12 @@ import React, { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
 import {
-  theme,
   useLoginButtonStyles,
   useProductCardItemSelectStyles,
 } from '../../styles/customizing-material-ui-components';
@@ -194,7 +192,6 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 </span>
               </div>
               <div className={'button-wrap'}>
-                <ThemeProvider theme={theme}>
                   <Button
                     classes={{
                       root: classes.root,
@@ -206,7 +203,6 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                   >
                     Беру!!!
                   </Button>
-                </ThemeProvider>
               </div>
             </div>
           </form>

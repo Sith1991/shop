@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as yup from 'yup';
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -14,7 +14,6 @@ import { PriceFormatInput } from '../../components/price-format-input';
 import { getDateOfChange, postItemsToDatabase, putItemsToDatabase, storage } from '../../services';
 
 import {
-  theme,
   themeUploadBtn,
   useAddItemInputStyles,
   useAddItemLabelStyles,
@@ -37,6 +36,8 @@ const AddItemOld = ({
   productsSpinnerClose,
 }) => {
   const [image, setImage] = useState(null);
+
+  console.log('render');
 
   const classesLabel = useAddItemLabelStyles();
   const classesInput = useAddItemInputStyles();
@@ -86,14 +87,19 @@ const AddItemOld = ({
         yup
           .object()
           .shape({
-            file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-              if (!value) return false;
-              return value.size < 153600;
-            }),
+            file: yup
+              .mixed()
+              .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+                return value ? value.size < 153600 : true;
+              })
+              .typeError('Добавьте файл')
+              .required('Добавьте файл'),
             type: yup
               .string()
-              .oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png'),
-            name: yup.string(),
+              .oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png')
+              .typeError('Добавьте файл')
+              .required('Добавьте файл'),
+            name: yup.string().typeError('Добавьте файл').required('Добавьте файл'),
           })
           .nullable()
           .typeError('Добавьте файл')
@@ -103,17 +109,17 @@ const AddItemOld = ({
             file: yup
               .mixed()
               .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-                if (!value) return false;
-                return value.size < 153600;
+                return value ? value.size < 153600 : true;
               })
-              .required(),
+              .typeError('Добавьте файл')
+              .required('Добавьте файл'),
             type: yup
               .string()
               .oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png')
-              .required(),
-            name: yup.string().required(),
+              .typeError('Добавьте файл')
+              .required('Добавьте файл'),
+            name: yup.string().typeError('Добавьте файл').required('Добавьте файл'),
           })
-          .typeError('Добавьте файл')
           .required(),
     fileUrl: yup.string().nullable().typeError('Должно быть строкой'),
     description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
@@ -159,25 +165,9 @@ const AddItemOld = ({
     } else setImage(null);
   };
 
-  const getArrErrorsMessages = (errors) => {
-    const result = [];
-    errors &&
-      Array.isArray(errors) &&
-      errors.forEach((value) => {
-        if (typeof value === 'string') {
-          result.push(value);
-        } else {
-          Object.values(value).forEach((error) => {
-            result.push(error);
-          });
-        }
-      });
-    return result;
-  };
-
-  const getError = (touched, error, index) => {
+  const getError = useCallback((touched, error, index) => {
     return touched && error && <FormHelperText key={index}>{error}</FormHelperText>;
-  };
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -302,9 +292,6 @@ const AddItemOld = ({
   } = formik;
 
   return (
-    <FormikProvider value={formik}>
-      {/*для того чтобы работал arrayHelper в инпуте type file*/}
-      <ThemeProvider theme={theme}>
         <div className={'add-item'}>
           <div className={'add-item-bordered-wrap'}>
             <form onSubmit={handleSubmit} className={'add-item-wrap'}>
@@ -360,7 +347,7 @@ const AddItemOld = ({
                     classesInput={classesInput}
                     onChange={handleChange} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
                     onBlur={handleBlur} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-                    values={values}
+                    values={values.price}
                     customInput={PriceFormatInput}
                     format={priceFormat}
                   />
@@ -381,6 +368,7 @@ const AddItemOld = ({
                     onChange={(event) => {
                       const { files } = event.target;
                       const file = getFileSchema(files.item(0));
+                      setFieldTouched('file', true, true);
                       fileHandleChange(event);
                       values.fileUrl = null; // при выборе картинки обнуляю ссылку на неё
                       if (!file) {
@@ -412,10 +400,8 @@ const AddItemOld = ({
                       </Button>
                     </ThemeProvider>
                   </label>
-                  {getArrErrorsMessages(errors.file).map((error, index) => getError(true, error, index))}
+                  {getError(touched.file, errors.file?.file)}
                 </FormControl>
-                {console.log('touched.file', touched.file)}
-                {console.log('errors.file', errors.file)}
                 {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
                 используем мимниатюру Thumb*/}
                 {values.fileUrl ? (
@@ -461,8 +447,6 @@ const AddItemOld = ({
             </form>
           </div>
         </div>
-      </ThemeProvider>
-    </FormikProvider>
   );
 };
 

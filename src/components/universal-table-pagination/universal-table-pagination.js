@@ -13,11 +13,11 @@ const UniversalTablePagination = (props) => {
 
   const correctPage = useCallback(() => {
     return page <= Math.ceil(array.length / rowsPerPage) - 1 ? setPage(page) : setPage(0);
-  }, [array, rowsPerPage]);
+  }, [array, rowsPerPage, page, setPage]);
 
   useEffect(() => {
     correctPage();
-  }, [array]);
+  }, [array, correctPage]);
 
   const useStyles = makeStyles((theme) => ({
     root: {

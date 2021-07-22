@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { FormControl, FormHelperText, FormLabel } from '@material-ui/core';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -15,7 +14,6 @@ import { ErrorMessageText } from '../../components/error-message-text';
 import { submitRegistration } from '../../services';
 
 import {
-  theme,
   useRegistrationButtonStyles,
 } from '../../styles/customizing-material-ui-components';
 
@@ -212,7 +210,6 @@ const Registration = ({ history }) => {
           </FormControl>
         </div>
         <div className={'registration-button'}>
-          <ThemeProvider theme={theme}>
             <Button
               classes={{
                 root: classes.root,
@@ -224,7 +221,6 @@ const Registration = ({ history }) => {
             >
               Зарегестрироваться
             </Button>
-          </ThemeProvider>
         </div>
         <div className={'link'}>
           <Link to={'/login'}>Вернуться</Link>

@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Link, withRouter } from 'react-router-dom';
 import { FormControl, FormHelperText, FormLabel } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -15,7 +14,6 @@ import { ErrorMessageText } from '../../components/error-message-text';
 import { submitLogIn } from '../../services';
 
 import {
-  theme,
   useLoginButtonStyles,
 } from '../../styles/customizing-material-ui-components';
 
@@ -125,7 +123,6 @@ const Login = ({ history }) => {
           </FormControl>
         </div>
         <div className={'login-button'}>
-          <ThemeProvider theme={theme}>
             <Button
               classes={{
                 root: classes.root,
@@ -137,7 +134,6 @@ const Login = ({ history }) => {
             >
               Войти
             </Button>
-          </ThemeProvider>
         </div>
         <div className={'link'}>
           <Link to={'/registration'}>Зарегестрироваться</Link>

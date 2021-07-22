@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { FieldArray } from 'formik';
+import React, { useCallback, useEffect, useState, memo } from 'react';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,7 +15,16 @@ import {
 
 import './add-property-to-product.scss';
 
-const AddPropertyToProductOld = ({
+const createSchema = () => {
+  return {
+    id: '',
+    propertyName: '',
+    propertyValue: '',
+    propertyType: '',
+  };
+};
+
+const AddPropertyToProductOld = memo(({
   handleChange,
   touched,
   errors,
@@ -100,7 +108,6 @@ const AddPropertyToProductOld = ({
     selectedProp.id = selectedProperty.id; //записываю id свойства в propertiesOfProduct[index].id товара
 
     const nameOfFieldArray = `propertiesOfProduct.${index}.propertyValue`;
-    console.log('selectedProp:', selectedProp);
     switch (selectedProperty.propertyType) {
       case 'Dropdown':
         const errorConditionDropdown = (idx) => {
@@ -156,7 +163,7 @@ const AddPropertyToProductOld = ({
                   </FormControl>
                   <IconButton
                     classes={{ root: classesButton.root }}
-                    onClick={() => removeValueFromProps(nameOfFieldArray, selectedProp.propertyValue, index)}
+                    onClick={() => removeValueFromProps(nameOfFieldArray, selectedProp.propertyValue, idx)}
                   >
                     <RemoveCircleOutlineIcon />
                   </IconButton>
@@ -260,21 +267,6 @@ const AddPropertyToProductOld = ({
     }
   };
 
-  const createSchema = () => {
-    return {
-      id: '',
-      propertyName: '',
-      propertyValue: '',
-      propertyType: '',
-    };
-  };
-
-  const createValueForDropdown = () => {
-    return {
-      propertyValue: '',
-    };
-  };
-
   const addItems = useCallback(() => {
     const newItem = createSchema();
     if (Array.isArray(propertiesOfProduct)) {
@@ -282,14 +274,14 @@ const AddPropertyToProductOld = ({
     } else {
       setFieldValue('propertiesOfProduct', [newItem], true);
     }
-  }, [setFieldValue, propertiesOfProduct, properties]);
+  }, [setFieldValue, propertiesOfProduct]);
 
   const removeItem = useCallback(
     (index) => {
       const newValue = propertiesOfProduct.filter((_, i) => i !== index);
       setFieldValue('propertiesOfProduct', newValue, true);
     },
-    [setFieldValue, propertiesOfProduct, properties],
+    [setFieldValue, propertiesOfProduct],
   );
 
   const addValueToProps = useCallback(
@@ -301,7 +293,7 @@ const AddPropertyToProductOld = ({
         setFieldValue(nameOfFieldArray, [newItem], true);
       }
     },
-    [setFieldValue, propertiesOfProduct, properties],
+    [setFieldValue],
   );
 
   const removeValueFromProps = useCallback(
@@ -309,7 +301,7 @@ const AddPropertyToProductOld = ({
       const newValue = selectedPropValue.filter((_, i) => i !== index);
       setFieldValue(nameOfFieldArray, newValue, true);
     },
-    [setFieldValue, propertiesOfProduct, properties],
+    [setFieldValue],
   );
 
   return (
@@ -379,6 +371,6 @@ const AddPropertyToProductOld = ({
       </div>
     </div>
   );
-};
+});
 
 export { AddPropertyToProductOld };

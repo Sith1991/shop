@@ -15,7 +15,7 @@ const PriceFormatInput = ({ classesInput, onChange, onBlur, values }) => {
     name={'price'}
     onChange={onChange} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
     onBlur={onBlur} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-    value={values.price.toLocaleString('ru-RU')} // toLocaleString добавлен, что бы при редактировании цена отображалась в правильном формате
+    value={values.toLocaleString('ru-RU')} // toLocaleString добавлен, что бы при редактировании цена отображалась в правильном формате
     />
   );
 };

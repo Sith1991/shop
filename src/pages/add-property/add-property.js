@@ -2,7 +2,6 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Button from '@material-ui/core/Button';
 import {
@@ -17,7 +16,6 @@ import { StyledRadio } from '../../components/styled-radio-icon';
 import { postItemsToDatabase } from '../../services';
 
 import {
-  theme,
   useAddItemLabelStyles,
   useAddItemInputStyles,
   useSaveButtonStyles,
@@ -105,7 +103,6 @@ const AddProperty = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <div className={'add-property'}>
         <div className={'add-property-bordered-wrap'}>
           <form onSubmit={handleSubmit} className={'add-property-wrap'}>
@@ -203,7 +200,6 @@ const AddProperty = ({
           </form>
         </div>
       </div>
-    </ThemeProvider>
   );
 };
 
