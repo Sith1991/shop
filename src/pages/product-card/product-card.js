@@ -7,10 +7,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
-import {
-  useLoginButtonStyles,
-  useProductCardItemSelectStyles,
-} from '../../styles/customizing-material-ui-components';
+import { useLoginButtonStyles, useProductCardItemSelectStyles } from '../../styles/customizing-material-ui-components';
 
 import './product-card.scss';
 
@@ -18,22 +15,12 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
   const classes = useLoginButtonStyles();
   const classesSelect = useProductCardItemSelectStyles();
 
-  const { itemName, fileUrl, description, price, propertiesOfProduct } =
-    selectedProduct;
+  const { itemName, fileUrl, description, price, propertiesOfProduct } = selectedProduct;
 
   const validationSchema = yup.object().shape({
-    itemName: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .required('Обязательное поле'),
-    description: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .required('Обязательное поле'),
-    fileUrl: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .required('Обязательное поле'),
+    itemName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+    description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
+    fileUrl: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
     price: yup
       .number()
       .typeError('Должно быть числом')
@@ -45,7 +32,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
         propertyName: yup.string(),
         propertyType: yup.string(),
         propertyValue: yup.string(),
-      })
+      }),
     ),
   });
 
@@ -65,14 +52,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
     validateOnBlur: true,
   });
 
-  const {
-    values,
-    handleChange,
-    handleBlur,
-    isValid,
-    handleSubmit,
-    setFieldValue,
-  } = formik;
+  const { values, handleChange, handleBlur, isValid, handleSubmit, setFieldValue } = formik;
 
   // При первом реднере компоненты, прохожу по массиву свойств товара и в случае, когда свойство имеет тип Dropdown,
   // его первое значение из массива значений сразу устанавливаю в initialValues формика, т.к. если пользователь не выберет
@@ -84,11 +64,11 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
         return setFieldValue(
           `propertiesOfProduct.${index}.propertyValue`,
           propertiesOfProduct[index].propertyValue[0].propertyValue,
-          false
+          false,
         );
       }
     },
-    [propertiesOfProduct, setFieldValue]
+    [propertiesOfProduct, setFieldValue],
   );
 
   useEffect(() => {
@@ -113,10 +93,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
         return (
           <div key={index}>
             <h4>{propertyName}</h4>
-            <FormControl
-              variant="outlined"
-              className={classesSelect.formControl}
-            >
+            <FormControl variant="outlined" className={classesSelect.formControl}>
               <Select
                 classes={{
                   root: classesSelect.root,
@@ -128,9 +105,9 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
                 /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                                этому полю было присвоено первое значение свойства из массива значений.
-                                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
-                                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
+                                                этому полю было присвоено первое значение свойства из массива значений.
+                                                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
+                                                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
                 value={
                   Array.isArray(values.propertiesOfProduct[index].propertyValue)
                     ? ''
@@ -184,25 +161,22 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
             </div>
             <div className={'bottom-items-row'}>
               <div className={'item-properties'}>
-                {propertiesOfProduct &&
-                  propertiesOfProduct.map(renderPropertiesOfProduct)}
+                {propertiesOfProduct && propertiesOfProduct.map(renderPropertiesOfProduct)}
                 <h4>Стоимость</h4>
-                <span className={'price'}>
-                  {price.toLocaleString('ru-RU')}$
-                </span>
+                <span className={'price'}>{price.toLocaleString('ru-RU')}$</span>
               </div>
               <div className={'button-wrap'}>
-                  <Button
-                    classes={{
-                      root: classes.root,
-                      label: classes.label,
-                    }}
-                    type={'submit'}
-                    disabled={!isValid}
-                    onClick={handleSubmit}
-                  >
-                    Беру!!!
-                  </Button>
+                <Button
+                  classes={{
+                    root: classes.root,
+                    label: classes.label,
+                  }}
+                  type={'submit'}
+                  disabled={!isValid}
+                  onClick={handleSubmit}
+                >
+                  Беру!!!
+                </Button>
               </div>
             </div>
           </form>

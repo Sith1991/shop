@@ -61,11 +61,7 @@
   }
 
   .property-type {
-    margin-left: 25px;
 
-    @include media('max', 'sm') {
-      margin-left: 0;
-    }
   }
 
   .link {
