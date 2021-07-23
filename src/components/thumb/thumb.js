@@ -25,7 +25,7 @@ const Thumb = ({ file }) => {
   }
 
   return (
-    <img src={thumb} alt={file.name} className={'thumb svg-thumbnail mt-2'} />
+    <img src={thumb} alt={file.name} className={'thumb'} />
   );
 };
 

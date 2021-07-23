@@ -406,11 +406,13 @@ const AddItem = memo(
               </FormControl>
               {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
                 используем мимниатюру Thumb*/}
-              {values.fileUrl ? (
-                <img src={values.fileUrl} alt={'изображение товара'} className={'thumb svg-thumbnail mt-2'} />
-              ) : (
-                <Thumb file={values.file === undefined || values.file === null ? null : values.file.file} />
-              )}
+                <div className={'thumb-wrapper img-thumbnail'}>
+                  {values.fileUrl ? (
+                      <img src={values.fileUrl} alt={'изображение товара'} className={'thumb'} />
+                  ) : (
+                      <Thumb file={values.file === undefined || values.file === null ? null : values.file.file} />
+                  )}
+                </div>
               <FormControl error={Boolean(touched.description && errors.description)}>
                 <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
                   Описание<span className={'red-star'}>*</span>

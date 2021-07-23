@@ -77,6 +77,15 @@
       margin-bottom: 0;
     }
 
+    .thumb-wrapper {
+      height: 150px;
+      max-width: 200px;
+      margin-top: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     input, textarea {
       @include font-params(normal, 14px, 16px, #000000);
       opacity: 0.8;
