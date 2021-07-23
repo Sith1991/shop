@@ -183,25 +183,8 @@ const AddItem = memo(
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         productsSpinnerOpen();
-        const { itemName, description, price, propertiesOfProduct } = values;
-        const trimmedItemName = itemName.trim();
-        const trimmedDescription = description.trim();
+        const { price } = values;
         const numberedPrice = parseInt(String(price).replace(/ /g, ''));
-        const trimmedPropsOfProduct = propertiesOfProduct.map((props) => {
-          if (typeof props.propertyValue === 'string') {
-            return { ...props, propertyValue: props.propertyValue.trim() };
-          } else if (Array.isArray(props.propertyValue)) {
-            return {
-              ...props,
-              propertyValue: props.propertyValue.map((propValue) => {
-                return {
-                  ...propValue,
-                  propertyValue: propValue.propertyValue.trim(),
-                };
-              }),
-            };
-          } else return props;
-        });
 
         if (image) {
           // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
@@ -221,10 +204,8 @@ const AddItem = memo(
                 .getDownloadURL()
                 .then((url) => {
                   const newValues = {
-                    itemName: trimmedItemName,
-                    description: trimmedDescription,
+                    ...values,
                     price: numberedPrice,
-                    propertiesOfProduct: trimmedPropsOfProduct,
                     file: [], // чистим массив с фото, т.к. он не нужен realtime firebase, файл загружается в firebase storage
                     fileUrl: url,
                   };
@@ -255,10 +236,8 @@ const AddItem = memo(
         // Сработает, если товар редактируется, но при этом изображение не было изменено (не было перевыбрано).
         else {
           const newValues = {
-            itemName: trimmedItemName,
-            description: trimmedDescription,
+            ...values,
             price: numberedPrice,
-            propertiesOfProduct: trimmedPropsOfProduct,
             file: [], // чистим массив с фото, т.к. он не нужен в realtime firebase, файл загружается в firebase storage
           };
 
@@ -277,6 +256,14 @@ const AddItem = memo(
 
     const {
       values,
+      values: {
+        itemName,
+        price,
+        file,
+        fileUrl,
+        description,
+        propertiesOfProduct
+      },
       errors,
       touched,
       handleChange,
@@ -287,6 +274,12 @@ const AddItem = memo(
       setFieldTouched,
       setFieldValue,
     } = formik;
+
+    const handleTrim = useCallback((event, trimValue) => {
+      handleBlur(event);
+      const newValue = event.target.value.trim();
+      setFieldValue(trimValue, newValue, true)
+    }, [handleBlur, setFieldValue])
 
     return (
       <div className={'add-item'}>
@@ -330,8 +323,8 @@ const AddItem = memo(
                   }}
                   name={'itemName'}
                   onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.itemName}
+                  onBlur={(event) => handleTrim(event, 'itemName')}
+                  value={itemName}
                 />
                 {getError(touched.itemName, errors.itemName)}
               </FormControl>
@@ -344,7 +337,7 @@ const AddItem = memo(
                   classesInput={classesInput}
                   onChange={handleChange} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
                   onBlur={handleBlur} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-                  values={values.price}
+                  values={price}
                   customInput={PriceFormatInput}
                   format={priceFormat}
                 />
@@ -389,10 +382,10 @@ const AddItem = memo(
                       }}
                       endIcon={<i className="fa fa-upload" aria-hidden="true" />}
                     >
-                      {values.file === undefined || values.file === null ? (
+                      {file === undefined || file === null ? (
                         <div className={'upload-btn-name'}>Выберите изображение</div>
                       ) : (
-                        values.file.file.name
+                        file.file.name
                       )}
                     </Button>
                   </ThemeProvider>
@@ -402,10 +395,10 @@ const AddItem = memo(
               {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
                 используем мимниатюру Thumb*/}
               <div className={'thumb-wrapper img-thumbnail'}>
-                {values.fileUrl ? (
-                  <img src={values.fileUrl} alt={'изображение товара'} className={'thumb'} />
+                {fileUrl ? (
+                  <img src={fileUrl} alt={'изображение товара'} className={'thumb'} />
                 ) : (
-                  <Thumb file={values.file === undefined || values.file === null ? null : values.file.file} />
+                  <Thumb file={file === undefined || file === null ? null : file.file} />
                 )}
               </div>
               <FormControl error={Boolean(touched.description && errors.description)}>
@@ -426,8 +419,8 @@ const AddItem = memo(
                   }}
                   name={'description'}
                   onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.description}
+                  onBlur={(event) => handleTrim(event, 'description')}
+                  value={description}
                 />
                 {getError(touched.description, errors.description)}
               </FormControl>
@@ -437,11 +430,12 @@ const AddItem = memo(
               touched={touched}
               errors={errors}
               handleBlur={handleBlur}
-              propertiesOfProduct={values.propertiesOfProduct}
+              propertiesOfProduct={propertiesOfProduct}
               properties={itemProperties}
               getError={getError}
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
+              handleTrim={handleTrim}
             />
           </form>
         </div>

@@ -35,6 +35,7 @@ const AddPropertyToProduct = memo(
     setFieldValue,
     setFieldTouched,
     propertiesOfProduct,
+    handleTrim,
   }) => {
     const classesSelect = useAddItemSelectStyles();
     const classesButton = useAddPropertyButtonStyles();
@@ -147,18 +148,21 @@ const AddPropertyToProduct = memo(
       [setFieldValue],
     );
 
-    const errorConditionDropdown = useCallback((index, idx) => {
-      return (
-        touched.propertiesOfProduct &&
-        touched.propertiesOfProduct[index] &&
-        errors.propertiesOfProduct &&
-        errors.propertiesOfProduct[index] &&
-        touched.propertiesOfProduct[index].propertyValue &&
-        errors.propertiesOfProduct[index].propertyValue &&
-        touched.propertiesOfProduct[index].propertyValue[idx] &&
-        errors.propertiesOfProduct[index].propertyValue[idx]
-      );
-    }, [touched.propertiesOfProduct, errors.propertiesOfProduct]);
+    const errorConditionDropdown = useCallback(
+      (index, idx) => {
+        return (
+          touched.propertiesOfProduct &&
+          touched.propertiesOfProduct[index] &&
+          errors.propertiesOfProduct &&
+          errors.propertiesOfProduct[index] &&
+          touched.propertiesOfProduct[index].propertyValue &&
+          errors.propertiesOfProduct[index].propertyValue &&
+          touched.propertiesOfProduct[index].propertyValue[idx] &&
+          errors.propertiesOfProduct[index].propertyValue[idx]
+        );
+      },
+      [touched.propertiesOfProduct, errors.propertiesOfProduct],
+    );
 
     const renderValueInputs = useCallback(
       (selectedProp, index) => {
@@ -200,7 +204,7 @@ const AddPropertyToProduct = memo(
                           }}
                           name={`${nameOfFieldArray}.${idx}.propertyValue`}
                           onChange={handleChange}
-                          onBlur={handleBlur}
+                          onBlur={(event) => handleTrim(event, `propertiesOfProduct.${index}.propertyValue.${idx}.propertyValue`)}
                           value={propertiesOfProduct[index].propertyValue[idx].propertyValue}
                         />
                         {errorConditionDropdown(index, idx)
@@ -299,7 +303,7 @@ const AddPropertyToProduct = memo(
                     }}
                     name={`${nameOfFieldArray}`}
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    onBlur={(event) => handleTrim(event, `propertiesOfProduct.${index}.propertyValue`)}
                     value={propertiesOfProduct[index].propertyValue}
                   />
                   {errorConditionString
@@ -328,7 +332,8 @@ const AddPropertyToProduct = memo(
         propertiesOfProduct,
         removeValueFromProps,
         touched.propertiesOfProduct,
-        errorConditionDropdown
+        errorConditionDropdown,
+        handleTrim,
       ],
     );
 
