@@ -4,7 +4,8 @@ import { compose } from 'redux';
 
 import { Spinner } from '../../components/spinner';
 import { ErrorIndicator } from '../error-indicator';
-import AddItemOld from './add-item-old';
+import { withAuthRedirect } from '../../hoc';
+import { AddItem } from './index';
 
 import {
   fetchProperties,
@@ -18,7 +19,6 @@ import {
   editedProduct,
   resetNotifications,
 } from '../../store/actions';
-import { withAuthRedirect } from '../../hoc';
 
 const AddItemContainer = ({
   fetchProperties,
@@ -57,8 +57,8 @@ const AddItemContainer = ({
   }, [itemId, resetNotifications, fetchProducts, fetchProperties, fetchSelectedProduct, clearSelectedProduct]);
 
   const loadIndicator = useMemo(() => {
-    return loadingProps || loadingProducts || (loadingEditingProduct && itemId);
-  }, [loadingProps, loadingProducts, loadingEditingProduct, itemId]);
+    return loadingProps || (loadingEditingProduct && itemId);
+  }, [loadingProps, loadingEditingProduct, itemId]);
 
   const errorIndicator = useMemo(() => {
     return errorProps || errorProducts || (errorEditingProduct && itemId);
@@ -73,7 +73,9 @@ const AddItemContainer = ({
   }
 
   return (
-      <AddItemOld
+    <>
+      {loadingProducts && <Spinner />}
+      <AddItem
         properties={properties}
         productsError={productsError}
         itemId={itemId}
@@ -84,6 +86,7 @@ const AddItemContainer = ({
         productsSpinnerOpen={productsSpinnerOpen}
         productsSpinnerClose={productsSpinnerClose}
       />
+    </>
   );
 };
 
