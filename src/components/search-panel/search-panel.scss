@@ -5,18 +5,24 @@
   flex-wrap: wrap;
 
   .input {
-    margin: 15px;
+    margin: 15px 25px;
     min-width: 240px;
     .MuiOutlinedInput-adornedStart {
       @include font-params(normal, 16px, 19px, #000000);
+    }
+    @include media('max', 'sm') {
+      width: 100%;
     }
   }
 
   .select {
     min-width: 240px;
-    margin: 15px;
+    margin: 15px 25px;
     .MuiOutlinedInput-root {
       @include font-params(normal, 16px, 19px, #000000);
+    }
+    @include media('max', 'sm') {
+      width: 100%;
     }
   }
 }

@@ -72,6 +72,7 @@ const AddItem = memo(
     }, [itemId, properties, editingProduct, createUniqueProperties]);
 
     const validationSchema = yup.object().shape({
+      itemId: yup.boolean(),
       itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
       price: yup
         .number()
@@ -81,45 +82,40 @@ const AddItem = memo(
           return value?.toString().charAt(0) !== '0'; // число НЕ должно быть 0
         })
         .required('Обязательное поле'),
-      file: itemId
-        ? // если есть ID продукта, то повторная загрузка картинки не обязательна
-          yup
-            .object()
-            .shape({
-              file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+      file: yup.object().when('itemId', {
+        is: true,
+        then: yup
+          .object()
+          .shape({
+            file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
+              return value ? value.size < 153600 : true;
+            }),
+            type: yup
+              .string()
+              .oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png'),
+            name: yup.string(),
+          })
+          .nullable()
+          .typeError('Добавьте файл'),
+        otherwise: yup
+          .object()
+          .shape({
+            file: yup
+              .mixed()
+              .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
                 return value ? value.size < 153600 : true;
-              }),
-              type: yup
-                .string()
-                .oneOf(
-                  ['image/jpeg', 'image/png', 'image/pjpeg'],
-                  'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
-                ),
-              name: yup.string(),
-            })
-            .nullable()
-            .typeError('Добавьте файл')
-        : yup
-            .object()
-            .shape({
-              file: yup
-                .mixed()
-                .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-                  return value ? value.size < 153600 : true;
-                })
-                .typeError('Добавьте файл')
-                .required('Добавьте файл'),
-              type: yup
-                .string()
-                .oneOf(
-                  ['image/jpeg', 'image/png', 'image/pjpeg'],
-                  'Добавьте файл с правильным форматом .jpg,.jpeg,.png',
-                )
-                .typeError('Добавьте файл')
-                .required('Добавьте файл'),
-              name: yup.string().typeError('Добавьте файл').required('Добавьте файл'),
-            })
-            .required(),
+              })
+              .typeError('Добавьте файл')
+              .required('Добавьте файл'),
+            type: yup
+              .string()
+              .oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png')
+              .typeError('Добавьте файл')
+              .required('Добавьте файл'),
+            name: yup.string().typeError('Добавьте файл').required('Добавьте файл'),
+          })
+          .required(),
+      }),
       fileUrl: yup.string().nullable().typeError('Должно быть строкой'),
       description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
       propertiesOfProduct: yup.array().of(
@@ -173,6 +169,7 @@ const AddItem = memo(
 
     const formik = useFormik({
       initialValues: {
+        itemId: Boolean(itemId),
         itemName: editingProduct.itemName,
         // для контролируемого input необходимо задать изначально пустую строку либо определенное значение
         price: itemId ? editingProduct.price : '',
@@ -224,7 +221,6 @@ const AddItem = memo(
                 .getDownloadURL()
                 .then((url) => {
                   const newValues = {
-                    ...values,
                     itemName: trimmedItemName,
                     description: trimmedDescription,
                     price: numberedPrice,
@@ -259,7 +255,6 @@ const AddItem = memo(
         // Сработает, если товар редактируется, но при этом изображение не было изменено (не было перевыбрано).
         else {
           const newValues = {
-            ...values,
             itemName: trimmedItemName,
             description: trimmedDescription,
             price: numberedPrice,
@@ -355,7 +350,7 @@ const AddItem = memo(
                 />
                 {getError(touched.price, errors.price)}
               </FormControl>
-              <FormControl error={Boolean(touched.file && errors.file)}>
+              <FormControl error={Boolean(touched.file && errors.file)} className={'upload-bnt-wrap'}>
                 <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
                   Изображение<span className={'red-star'}>*</span>
                 </FormLabel>
@@ -406,13 +401,13 @@ const AddItem = memo(
               </FormControl>
               {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
                 используем мимниатюру Thumb*/}
-                <div className={'thumb-wrapper img-thumbnail'}>
-                  {values.fileUrl ? (
-                      <img src={values.fileUrl} alt={'изображение товара'} className={'thumb'} />
-                  ) : (
-                      <Thumb file={values.file === undefined || values.file === null ? null : values.file.file} />
-                  )}
-                </div>
+              <div className={'thumb-wrapper img-thumbnail'}>
+                {values.fileUrl ? (
+                  <img src={values.fileUrl} alt={'изображение товара'} className={'thumb'} />
+                ) : (
+                  <Thumb file={values.file === undefined || values.file === null ? null : values.file.file} />
+                )}
+              </div>
               <FormControl error={Boolean(touched.description && errors.description)}>
                 <FormLabel classes={{ root: classesLabel.root }} className={'labels'}>
                   Описание<span className={'red-star'}>*</span>

@@ -11,17 +11,15 @@
     .button-wrap {
       display: flex;
       flex-direction: row-reverse;
+      align-items: center;
+      margin-top: 4px;
+      height: 72px;
 
       .add-property-link {
-        margin: 24px 95px 20px 0;
-      }
-
-      @include media("max", "sm") {
-        & {
-          justify-content: center;
-        }
-        .add-property-link {
-          margin: 24px auto;
+        margin-right: 95px;
+        @include media("max", "sm") {
+          width: 100%;
+          margin: 0 20px;
         }
       }
     }
@@ -37,6 +35,10 @@
       &:focus,
       &:visited {
         color: white;
+      }
+
+      @include media("max", "sm") {
+        width: 100%;
       }
     }
   }

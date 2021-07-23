@@ -73,6 +73,10 @@
       color: #FF0000;
     }
 
+    .upload-bnt-wrap {
+      max-width: 255px;
+    }
+
     .upload-bnt-label {
       margin-bottom: 0;
     }
@@ -104,6 +108,7 @@
         -webkit-appearance: none;
         margin: 0;
       }
+
       -moz-appearance: textfield;
     }
 
