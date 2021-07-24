@@ -43,10 +43,4 @@ const fetchProducts = () => (dispatch) => {
   getItems(dispatch, 'products', productsLoaded);
 };
 
-export {
-  fetchProducts,
-  productsError,
-  productsSpinnerOpen,
-  productsSpinnerClose,
-  productsLoaded
-};
+export { fetchProducts, productsError, productsSpinnerOpen, productsSpinnerClose, productsLoaded };

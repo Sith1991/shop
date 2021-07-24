@@ -1,3 +1,1 @@
-import { ErrorMessageText } from './error-message-text';
-
-export { ErrorMessageText };
+export { ErrorMessageText } from './error-message-text';

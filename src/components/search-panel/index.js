@@ -1,3 +1,1 @@
-import { SearchPanel } from './search-panel';
-
-export { SearchPanel };
+export { SearchPanel } from './search-panel';

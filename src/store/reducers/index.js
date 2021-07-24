@@ -1,13 +1,5 @@
-import { isAuthReducer } from './is-auth-reducer';
-import { notificationsReducer } from './notifications-reducer';
-import { productCardReducer } from './product-card-reducer';
-import { productsReducer } from './products-reducer';
-import { propertiesReducer } from './properties-reducer';
-
-export {
-  isAuthReducer,
-  notificationsReducer,
-  productCardReducer,
-  productsReducer,
-  propertiesReducer,
-};
+export { isAuthReducer } from './is-auth-reducer';
+export { notificationsReducer } from './notifications-reducer';
+export { productCardReducer } from './product-card-reducer';
+export { productsReducer } from './products-reducer';
+export { propertiesReducer } from './properties-reducer';

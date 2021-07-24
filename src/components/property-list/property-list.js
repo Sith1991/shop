@@ -7,12 +7,7 @@ import { compose } from 'redux';
 import { PropertyListTable } from '../property-list-table';
 import { Spinner } from '../spinner';
 import { ErrorIndicator } from '../../pages/error-indicator';
-import {
-  fetchProperties,
-  propertiesError,
-  deletedProperty,
-  resetNotifications,
-} from '../../store/actions';
+import { fetchProperties, propertiesError, deletedProperty, resetNotifications } from '../../store/actions';
 import { deleteItem } from '../../services';
 import { withAuthRedirect } from '../../hoc';
 
@@ -27,7 +22,6 @@ const PropertyList = ({
   error,
   resetNotifications,
 }) => {
-
   useEffect(() => {
     fetchProperties();
     resetNotifications();
@@ -77,7 +71,4 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default compose(
-  withAuthRedirect,
-  connect(mapStateToProps, mapDispatchToProps)
-)(PropertyList);
+export default compose(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps))(PropertyList);

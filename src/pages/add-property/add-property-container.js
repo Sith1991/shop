@@ -67,7 +67,4 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default compose(
-  withAuthRedirect,
-  connect(mapStateToProps, mapDispatchToProps)
-)(AddPropertyContainer);
+export default compose(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps))(AddPropertyContainer);

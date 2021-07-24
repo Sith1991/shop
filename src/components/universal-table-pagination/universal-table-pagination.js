@@ -97,4 +97,4 @@ const UniversalTablePagination = (props) => {
   );
 };
 
-export { UniversalTablePagination };
+export {UniversalTablePagination};

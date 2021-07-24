@@ -1,3 +1,1 @@
-import { Thumb } from './thumb';
-
-export { Thumb };
+export { Thumb } from './thumb';

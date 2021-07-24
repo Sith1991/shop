@@ -1,3 +1,1 @@
-import { StyledRadio } from './styled-radio-button';
-
-export { StyledRadio };
+export { StyledRadio } from './styled-radio-button';

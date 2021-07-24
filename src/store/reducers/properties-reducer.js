@@ -48,4 +48,4 @@ const propertiesReducer = (state, action) => {
   }
 };
 
-export {propertiesReducer};
+export { propertiesReducer };

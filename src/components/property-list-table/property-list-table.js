@@ -1,27 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableRow,
-} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableFooter, TableRow } from '@material-ui/core';
 
 import { UniversalTablePagination } from '../universal-table-pagination';
 import { PropertyListTableHeader } from './index';
 
 import './property-list-table.scss';
 
-const PropertyListTable = ({
-  properties,
-  onDeleted,
-  propertiesError,
-  deletedProperty,
-}) => {
+const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProperty }) => {
   // русская локализация
   const theme = createMuiTheme(
     {
@@ -29,15 +17,14 @@ const PropertyListTable = ({
         primary: { main: '#1976d2' },
       },
     },
-    ruRU
+    ruRU,
   );
 
   // начинаем делать пагинацию
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, properties.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, properties.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -78,7 +65,7 @@ const PropertyListTable = ({
   }
 
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] =useState();
+  const [orderBy, setOrderBy] = useState();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -93,17 +80,13 @@ const PropertyListTable = ({
       <ThemeProvider theme={theme}>
         <TableContainer>
           <Table>
-            <PropertyListTableHeader
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
+            <PropertyListTableHeader order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
             <TableBody>
               {/*Если rowsPerPage = -1 (т.е. выбрано в пагинации "Показать Все", то мапим без слайса)*/}
               {(rowsPerPage > 0
                 ? stableSort(properties, getComparator(order, orderBy)).slice(
                     page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
+                    page * rowsPerPage + rowsPerPage,
                   )
                 : stableSort(properties, getComparator(order, orderBy))
               ).map((property) => {
@@ -111,26 +94,15 @@ const PropertyListTable = ({
                 return (
                   <TableRow key={id}>
                     <TableCell>
-                      <div className={'property-name table-body'}>
-                        {propertyName}
-                      </div>
+                      <div className={'property-name table-body'}>{propertyName}</div>
                     </TableCell>
                     <TableCell>
-                      <div className={'property-type table-body'}>
-                        {propertyType}
-                      </div>
+                      <div className={'property-type table-body'}>{propertyType}</div>
                     </TableCell>
                     <TableCell align={'right'}>
                       <Link
                         to={'#'}
-                        onClick={() =>
-                          onDeleted(
-                            id,
-                            'properties',
-                            propertiesError,
-                            deletedProperty
-                          )
-                        }
+                        onClick={() => onDeleted(id, 'properties', propertiesError, deletedProperty)}
                         className={'link'}
                       >
                         Удалить
@@ -164,4 +136,4 @@ const PropertyListTable = ({
   );
 };
 
-export { PropertyListTable };
+export {PropertyListTable};

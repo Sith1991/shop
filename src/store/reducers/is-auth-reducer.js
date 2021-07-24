@@ -1,8 +1,4 @@
-import {
-  USER_IS_LOGGED_IN,
-  USER_IS_LOGGED_OUT,
-  USER_IS_LOGGED_REQUEST,
-} from '../action-types';
+import { USER_IS_LOGGED_IN, USER_IS_LOGGED_OUT, USER_IS_LOGGED_REQUEST } from '../action-types';
 
 const isAuthReducer = (state, action) => {
   if (state === undefined) {
@@ -39,4 +35,4 @@ const isAuthReducer = (state, action) => {
   }
 };
 
-export {isAuthReducer};
+export { isAuthReducer };

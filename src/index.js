@@ -14,9 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <Provider store={store}>
-    {/*Предоставляет доступ к Redux Store*/}
     <ErrorBoundary>
-      {/*Обработка ошибок в компонентах ниже*/}
       <HashRouter>
         <NotificationsContainer />
         <ThemeProvider theme={theme}>

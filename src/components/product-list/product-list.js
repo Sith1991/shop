@@ -6,12 +6,7 @@ import { compose } from 'redux';
 
 import { ProductListTable } from '../product-list-table';
 import { SearchPanel } from '../search-panel';
-import {
-  fetchProducts,
-  productsError,
-  deletedProduct,
-  resetNotifications,
-} from '../../store/actions';
+import { fetchProducts, productsError, deletedProduct, resetNotifications } from '../../store/actions';
 import { ErrorIndicator } from '../../pages/error-indicator';
 import { deleteItem } from '../../services';
 import { withAuthRedirect } from '../../hoc';
@@ -46,23 +41,11 @@ class ProductList extends Component {
       return arr;
     }
 
-    return arr.filter(
-      (el) =>
-        el[this.state.columnName]
-          .toString()
-          .toLowerCase()
-          .indexOf(term.toLowerCase()) > -1
-    );
+    return arr.filter((el) => el[this.state.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1);
   };
 
   render() {
-    const {
-      products,
-      loading,
-      error,
-      productsError,
-      deletedProduct,
-    } = this.props;
+    const { products, loading, error, productsError, deletedProduct } = this.props;
 
     const { term } = this.state;
 
@@ -82,10 +65,7 @@ class ProductList extends Component {
             <ErrorIndicator />
           ) : (
             <div>
-              <SearchPanel
-                termSetup={this.termSetup}
-                columnChange={this.columnChange}
-              />
+              <SearchPanel termSetup={this.termSetup} columnChange={this.columnChange} />
               <ProductListTable
                 products={visibleItems}
                 onDeleted={deleteItem}
@@ -116,7 +96,4 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default compose(
-  withAuthRedirect,
-  connect(mapStateToProps, mapDispatchToProps)
-)(ProductList);
+export default compose(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps))(ProductList);

@@ -1,10 +1,6 @@
-import {
-  userIsAuth,
-  userIsLoggedIn,
-  userIsNotLoggedIn,
-} from './is-auth-actions';
+export { userIsAuth, userIsLoggedIn, userIsNotLoggedIn } from './is-auth-actions';
 
-import {
+export {
   createdProduct,
   editedProduct,
   deletedProduct,
@@ -14,12 +10,9 @@ import {
   resetNotifications,
 } from './notifications-actions';
 
-import {
-  fetchSelectedProduct,
-  clearSelectedProduct,
-} from './propduct-card-actions';
+export { fetchSelectedProduct, clearSelectedProduct } from './propduct-card-actions';
 
-import {
+export {
   fetchProducts,
   productsError,
   productsSpinnerOpen,
@@ -27,35 +20,10 @@ import {
   productsLoaded,
 } from './propducts-actions';
 
-import {
+export {
   fetchProperties,
   propertiesError,
   propertiesSpinnerOpen,
   propertiesSpinnerClose,
   propertiesLoaded,
 } from './properties-actions';
-
-export {
-  userIsAuth,
-  userIsLoggedIn,
-  userIsNotLoggedIn,
-  createdProduct,
-  editedProduct,
-  deletedProduct,
-  createdProperty,
-  deletedProperty,
-  closeNotifications,
-  resetNotifications,
-  fetchSelectedProduct,
-  clearSelectedProduct,
-  fetchProducts,
-  productsError,
-  productsSpinnerOpen,
-  productsSpinnerClose,
-  productsLoaded,
-  fetchProperties,
-  propertiesError,
-  propertiesSpinnerOpen,
-  propertiesSpinnerClose,
-  propertiesLoaded,
-};

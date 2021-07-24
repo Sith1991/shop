@@ -4,13 +4,7 @@ import { connect } from 'react-redux';
 import Notifications from './notifications';
 import { closeNotifications } from '../../store/actions';
 
-const NotificationsContainer = ({
-  showNotification,
-  path,
-  isEditing,
-  deletedItem,
-  closeNotifications,
-}) => {
+const NotificationsContainer = ({ showNotification, path, isEditing, deletedItem, closeNotifications }) => {
   return (
     <Notifications
       showNotification={showNotification}
@@ -35,7 +29,4 @@ const mapDispatchToProps = {
   closeNotifications,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NotificationsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsContainer);

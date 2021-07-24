@@ -1,3 +1,1 @@
-import { withAuthRedirect } from './with-auth-redirect';
-
-export { withAuthRedirect };
+export { withAuthRedirect } from './with-auth-redirect';

@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Button from '@material-ui/core/Button';
@@ -8,6 +7,7 @@ import { FormControl, FormControlLabel, FormHelperText, FormLabel, RadioGroup } 
 
 import { StyledRadio } from '../../components/styled-radio-icon';
 import { postItemsToDatabase } from '../../services';
+import { addPropertyValidationSchema } from './add-property-validation-shema';
 
 import {
   useAddItemLabelStyles,
@@ -33,34 +33,16 @@ const AddProperty = ({
 
   const classesRadioButtons = usePropertyLabelStyles();
 
-  const validateNames = useCallback((arr, value) => {
-    const result = arr.find((el) => el?.propertyName.toLowerCase() === value?.toLowerCase());
-    return !result;
-  }, []);
-
   const getError = useCallback((touched, error) => {
     return touched && error && <FormHelperText>{error}</FormHelperText>;
   }, []);
-
-  const validationSchema = yup.object().shape({
-    propertyName: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .test('sameName', 'Свойство с таким именем уже существует', (value) => {
-        if (!value) return true; // если поле пустое, перейдет к следующей проверке required
-        return validateNames(properties, value); // возвращает false, если свойство с таким именем уже существует
-      })
-      .trim('Без паробелов')
-      .required('Обязательное поле'),
-    propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-  });
 
   const formik = useFormik({
     initialValues: {
       propertyName: '',
       propertyType: 'Dropdown',
     },
-    validationSchema: validationSchema,
+    validationSchema: addPropertyValidationSchema(properties),
     onSubmit: async (values) => {
       propertiesSpinnerOpen();
       const { propertyName } = values;

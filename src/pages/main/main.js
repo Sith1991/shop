@@ -22,11 +22,7 @@ const Main = ({ email, history }) => {
               Листинг товаров
             </Link>
           </div>
-          <div
-            className={`wrap ${
-              pathname === '/property-list' ? 'colored' : null
-            }`}
-          >
+          <div className={`wrap ${pathname === '/property-list' ? 'colored' : null}`}>
             <div className={'background'} />
             <Link to={'/property-list'} className={'header-links'}>
               Листинг проперти
@@ -36,11 +32,7 @@ const Main = ({ email, history }) => {
         <div className={'button-group'}>
           <div className={'user-name'}>Пользователь (E-mail): {email}</div>
           <div className={'button-log-out-wrap'}>
-            <Button
-              className={'button-log-out'}
-              variant={'warning'}
-              onClick={userLogOut}
-            >
+            <Button className={'button-log-out'} variant={'warning'} onClick={userLogOut}>
               Выйти
             </Button>
           </div>

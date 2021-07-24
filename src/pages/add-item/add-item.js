@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -12,6 +11,7 @@ import { Thumb } from '../../components/thumb';
 import { PriceFormatInput } from '../../components/price-format-input';
 import { getDateOfChange, postItemsToDatabase, putItemsToDatabase, storage } from '../../services';
 import { AddPropertyToProduct } from '../../components/add-property-to-product';
+import { addItemValidationSchema } from './add-item-validation-schema';
 
 import {
   themeUploadBtn,
@@ -71,82 +71,6 @@ const AddItem = memo(
       return itemId ? createUniqueProperties(properties, editingProduct.propertiesOfProduct) : properties;
     }, [itemId, properties, editingProduct, createUniqueProperties]);
 
-    const validationSchema = yup.object().shape({
-      itemId: yup.boolean(),
-      itemName: yup.string().typeError('Должно быть строкой').trim('Без паробелов').required('Обязательное поле'),
-      price: yup
-        .number()
-        .typeError('Должно быть числом')
-        .integer('Должно быть целым числом')
-        .test('firstSymbol', 'Стоимость не должна ровняться нулю', (value) => {
-          return value?.toString().charAt(0) !== '0'; // число НЕ должно быть 0
-        })
-        .required('Обязательное поле'),
-      file: yup.object().when('itemId', {
-        is: true,
-        then: yup
-          .object()
-          .shape({
-            file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-              return value ? value.size < 153600 : true;
-            }),
-            type: yup
-              .string()
-              .oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png'),
-            name: yup.string(),
-          })
-          .nullable()
-          .typeError('Добавьте файл'),
-        otherwise: yup
-          .object()
-          .shape({
-            file: yup
-              .mixed()
-              .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-                return value ? value.size < 153600 : true;
-              })
-              .typeError('Добавьте файл')
-              .required('Добавьте файл'),
-            type: yup
-              .string()
-              .oneOf(['image/jpeg', 'image/png', 'image/pjpeg'], 'Добавьте файл с правильным форматом .jpg,.jpeg,.png')
-              .typeError('Добавьте файл')
-              .required('Добавьте файл'),
-            name: yup.string().typeError('Добавьте файл').required('Добавьте файл'),
-          })
-          .required(),
-      }),
-      fileUrl: yup.string().nullable().typeError('Должно быть строкой'),
-      description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-      propertiesOfProduct: yup.array().of(
-        yup
-          .object()
-          .shape({
-            id: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-            propertyName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-            propertyType: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-            propertyValue: yup.lazy((value) => {
-              switch (typeof value) {
-                case 'number':
-                  return yup.number().typeError('Должно быть числом').required('Обязательное поле');
-                case 'string':
-                  return yup.string().typeError('Должно быть строкой').required('Обязательное поле');
-                default:
-                  return yup
-                    .array()
-                    .of(
-                      yup.object().shape({
-                        propertyValue: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-                      }),
-                    )
-                    .required('Обязательное поле');
-              }
-            }),
-          })
-          .required('Обязательное поле'),
-      ),
-    });
-
     const getFileSchema = useCallback(
       (file) =>
         file && {
@@ -180,7 +104,7 @@ const AddItem = memo(
         // Если это редактируемый товар, и у него есть свойства, то сюда передается их массив, иначе создается пустой массив
         propertiesOfProduct: itemId && editingProduct.propertiesOfProduct ? editingProduct.propertiesOfProduct : [],
       },
-      validationSchema: validationSchema,
+      validationSchema: addItemValidationSchema,
       onSubmit: async (values) => {
         productsSpinnerOpen();
         const { price } = values;
@@ -256,14 +180,7 @@ const AddItem = memo(
 
     const {
       values,
-      values: {
-        itemName,
-        price,
-        file,
-        fileUrl,
-        description,
-        propertiesOfProduct
-      },
+      values: { itemName, price, file, fileUrl, description, propertiesOfProduct },
       errors,
       touched,
       handleChange,
@@ -275,11 +192,14 @@ const AddItem = memo(
       setFieldValue,
     } = formik;
 
-    const handleTrim = useCallback((event, trimValue) => {
-      handleBlur(event);
-      const newValue = event.target.value.trim();
-      setFieldValue(trimValue, newValue, true)
-    }, [handleBlur, setFieldValue])
+    const handleTrim = useCallback(
+      (event, trimValue) => {
+        handleBlur(event);
+        const newValue = event.target.value.trim();
+        setFieldValue(trimValue, newValue, true);
+      },
+      [handleBlur, setFieldValue],
+    );
 
     return (
       <div className={'add-item'}>

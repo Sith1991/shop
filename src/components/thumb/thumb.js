@@ -24,9 +24,7 @@ const Thumb = ({ file }) => {
     return null;
   }
 
-  return (
-    <img src={thumb} alt={file.name} className={'thumb'} />
-  );
+  return <img src={thumb} alt={file.name} className={'thumb'} />;
 };
 
 export { Thumb };

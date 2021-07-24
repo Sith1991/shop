@@ -6,8 +6,7 @@ import 'firebase/auth';
 const firebaseConfig = {
   apiKey: 'AIzaSyBqzyhjRSQnQiJdwh2_P2W-wS6XMhowBuI',
   authDomain: 'shop-app-firebase.firebaseapp.com',
-  databaseURL:
-    'https://shop-app-firebase-default-rtdb.europe-west1.firebasedatabase.app',
+  databaseURL: 'https://shop-app-firebase-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'shop-app-firebase',
   storageBucket: 'shop-app-firebase.appspot.com',
   messagingSenderId: '159676401640',
@@ -88,13 +87,7 @@ const submitRegistration = (values) => {
   return auth.createUserWithEmailAndPassword(email, password);
 };
 
-const postItemsToDatabase = async (
-  newValues,
-  path,
-  itemError,
-  itemSpinnerClose,
-  notificationItem
-) => {
+const postItemsToDatabase = async (newValues, path, itemError, itemSpinnerClose, notificationItem) => {
   const db = firebase.database();
   const ref = db.ref(`${path}`);
   const dbDataRef = ref.push();
@@ -108,14 +101,7 @@ const postItemsToDatabase = async (
   });
 };
 
-const putItemsToDatabase = async (
-  newValues,
-  itemId,
-  path,
-  itemError,
-  itemSpinnerClose,
-  notificationItem
-) => {
+const putItemsToDatabase = async (newValues, itemId, path, itemError, itemSpinnerClose, notificationItem) => {
   const db = firebase.database();
   const ref = db.ref(`${path}`);
   const dbDataRef = ref.child(itemId);

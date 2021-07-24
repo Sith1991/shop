@@ -7,14 +7,7 @@ const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 
-const Notifications = ({
-  history,
-  showNotification,
-  path,
-  deletedItem,
-  isEditing,
-  closeNotifications,
-}) => {
+const Notifications = ({ history, showNotification, path, deletedItem, isEditing, closeNotifications }) => {
   const backToListItems = (path) => {
     return history.push(`${path}`);
   };
@@ -31,14 +24,9 @@ const Notifications = ({
 
   if (isEditing && !deletedItem && path === '/') {
     return (
-      <Snackbar
-        open={showNotification}
-        autoHideDuration={4000}
-        onClose={handleClose}
-      >
+      <Snackbar open={showNotification} autoHideDuration={4000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-          Товар успешно отредактирован! Вы будете автоматически перенаправлены в
-          список товаров.
+          Товар успешно отредактирован! Вы будете автоматически перенаправлены в список товаров.
         </Alert>
       </Snackbar>
     );
@@ -46,14 +34,9 @@ const Notifications = ({
 
   if (!isEditing && !deletedItem && path === '/') {
     return (
-      <Snackbar
-        open={showNotification}
-        autoHideDuration={4000}
-        onClose={handleClose}
-      >
+      <Snackbar open={showNotification} autoHideDuration={4000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-          Товар успешно добавлен! Вы будете автоматически перенаправлены в
-          список товаров.
+          Товар успешно добавлен! Вы будете автоматически перенаправлены в список товаров.
         </Alert>
       </Snackbar>
     );
@@ -61,14 +44,9 @@ const Notifications = ({
 
   if (!isEditing && !deletedItem && path === '/property-list') {
     return (
-      <Snackbar
-        open={showNotification}
-        autoHideDuration={4000}
-        onClose={handleClose}
-      >
+      <Snackbar open={showNotification} autoHideDuration={4000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-          Свойство успешно добавлено! Вы будете автоматически перенаправлены в
-          список добавленных свойств.
+          Свойство успешно добавлено! Вы будете автоматически перенаправлены в список добавленных свойств.
         </Alert>
       </Snackbar>
     );

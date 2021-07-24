@@ -9,7 +9,6 @@ import {
 } from '../action-types';
 
 const notificationsReducer = (state, action) => {
-
   if (state === undefined) {
     return {
       showNotification: false,
@@ -20,7 +19,6 @@ const notificationsReducer = (state, action) => {
   }
 
   switch (action.type) {
-
     case NOTIFICATION_CREATED_PRODUCT:
       return {
         showNotification: true,
@@ -80,4 +78,4 @@ const notificationsReducer = (state, action) => {
   }
 };
 
-export {notificationsReducer};
+export { notificationsReducer };

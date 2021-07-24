@@ -43,10 +43,4 @@ const fetchProperties = () => (dispatch) => {
   getItems(dispatch, 'properties', propertiesLoaded);
 };
 
-export {
-  fetchProperties,
-  propertiesError,
-  propertiesSpinnerOpen,
-  propertiesSpinnerClose,
-  propertiesLoaded,
-};
+export { fetchProperties, propertiesError, propertiesSpinnerOpen, propertiesSpinnerClose, propertiesLoaded };

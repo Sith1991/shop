@@ -15,7 +15,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default compose(
-  withAuthRedirect,
-  connect(mapStateToProps, null)
-)(MainContainer);
+export default compose(withAuthRedirect, connect(mapStateToProps, null))(MainContainer);

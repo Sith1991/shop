@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
 import { useLoginButtonStyles, useProductCardItemSelectStyles } from '../../styles/customizing-material-ui-components';
+import { productCardValidationSchema } from './product-card-validation-shema';
 
 import './product-card.scss';
 
@@ -17,25 +17,6 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
 
   const { itemName, fileUrl, description, price, propertiesOfProduct } = selectedProduct;
 
-  const validationSchema = yup.object().shape({
-    itemName: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-    description: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-    fileUrl: yup.string().typeError('Должно быть строкой').required('Обязательное поле'),
-    price: yup
-      .number()
-      .typeError('Должно быть числом')
-      .integer('Должно быть целым числом')
-      .required('Обязательное поле'),
-    propertiesOfProduct: yup.array().of(
-      yup.object().shape({
-        id: yup.string(),
-        propertyName: yup.string(),
-        propertyType: yup.string(),
-        propertyValue: yup.string(),
-      }),
-    ),
-  });
-
   const formik = useFormik({
     initialValues: {
       itemName: itemName,
@@ -44,7 +25,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
       price: price,
       propertiesOfProduct: propertiesOfProduct ? propertiesOfProduct : [],
     },
-    validationSchema: validationSchema,
+    validationSchema: productCardValidationSchema,
     onSubmit: async (values) => {
       await new Promise((r) => setTimeout(r, 500));
       console.log(values);
@@ -105,9 +86,9 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
                 /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                                                этому полю было присвоено первое значение свойства из массива значений.
-                                                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
-                                                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
+                                                                этому полю было присвоено первое значение свойства из массива значений.
+                                                                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
+                                                                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
                 value={
                   Array.isArray(values.propertiesOfProduct[index].propertyValue)
                     ? ''

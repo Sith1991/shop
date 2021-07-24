@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { Link, withRouter } from 'react-router-dom';
 import { FormControl, FormHelperText, FormLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -12,10 +11,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { ErrorMessageText } from '../../components/error-message-text';
 import { submitLogIn } from '../../services';
+import { loginValidationSchema } from './login-validation-shema';
 
-import {
-  useLoginButtonStyles,
-} from '../../styles/customizing-material-ui-components';
+import { useLoginButtonStyles } from '../../styles/customizing-material-ui-components';
 
 import './login.scss';
 
@@ -24,27 +22,13 @@ const Login = ({ history }) => {
 
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const validationSchema = yup.object().shape({
-    email: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .min(4, 'Логин должен быть не менее 4 символов')
-      .max(20, 'Логин должен быть не болле 20 символов')
-      .required('Обязательное поле'),
-    password: yup
-      .string()
-      .typeError('Должно быть строкой')
-      .min(8, 'Пароль должен быть не менее 8 символов')
-      .required('Обязательное поле'),
-  });
-
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
       showPassword: false,
     },
-    validationSchema: validationSchema,
+    validationSchema: loginValidationSchema,
     onSubmit: (values) => {
       submitLogIn(values)
         .then(() => {
@@ -59,17 +43,7 @@ const Login = ({ history }) => {
     validateOnBlur: true,
   });
 
-  const {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    isValid,
-    handleSubmit,
-    dirty,
-    setFieldValue,
-  } = formik;
+  const { values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, setFieldValue } = formik;
 
   return (
     <div className={'login'}>
@@ -89,9 +63,7 @@ const Login = ({ history }) => {
               onBlur={handleBlur}
               value={values.email}
             />
-            {touched.email && errors.email && (
-              <FormHelperText>{errors.email}</FormHelperText>
-            )}
+            {touched.email && errors.email && <FormHelperText>{errors.email}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth error={Boolean(touched.password && errors.password)}>
             <FormLabel>Пароль</FormLabel>
@@ -107,9 +79,7 @@ const Login = ({ history }) => {
                 <InputAdornment position="end">
                   <IconButton
                     name={'showPassword'}
-                    onClick={() =>
-                      setFieldValue('showPassword', !values.showPassword)
-                    }
+                    onClick={() => setFieldValue('showPassword', !values.showPassword)}
                     edge="end"
                   >
                     {values.showPassword ? <Visibility /> : <VisibilityOff />}
@@ -117,23 +87,21 @@ const Login = ({ history }) => {
                 </InputAdornment>
               }
             />
-            {touched.password && errors.password && (
-              <FormHelperText>{errors.password}</FormHelperText>
-            )}
+            {touched.password && errors.password && <FormHelperText>{errors.password}</FormHelperText>}
           </FormControl>
         </div>
         <div className={'login-button'}>
-            <Button
-              classes={{
-                root: classes.root,
-                label: classes.label,
-              }}
-              type={'submit'}
-              disabled={!isValid || !dirty}
-              onClick={handleSubmit}
-            >
-              Войти
-            </Button>
+          <Button
+            classes={{
+              root: classes.root,
+              label: classes.label,
+            }}
+            type={'submit'}
+            disabled={!isValid || !dirty}
+            onClick={handleSubmit}
+          >
+            Войти
+          </Button>
         </div>
         <div className={'link'}>
           <Link to={'/registration'}>Зарегестрироваться</Link>

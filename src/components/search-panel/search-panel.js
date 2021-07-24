@@ -38,11 +38,7 @@ export class SearchPanel extends Component {
         />
         <FormControl className={'select'} variant="outlined" size="small">
           <InputLabel>Категория</InputLabel>
-          <Select
-            label={'Категория'}
-            defaultValue={'itemName'}
-            onChange={this.onColumnChange}
-          >
+          <Select label={'Категория'} defaultValue={'itemName'} onChange={this.onColumnChange}>
             <MenuItem value={'itemName'}>Перечень товаров</MenuItem>
             <MenuItem value={'price'}>Стоимость</MenuItem>
             <MenuItem value={'dateOfChange'}>Дата изменения</MenuItem>

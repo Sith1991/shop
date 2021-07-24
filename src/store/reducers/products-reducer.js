@@ -46,4 +46,4 @@ const productsReducer = (state, action) => {
   }
 };
 
-export {productsReducer};
+export { productsReducer };

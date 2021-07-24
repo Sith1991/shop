@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 import { Spinner } from '../../components/spinner';
 import { ErrorIndicator } from '../error-indicator';
 import { ProductCard } from './product-card';
-import {
-  clearSelectedProduct,
-  fetchSelectedProduct,
-  resetNotifications,
-} from '../../store/actions';
+import { clearSelectedProduct, fetchSelectedProduct, resetNotifications } from '../../store/actions';
 
 const ProductCardContainer = ({
   match,
@@ -39,13 +35,7 @@ const ProductCardContainer = ({
     return <ErrorIndicator />;
   }
 
-  return (
-    <ProductCard
-      selectedProduct={selectedProduct}
-      clearSelectedProduct={clearSelectedProduct}
-      logIn={logIn}
-    />
-  );
+  return <ProductCard selectedProduct={selectedProduct} clearSelectedProduct={clearSelectedProduct} logIn={logIn} />;
 };
 
 const mapStateToProps = (state) => {
@@ -63,7 +53,4 @@ const mapDispatchToProps = {
   resetNotifications,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductCardContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductCardContainer);

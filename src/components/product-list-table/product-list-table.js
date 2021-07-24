@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableRow,
-} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableFooter, TableRow } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
@@ -16,13 +9,7 @@ import { Spinner } from '../spinner';
 
 import './product-list-table.scss';
 
-const ProductListTable = ({
-  products,
-  onDeleted,
-  loading,
-  productsError,
-  deletedProduct,
-}) => {
+const ProductListTable = ({ products, onDeleted, loading, productsError, deletedProduct }) => {
   // русская локализация
   const theme = createMuiTheme(
     {
@@ -30,7 +17,7 @@ const ProductListTable = ({
         primary: { main: '#1976d2' },
       },
     },
-    ruRU
+    ruRU,
   );
 
   // начинаем делать пагинацию
@@ -105,11 +92,7 @@ const ProductListTable = ({
       <ThemeProvider theme={theme}>
         <TableContainer>
           <Table>
-            <ProductListTableHeader
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
+            <ProductListTableHeader order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
             {loading ? (
               <TableBody>
                 <TableRow>
@@ -124,7 +107,7 @@ const ProductListTable = ({
                 {(rowsPerPage > 0
                   ? stableSort(products, getComparator(order, orderBy)).slice(
                       page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
+                      page * rowsPerPage + rowsPerPage,
                     )
                   : stableSort(products, getComparator(order, orderBy))
                 ).map((product) => {
@@ -142,9 +125,7 @@ const ProductListTable = ({
                         <div className={'table-value'}>{formattedPrice} $</div>
                       </TableCell>
                       <TableCell className={'table-body'}>
-                        <div className={'table-value'}>
-                          {formattedDateOfChange}
-                        </div>
+                        <div className={'table-value'}>{formattedDateOfChange}</div>
                       </TableCell>
                       <TableCell>
                         <div className="links">
@@ -153,14 +134,7 @@ const ProductListTable = ({
                           </Link>
                           <Link
                             to={'#'}
-                            onClick={() =>
-                              onDeleted(
-                                id,
-                                'products',
-                                productsError,
-                                deletedProduct
-                              )
-                            }
+                            onClick={() => onDeleted(id, 'products', productsError, deletedProduct)}
                             className={'link'}
                           >
                             Удалить
@@ -196,4 +170,4 @@ const ProductListTable = ({
   );
 };
 
-export { ProductListTable };
+export {ProductListTable};

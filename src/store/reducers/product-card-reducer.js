@@ -6,7 +6,6 @@ import {
 } from '../action-types';
 
 const productCardReducer = (state, action) => {
-
   if (state === undefined) {
     return {
       selectedProduct: {},
@@ -49,4 +48,4 @@ const productCardReducer = (state, action) => {
   }
 };
 
-export {productCardReducer};
+export { productCardReducer };

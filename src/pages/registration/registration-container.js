@@ -27,7 +27,4 @@ const mapDispatchToProps = {
   userIsAuth,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RegistrationContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationContainer);
