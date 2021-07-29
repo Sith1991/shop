@@ -3,11 +3,12 @@ import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Button from '@material-ui/core/Button';
-import { FormControl, FormControlLabel, FormHelperText, FormLabel, RadioGroup } from '@material-ui/core';
+import { FormControl, FormControlLabel, FormLabel, RadioGroup } from '@material-ui/core';
 
 import { StyledRadio } from '../../components/styled-radio-icon';
 import { postItemsToDatabase } from '../../services';
 import { addPropertyValidationSchema } from './add-property-validation-shema';
+import { FormHelperTextStyled } from "../../components/form-helper-text";
 
 import {
   useAddItemLabelStyles,
@@ -34,7 +35,7 @@ const AddProperty = ({
   const classesRadioButtons = usePropertyLabelStyles();
 
   const getError = useCallback((touched, error) => {
-    return touched && error && <FormHelperText>{error}</FormHelperText>;
+    return touched && error && <FormHelperTextStyled>{error}</FormHelperTextStyled>;
   }, []);
 
   const formik = useFormik({

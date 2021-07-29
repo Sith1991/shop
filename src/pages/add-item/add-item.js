@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { FormControl, FormHelperText, FormLabel } from '@material-ui/core';
+import { FormControl, FormLabel } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
 import { Thumb } from '../../components/thumb';
@@ -12,6 +12,7 @@ import { PriceFormatInput } from '../../components/price-format-input';
 import { getDateOfChange, postItemsToDatabase, putItemsToDatabase, storage } from '../../services';
 import { AddPropertyToProduct } from '../../components/add-property-to-product';
 import { addItemValidationSchema } from './add-item-validation-schema';
+import { FormHelperTextStyled } from "../../components/form-helper-text";
 
 import {
   themeUploadBtn,
@@ -88,7 +89,7 @@ const AddItem = memo(
     }, []);
 
     const getError = useCallback((touched, error, index) => {
-      return touched && error && <FormHelperText key={index}>{error}</FormHelperText>;
+      return touched && error && <FormHelperTextStyled key={index}>{error}</FormHelperTextStyled>;
     }, []);
 
     const formik = useFormik({

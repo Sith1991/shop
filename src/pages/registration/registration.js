@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
-import { FormControl, FormHelperText, FormLabel } from '@material-ui/core';
+import { FormControl, FormLabel } from '@material-ui/core';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,6 +12,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { ErrorMessageText } from '../../components/error-message-text';
 import { submitRegistration } from '../../services';
 import { registrationValidationSchema } from './registration-validation-shema';
+import { FormHelperTextStyled } from "../../components/form-helper-text";
 
 import { useRegistrationButtonStyles } from '../../styles/customizing-material-ui-components';
 
@@ -65,7 +66,7 @@ const Registration = ({ history }) => {
               onBlur={handleBlur}
               value={values.name}
             />
-            {touched.name && errors.name && <FormHelperText>{errors.name}</FormHelperText>}
+            {touched.name && errors.name && <FormHelperTextStyled>{errors.name}</FormHelperTextStyled>}
           </FormControl>
           <FormControl fullWidth error={Boolean(touched.secondName && errors.secondName)}>
             <FormLabel>Фамилия</FormLabel>
@@ -79,7 +80,7 @@ const Registration = ({ history }) => {
               onBlur={handleBlur}
               value={values.secondName}
             />
-            {touched.secondName && errors.secondName && <FormHelperText>{errors.secondName}</FormHelperText>}
+            {touched.secondName && errors.secondName && <FormHelperTextStyled>{errors.secondName}</FormHelperTextStyled>}
           </FormControl>
           <FormControl fullWidth error={Boolean(touched.email && errors.email)}>
             <FormLabel>E-mail</FormLabel>
@@ -93,7 +94,7 @@ const Registration = ({ history }) => {
               onBlur={handleBlur}
               value={values.email}
             />
-            {touched.email && errors.email && <FormHelperText>{errors.email}</FormHelperText>}
+            {touched.email && errors.email && <FormHelperTextStyled>{errors.email}</FormHelperTextStyled>}
           </FormControl>
           <FormControl fullWidth error={Boolean(touched.password && errors.password)}>
             <FormLabel>Пароль</FormLabel>
@@ -117,7 +118,7 @@ const Registration = ({ history }) => {
                 </InputAdornment>
               }
             />
-            {touched.password && errors.password && <FormHelperText>{errors.password}</FormHelperText>}
+            {touched.password && errors.password && <FormHelperTextStyled>{errors.password}</FormHelperTextStyled>}
           </FormControl>
           <FormControl fullWidth error={Boolean(touched.confirmPassword && errors.confirmPassword)}>
             <FormLabel>Повторите пароль</FormLabel>
@@ -142,7 +143,7 @@ const Registration = ({ history }) => {
               }
             />
             {touched.confirmPassword && errors.confirmPassword && (
-              <FormHelperText>{errors.confirmPassword}</FormHelperText>
+              <FormHelperTextStyled>{errors.confirmPassword}</FormHelperTextStyled>
             )}
           </FormControl>
         </div>

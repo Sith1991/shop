@@ -16,8 +16,8 @@ export const addItemValidationSchema = yup.object().shape({
     then: yup
       .object()
       .shape({
-        file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-          return value ? value.size < 153600 : true;
+        file: yup.mixed().test('fileSize', 'Размер файла не должен превышать 1Mб', (value) => {
+          return value ? value.size < 1048576 : true;
         }),
         type: yup
           .string()
@@ -31,8 +31,8 @@ export const addItemValidationSchema = yup.object().shape({
       .shape({
         file: yup
           .mixed()
-          .test('fileSize', 'Размер файла не должен превышать 150кб', (value) => {
-            return value ? value.size < 153600 : true;
+          .test('fileSize', 'Размер файла не должен превышать 1Mб', (value) => {
+            return value ? value.size < 1048576 : true;
           })
           .typeError('Добавьте файл')
           .required('Добавьте файл'),
