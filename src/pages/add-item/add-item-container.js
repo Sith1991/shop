@@ -50,9 +50,6 @@ const AddItemContainer = ({
     if (itemId) {
       fetchSelectedProduct(itemId);
     }
-    // срабатывает при уничтожении компоненты. Очищаю бывранный товар, т.к. если этого не делать, то при нажатии
-    // на backspace с редактируемого товара и последующем переходе на добавление товара в инпуты прогружаются
-    // данные ранее редактируемого товара
     return () => clearSelectedProduct();
   }, [itemId, resetNotifications, fetchProducts, fetchProperties, fetchSelectedProduct, clearSelectedProduct]);
 

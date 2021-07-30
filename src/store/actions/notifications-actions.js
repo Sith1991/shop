@@ -49,8 +49,6 @@ const closeNotifications = () => {
   };
 };
 
-// Необходимо для того, что бы при переходе на другую страницу, не перебрасывало обратно после срабатывания нотификации,
-// как это сделано в логике компоненты notifications.js
 const resetNotifications = () => {
   return {
     type: NOTIFICATION_STATUS_RESET,

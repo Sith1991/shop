@@ -41,13 +41,8 @@ const AddPropertyToProduct = memo(
     const classesButton = useAddPropertyButtonStyles();
     const classesInput = useAddPropInputStyles();
 
-    // Храним массив оставшихся свойств.
     const [lastProperties, setLastProperties] = useState(properties);
 
-    // если товар редактируется, из свего массива свойств вычитаю массив свойств, которые уже есть у товара,
-    // и переопределяю массив оставшихся свойств. В случае, если товар только добавляется, то результатом вычитания останется
-    // изначальный массив свойств (полученный с сервера).
-    // Вычитание произвожу по имени свойств (propertyName).
     const propertiesWithEditing = useCallback((properties, propertiesOfProduct) => {
       const result = properties.filter((x) => !propertiesOfProduct.some((y) => x.propertyName === y.propertyName));
       setLastProperties(result);
@@ -60,13 +55,8 @@ const AddPropertyToProduct = memo(
     const removeSelectedProperties = useCallback(
       (event, index) => {
         handleChange(event);
-        // При перевыборе свойства, очищаю его значение (устанвливаю значение на пустую строку), что бы при выборе другого
-        // свойства, ранее вбитые значения не присваивались ему автоматически
         setFieldValue(`propertiesOfProduct.${index}.propertyValue`, '', false);
-        // При перевыборе свойства, очищаю параметр touched т.к. если этого не сделать, то сработавшие errors передадутся на
-        // заново выбранное свойство
         setFieldTouched(`propertiesOfProduct.${index}.propertyValue`, false, false);
-        // удаляю выбранное свойство из массива оставшихся свойств
         const { value } = event.target;
         const lastProps = lastProperties.filter((item) => item.propertyName !== value);
         setLastProperties(lastProps);
@@ -74,8 +64,6 @@ const AddPropertyToProduct = memo(
       [handleChange, setFieldValue, setFieldTouched, lastProperties],
     );
 
-    // если происходит удаление свойства у товара, то происходит поиск по имении удаляемого свойства в массиве всех свойств
-    // и добавляется данное свойство (объект с этим свойством) в массив оставшихся свойств
     const pushSelectedProperties = useCallback(
       (property) => {
         if (property) {
@@ -96,16 +84,11 @@ const AddPropertyToProduct = memo(
       );
     }, []);
 
-    // в случае, когда в селекте выбрано свойство, делаю копию оставшихся свойств и добавляю его для дальнейшего
-    // рендеринга итемов для селекта, иначе любое выбранное свойство удаляется из массива оставшихся свойств
     const selectedWithLastProperties = useCallback(
       (propName) => {
         const selectedProperty = properties.find(({ propertyName }) => propertyName === propName);
-        // делаю копию массива оставшихся свойств
         const arr = lastProperties.slice();
-        // пушу к этому массиву выбранное в селекте свойство
         arr.push(selectedProperty);
-        // рендерю итемы для селекта свойств
         return arr.map(renderMenuItems);
       },
       [lastProperties, properties, renderMenuItems],
@@ -166,11 +149,9 @@ const AddPropertyToProduct = memo(
 
     const renderValueInputs = useCallback(
       (selectedProp, index) => {
-        // нахожу по имени выбранное свойство из массива всех возможных свойств
         const selectedProperty = properties.find(({ propertyName }) => propertyName === selectedProp.propertyName);
-        // присваиваю тип и id выбранного свойства в массив добавленных свойств данному товару
-        selectedProp.propertyType = selectedProperty.propertyType; // записываю тип свойства в propertiesOfProduct[index].propertyType товара
-        selectedProp.id = selectedProperty.id; //записываю id свойства в propertiesOfProduct[index].id товара
+        selectedProp.propertyType = selectedProperty.propertyType;
+        selectedProp.id = selectedProperty.id;
 
         const nameOfFieldArray = `propertiesOfProduct.${index}.propertyValue`;
         switch (selectedProperty.propertyType) {
@@ -178,7 +159,6 @@ const AddPropertyToProduct = memo(
             return (
               <div className={'add-property-right-column'}>
                 <p className={'property-name'}>Значение</p>
-                {/*В случае если массив значений свойства DROPDOWN будет пустым, не выполнять мапинг*/}
                 {selectedProp.propertyValue &&
                   selectedProp.propertyValue.length > 0 &&
                   selectedProp.propertyValue.map((selectedPropValue, idx) => (
@@ -343,7 +323,6 @@ const AddPropertyToProduct = memo(
       <div className={'add-property-to-product'}>
         <div className={'add-property-head'}>
           <h5>Добавление товару свойств</h5>
-          {/*отключаем кнопку добавления свойств, когда кол-во свойств в товаре равно количеству достпуных свойств*/}
           {properties.length > propertiesOfProduct.length && (
             <IconButton
               classes={{ root: classesButton.root }}
@@ -390,10 +369,8 @@ const AddPropertyToProduct = memo(
                       removeSelectedProperties(event, index);
                     }}
                     onBlur={handleBlur}
-                    notched={false} /*Если true, на контуре сделана выемка для размещения метки.*/
+                    notched={false}
                   >
-                    {/*если в селекте выбрано свойство, добавить его к оставшимся свойствам,
-                      но только для рендеринга итемов для селекта,иначе просто отрендерить оставшиеся свойства*/}
                     {propertiesOfProduct[index].propertyName
                       ? selectedWithLastProperties(propertiesOfProduct[index].propertyName)
                       : lastProperties.map(renderMenuItems)}

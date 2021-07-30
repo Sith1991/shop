@@ -10,8 +10,7 @@ const selectedProductLoaded = (products, itemId) => {
   const objectsToArray = Object.values(products);
   const getKeysToArray = Object.keys(products);
   for (let i = 0; i < getKeysToArray.length; i++) {
-    // добавляю свойство id для того что бы через него
-    objectsToArray[i].id = getKeysToArray[i]; // редактировать или удалять необходимые объекты
+    objectsToArray[i].id = getKeysToArray[i];
   }
   const product = objectsToArray.find(({ id }) => id === itemId);
   if (product === undefined) {
@@ -25,8 +24,6 @@ const selectedProductLoaded = (products, itemId) => {
 };
 
 const clearSelectedProduct = () => {
-  // зачищаем выбранный товар, т.к. если этого не делать, то при переключении
-  // на другой товар, до его загрузки отображается предыдущий выбранный.
   return {
     type: CLEAR_SELECTED_PRODUCT,
   };

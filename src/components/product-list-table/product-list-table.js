@@ -10,7 +10,7 @@ import { Spinner } from '../spinner';
 import './product-list-table.scss';
 
 const ProductListTable = ({ products, onDeleted, loading, productsError, deletedProduct }) => {
-  // русская локализация
+  // russian localization
   const theme = createMuiTheme(
     {
       palette: {
@@ -20,7 +20,7 @@ const ProductListTable = ({ products, onDeleted, loading, productsError, deleted
     ruRU,
   );
 
-  // начинаем делать пагинацию
+  //
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -34,9 +34,9 @@ const ProductListTable = ({ products, onDeleted, loading, productsError, deleted
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  // закончили с пагинацией
+  //
 
-  // начинаем делать сортировку
+  //
 
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -73,7 +73,7 @@ const ProductListTable = ({ products, onDeleted, loading, productsError, deleted
     setOrderBy(property);
   };
 
-  // закончили с сортировкой
+  //
 
   const timestampToDate = (timestamp) => {
     const d = new Date();
@@ -103,7 +103,6 @@ const ProductListTable = ({ products, onDeleted, loading, productsError, deleted
               </TableBody>
             ) : (
               <TableBody>
-                {/*Если rowsPerPage = -1 (т.е. выбрано в пагинации "Показать Все", то мапим без слайса)*/}
                 {(rowsPerPage > 0
                   ? stableSort(products, getComparator(order, orderBy)).slice(
                       page * rowsPerPage,

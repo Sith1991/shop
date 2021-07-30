@@ -35,10 +35,6 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
 
   const { values, handleChange, handleBlur, isValid, handleSubmit, setFieldValue } = formik;
 
-  // При первом реднере компоненты, прохожу по массиву свойств товара и в случае, когда свойство имеет тип Dropdown,
-  // его первое значение из массива значений сразу устанавливаю в initialValues формика, т.к. если пользователь не выберет
-  // вручную какое либо свойство из селекта (т.е. не сработает onChange селекта), то в initialValues передастся весь
-  // массив значений свойств Dropdown, а не только одно значение.
   const setFirstValuesFromDropDowns = useCallback(
     (property, index) => {
       if (property.propertyType === 'Dropdown') {
@@ -83,12 +79,7 @@ const ProductCard = ({ selectedProduct, clearSelectedProduct, logIn }) => {
                 name={`propertiesOfProduct.${index}.propertyValue`}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                /*Если true, на контуре сделана выемка для размещения имени селекта.*/
                 notched={false}
-                /*В данном случае будет первое значение из массива свойств Dropdown, т.к. при рендере
-                                                                этому полю было присвоено первое значение свойства из массива значений.
-                                                                Условие же необходимо, т.к. "values.propertiesOfProduct[index].propertyValue" изначально массив значений,
-                                                                а в селекте значением может быть простой элемекнт, а не массив, поэтому мы присваиваем пустую строку */
                 value={
                   Array.isArray(values.propertiesOfProduct[index].propertyValue)
                     ? ''

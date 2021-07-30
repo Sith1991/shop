@@ -10,7 +10,6 @@ const propertiesLoaded = (newItems) => {
   const objectsToArray = Object.values(newItems);
   const getKeysToArray = Object.keys(newItems);
   for (let i = 0; i < getKeysToArray.length; i++) {
-    // добавляю свойство id для того что бы через него редактировать или удалять необходимые объекты
     objectsToArray[i].id = getKeysToArray[i];
   }
   return {

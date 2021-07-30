@@ -10,7 +10,7 @@ import { PropertyListTableHeader } from './index';
 import './property-list-table.scss';
 
 const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProperty }) => {
-  // русская локализация
+  // russian localization
   const theme = createMuiTheme(
     {
       palette: {
@@ -20,7 +20,7 @@ const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProp
     ruRU,
   );
 
-  // начинаем делать пагинацию
+  //
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -34,9 +34,9 @@ const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProp
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  // закончили с пагинацией
+  //
 
-  // начинаем делать сортировку
+  //
 
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -73,7 +73,7 @@ const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProp
     setOrderBy(property);
   };
 
-  // закончили с сортировкой
+  //
 
   return (
     <div className={'property-list-table'}>
@@ -82,7 +82,6 @@ const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProp
           <Table>
             <PropertyListTableHeader order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
             <TableBody>
-              {/*Если rowsPerPage = -1 (т.е. выбрано в пагинации "Показать Все", то мапим без слайса)*/}
               {(rowsPerPage > 0
                 ? stableSort(properties, getComparator(order, orderBy)).slice(
                     page * rowsPerPage,

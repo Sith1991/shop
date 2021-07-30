@@ -18,7 +18,6 @@ import { useLoginButtonStyles } from '../../styles/customizing-material-ui-compo
 
 import './login.scss';
 
-
 const Login = ({ history }) => {
   const classes = useLoginButtonStyles();
 

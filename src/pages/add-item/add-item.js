@@ -45,26 +45,20 @@ const AddItem = memo(
     const classesUploadBtn = useUploadButtonStyles();
     const classesTextarea = useAddItemTextareaStyles();
 
-    // отображенире цены происходит с пробелами чсерез каждых три символа
     const priceFormat = useCallback((value) => {
       return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
     }, []);
 
-    // Создаем массив "уникальных" свойсв, который включает в себя все свойства с сервера и свойства товара,
-    // которых нет на сервере (т.е. товар был создан с свойствами, которые в последствии были удалены с сервреа).
     const createUniqueProperties = useCallback((allProperties, propertiesOfProduct) => {
-      // Если товав не имеет свойств, то возвращаем все свойства с сервера
       if (!propertiesOfProduct) {
         return allProperties;
       }
-      // Находим все свойства товара, которых нет в общем массиве свойств на сервере
       const uniqueResultTwo = propertiesOfProduct.filter(function (obj) {
         return !allProperties.some(function (obj2) {
           return obj.id === obj2.id;
         });
       });
 
-      // Добавляем ко всем свойствам, свойства найденные в товаре, но которых нет на сервере
       return allProperties.concat(uniqueResultTwo);
     }, []);
 
@@ -96,13 +90,11 @@ const AddItem = memo(
       initialValues: {
         itemId: Boolean(itemId),
         itemName: editingProduct.itemName,
-        // для контролируемого input необходимо задать изначально пустую строку либо определенное значение
         price: itemId ? editingProduct.price : '',
         file: undefined,
         fileUrl: editingProduct.fileUrl,
         dateOfChange: '',
         description: editingProduct.description,
-        // Если это редактируемый товар, и у него есть свойства, то сюда передается их массив, иначе создается пустой массив
         propertiesOfProduct: itemId && editingProduct.propertiesOfProduct ? editingProduct.propertiesOfProduct : [],
       },
       validationSchema: addItemValidationSchema,
@@ -112,8 +104,6 @@ const AddItem = memo(
         const numberedPrice = parseInt(String(price).replace(/ /g, ''));
 
         if (image) {
-          // добавление случайного шестизначного числа к названию файла, для того что бы файлы с одинаковыми именами
-          // не перезаписывали друг друга
           const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;
           const uploadTask = storage.ref(`images/${fileNameWithRndNumber}`).put(image);
           await uploadTask.on(
@@ -131,11 +121,10 @@ const AddItem = memo(
                   const newValues = {
                     ...values,
                     price: numberedPrice,
-                    file: [], // чистим массив с фото, т.к. он не нужен realtime firebase, файл загружается в firebase storage
+                    file: [],
                     fileUrl: url,
                   };
 
-                  // Сработает, если товар редактируется
                   if (itemId) {
                     putItemsToDatabase(
                       { ...newValues, dateOfChange: getDateOfChange() },
@@ -158,12 +147,11 @@ const AddItem = memo(
             },
           );
         }
-        // Сработает, если товар редактируется, но при этом изображение не было изменено (не было перевыбрано).
         else {
           const newValues = {
             ...values,
             price: numberedPrice,
-            file: [], // чистим массив с фото, т.к. он не нужен в realtime firebase, файл загружается в firebase storage
+            file: [],
           };
 
           await putItemsToDatabase(
@@ -256,8 +244,8 @@ const AddItem = memo(
                 </FormLabel>
                 <NumberFormat
                   classesInput={classesInput}
-                  onChange={handleChange} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
-                  onBlur={handleBlur} // необходимо прокидывать с такими именами, иначе NumberFormat не сработает
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                   values={price}
                   customInput={PriceFormatInput}
                   format={priceFormat}
@@ -284,8 +272,7 @@ const AddItem = memo(
                     values.fileUrl = null; // при выборе картинки обнуляю ссылку на неё
                     if (!file) {
                       setFieldValue('file', undefined, true);
-                      values.fileUrl = editingProduct.fileUrl; // если отменил выбор картинки (нажал кнопку "отмена"),
-                      // ссылу на изображение беру из редактируемого товара
+                      values.fileUrl = editingProduct.fileUrl;
                     } else {
                       setFieldValue('file', file, true);
                     }
@@ -313,8 +300,6 @@ const AddItem = memo(
                 </label>
                 {getError(touched.file, errors.file?.file)}
               </FormControl>
-              {/*Если редактируем товар, то загружаем его картинку сразу, но при выборе другой картинки
-                используем мимниатюру Thumb*/}
               <div className={'thumb-wrapper img-thumbnail'}>
                 {fileUrl ? (
                   <img src={fileUrl} alt={'изображение товара'} className={'thumb'} />
