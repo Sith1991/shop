@@ -19,6 +19,7 @@
 
 Бэкенд: firebase realtime database (для хранения таблиц с данными) и firebase storage (для хранения изображений товара).
 
+Регистрация и авторизация: firebase Authentication.
 
 #### Используемый стек технологий:
 
