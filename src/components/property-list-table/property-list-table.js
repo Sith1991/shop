@@ -90,6 +90,15 @@ const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProp
                 : stableSort(properties, getComparator(order, orderBy))
               ).map((property) => {
                 const { id, propertyName, propertyType } = property;
+                if (!(propertyName && propertyType)) {
+                  return (
+                    <TableRow key={id} style={{ height: 48 }}>
+                      <TableCell colSpan={6} align={'center'} className={'table-body'}>
+                        При загрузке свойства произошла ошибка
+                      </TableCell>
+                    </TableRow>
+                  )
+                }
                 return (
                   <TableRow key={id}>
                     <TableCell>
@@ -111,7 +120,7 @@ const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProp
                 );
               })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 47 * emptyRows }}>
+                <TableRow style={{ height: 48 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}

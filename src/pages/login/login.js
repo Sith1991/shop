@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Link, withRouter } from 'react-router-dom';
-import { FormControl, FormHelperText, FormLabel, Tooltip } from '@material-ui/core';
+import { FormControl, FormLabel, Tooltip } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';

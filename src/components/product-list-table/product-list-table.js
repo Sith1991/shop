@@ -111,6 +111,15 @@ const ProductListTable = ({ products, onDeleted, loading, productsError, deleted
                   : stableSort(products, getComparator(order, orderBy))
                 ).map((product) => {
                   const { id, itemName, price, dateOfChange } = product;
+                  if (!(itemName && price && dateOfChange)) {
+                    return (
+                      <TableRow key={id} style={{ height: 48 }}>
+                        <TableCell colSpan={6} align={'center'} className={'table-body'}>
+                          При загрузке товара произошла ошибка
+                        </TableCell>
+                      </TableRow>
+                    )
+                  }
                   const formattedPrice = price.toLocaleString('ru-RU');
                   const formattedDateOfChange = timestampToDate(dateOfChange);
                   return (
@@ -144,7 +153,7 @@ const ProductListTable = ({ products, onDeleted, loading, productsError, deleted
                   );
                 })}
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: 47 * emptyRows }}>
+                  <TableRow style={{ height: 48 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
