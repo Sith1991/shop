@@ -44,10 +44,6 @@ class ProductList extends Component {
     return arr.filter((el) => el[this.state.columnName].toString().toLowerCase().indexOf(term.toLowerCase()) > -1);
   };
 
-  startError = () => {
-    this.boo.too = 5;
-  }
-
   render() {
     const { products, loading, error, productsError, deletedProduct } = this.props;
 
@@ -64,11 +60,6 @@ class ProductList extends Component {
                 Добавить товар
               </Button>
             </Link>
-          </div>
-          <div className={'button-wrap'}>
-              <Button className={'add-button'} variant={'warning'} onClick={() => this.startError()}>
-                Ошибка
-              </Button>
           </div>
           {error ? (
             <ErrorIndicator />

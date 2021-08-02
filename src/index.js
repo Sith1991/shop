@@ -14,14 +14,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <Provider store={store}>
-    <ErrorBoundary>
-      <HashRouter>
-        <NotificationsContainer />
-        <ThemeProvider theme={theme}>
+    <HashRouter>
+      <NotificationsContainer />
+      <ThemeProvider theme={theme}>
+        <ErrorBoundary>
           <AppContainer />
-        </ThemeProvider>
-      </HashRouter>
-    </ErrorBoundary>
+        </ErrorBoundary>
+      </ThemeProvider>
+    </HashRouter>
   </Provider>,
   document.getElementById('root'),
 );

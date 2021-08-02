@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableFooter, TableRow } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme , ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
 import { UniversalTablePagination } from '../universal-table-pagination';
 import { ProductListTableHeader } from './index';
@@ -11,7 +11,7 @@ import './product-list-table.scss';
 
 const ProductListTable = ({ products, onDeleted, loading, productsError, deletedProduct }) => {
   // russian localization
-  const theme = createMuiTheme(
+  const theme = createTheme (
     {
       palette: {
         primary: { main: '#1976d2' },

@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme  } from '@material-ui/core/styles';
 
-const themeUploadBtn = createMuiTheme({
+const themeUploadBtn = createTheme ({
   typography: {
     button: {
       fontFamily: 'Roboto, serif',

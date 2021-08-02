@@ -102,6 +102,7 @@ const AddItem = memo(
         productsSpinnerOpen();
         const { price } = values;
         const numberedPrice = parseInt(String(price).replace(/ /g, ''));
+        delete values.itemId;
 
         if (image) {
           const fileNameWithRndNumber = `${image.name}_${Math.floor(Math.random() * 1000000)}`;

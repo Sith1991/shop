@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme , ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
 import { Table, TableBody, TableCell, TableContainer, TableFooter, TableRow } from '@material-ui/core';
 
@@ -11,7 +11,7 @@ import './property-list-table.scss';
 
 const PropertyListTable = ({ properties, onDeleted, propertiesError, deletedProperty }) => {
   // russian localization
-  const theme = createMuiTheme(
+  const theme = createTheme (
     {
       palette: {
         primary: { main: '#1976d2' },
